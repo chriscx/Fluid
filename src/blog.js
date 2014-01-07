@@ -10,7 +10,7 @@ module.exports = {
   */
 
   getEntry: function(id, callback) {
-    request.get(database.host() + database.dbEntries()+ '/' + id, function (error, response, body) {
+    request.get(database.host() + id, function (error, response, body) {
       if (!error && response.statusCode == 200) {
         console.log('request body: ' + body);
         callback(null, body);
@@ -26,8 +26,11 @@ module.exports = {
   ----------------------------
   */
   createEntry: function(entry, callback) {
-    request.post(database.url + '' + entry);
-
+    request.post(database.host(), entry, function (error, response, body) {
+      if (error || !response.statusCode == 200) {
+        callback(error);
+      }
+    });
   },
 
   /*
@@ -36,7 +39,7 @@ module.exports = {
 
   */
   removeEntry: function(id, callback) {
-    request.del(database.url + '' + id);
+    request.del();
 
   },
 
@@ -46,7 +49,7 @@ module.exports = {
 
   */
   editEntry: function(modifiedEntry, callback) {
-    request.put(database.url);
+    request.put();
 
   },
 
@@ -56,7 +59,7 @@ module.exports = {
 
   */
   createCategory: function(name, callback) {
-    request.post(database.url, entry);
+    request.post();
 
   },
 
@@ -66,7 +69,7 @@ module.exports = {
 
   */
   removeCategory: function(id, callback) {
-    request.del(database.url + '' + id);
+    request.del();
 
   },
 
@@ -76,7 +79,7 @@ module.exports = {
 
   */
   editCategory: function(newName, callback) {
-    request.put(database.url);
+    request.put();
 
   }
 };
