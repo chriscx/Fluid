@@ -8,7 +8,7 @@
       "supervisor": "*",
       "underscore":"*",
       "markdown": "*",
-      "connect-couchdb": "*",
+      "mongoose": "*",
       "request", "*"
     },
     "devDependencies": { 
