@@ -9,7 +9,7 @@
       "underscore":"*",
       "markdown": "*",
       "mongoose": "*",
-      "request", "*"
+      "request": "*"
     },
     "devDependencies": { 
       "request": "*",
