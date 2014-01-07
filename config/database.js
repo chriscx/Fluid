@@ -1,6 +1,7 @@
 module.exports = {
-	var url = 'http://127.0.0.1:5984/',
-	var dbUsers = 'fluiddb_users',
-	var dbEntries = 'fluiddb_blog_entries',
-	var dbCategories ='fluiddb_blog_categories'
+
+	host: function() { return 'http://127.0.0.1:5984/' },
+	dbUsers: function() { return 'fluiddb_users' },
+	dbEntries: function() { return 'fluiddb_blog_entries' },
+	dbCategories: function() { return 'fluiddb_blog_categories' }
 }
