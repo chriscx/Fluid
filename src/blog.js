@@ -3,23 +3,31 @@ request = require('request');
 database = require('./../config/database');
 
 module.exports = {
+
   /*
   `getEntry(id, callback)`
   ----------------------------
   */
 
   getEntry: function(id, callback) {
-    request.get(database.url + '' + id);
-    request.on('error', callback);
+    request.get(database.host() + database.dbEntries()+ '/' + id, function (error, response, body) {
+      if (!error && response.statusCode == 200) {
+        console.log('request body: ' + body);
+        callback(null, body);
+      }
+      else {
+        callback(error);
+      }
+    });
   },
+
   /*
   `createEntry(entry, callback)`
   ----------------------------
   */
-
   createEntry: function(entry, callback) {
     request.post(database.url + '' + entry);
-    request.on('error', callback);
+
   },
 
   /*
@@ -27,10 +35,9 @@ module.exports = {
   ----------------------------
 
   */
-
   removeEntry: function(id, callback) {
     request.del(database.url + '' + id);
-    request.on('error', callback);
+
   },
 
   /*
@@ -38,10 +45,9 @@ module.exports = {
   ----------------------------
 
   */
-
   editEntry: function(modifiedEntry, callback) {
     request.put(database.url);
-    request.on('error', callback);
+
   },
 
     /*
@@ -49,10 +55,9 @@ module.exports = {
   ----------------------------
 
   */
-
   createCategory: function(name, callback) {
     request.post(database.url, entry);
-    request.on('error', callback);
+
   },
 
     /*
@@ -60,10 +65,9 @@ module.exports = {
   ----------------------------
 
   */
-
   removeCategory: function(id, callback) {
     request.del(database.url + '' + id);
-    request.on('error', callback);
+
   },
 
     /*
@@ -71,9 +75,8 @@ module.exports = {
   ----------------------------
 
   */
-
   editCategory: function(newName, callback) {
     request.put(database.url);
-    request.on('error', callback);
+
   }
 };
