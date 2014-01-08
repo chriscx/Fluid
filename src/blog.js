@@ -13,6 +13,8 @@ var entrySchema = new Schema({
   author: String,
   url:    String,
   body:   String,
+  tags: [{name: String}],
+  categories: String,
   comments: [{ body: String, date: Date }],
   date: { type: Date, default: Date.now },
   published: Boolean,
