@@ -1,4 +1,4 @@
-var app, checkAuth, connect, ConnectCouchDB, store, express, http, metrics, stylus, underscore, user, user_metrics;
+var app, checkAuth, connect, SessionStore, store, express, http, stylus, underscore, user;
 
 http = require('http');
 stylus = require('stylus');
@@ -6,23 +6,10 @@ express = require('express');
 user = require('./user');
 underscore = require('underscore');
 connect = require('connect'),
-ConnectCouchDB = require('connect-couchdb')(connect);
-store = new ConnectCouchDB({
-  // Name of the database you would like to use for sessions.
-  name: 'fluiddb_sessions',
-
-  // Optional. How often expired sessions should be cleaned up.
-  // Defaults to 600000 (10 minutes).
-  reapInterval: 600000,
-
-  // Optional. How often to run DB compaction against the session
-  // database. Defaults to 300000 (5 minutes).
-  // To disable compaction, set compactInterval to -1
-  compactInterval: 300000,
-
-  // Optional. How many time between two identical session store
-  // Defaults to 60000 (1 minute)
-  setThrottle: 60000
+SessionStore = require("session-mongoose")(connect);
+store = new SessionStore({
+    url: "mongodb://localhost/session",
+    interval: 120000 // expiration check worker run interval in millisec (default: 60000)
 });
 
 app = express();
