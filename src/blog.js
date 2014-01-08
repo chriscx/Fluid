@@ -98,7 +98,18 @@ module.exports = {
 
   */
   editEntry: function(modifiedEntry, callback) {
-
+    if(modifiedEntry.hasOwnProperty(_id)) {
+      var id = modifiedEntry._id;
+      delete modifiedEntry._id;
+      Entry.update({_id: id}, modifiedEntry, {upsert: true}, function(err){
+        if (err) {
+          callback(err);
+        };
+      });
+    }
+    else {
+      callback("No id provided. Couldn't update entry");
+    }
   },
 
   /*
