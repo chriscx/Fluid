@@ -1,24 +1,41 @@
-var request, database;
-request = require('request');
-database = require('./../config/database');
+var request, database, mongoose, db;
+
+request   = require('request');
+database  = require('./../config/database');
+mongoose  = require('mongoose');
+
+mongoose.connect('mongodb://localhost/fluiddb');
+
+var Schema = mongoose.Schema;
+
+var entrySchema = new Schema({
+  title:  String,
+  author: String,
+  url:    String,
+  body:   String,
+  comments: [{ body: String, date: Date }],
+  date: { type: Date, default: Date.now },
+  published: Boolean,
+});
+
+var Entry = mongoose.model('Entry', entrySchema);
 
 module.exports = {
 
   /*
-  `getEntry(id, callback)`
+  `getEntry(title, callback)`
   ----------------------------
   */
 
-  getEntry: function(id, callback) {
-    request.get(database.host() + id, function (error, response, body) {
-      if (!error && response.statusCode == 200) {
-        console.log('request body: ' + body);
-        callback(null, body);
+  getEntry: function(title, callback) {
+    Entry.find({'title' : title}, function (err, data) {
+      if (err) {
+        callback(err);
       }
       else {
-        callback(error);
+        callback(null, data);
       }
-    });
+    })
   },
 
   /*
@@ -26,11 +43,15 @@ module.exports = {
   ----------------------------
   */
   createEntry: function(entry, callback) {
-    request.post(database.host(), entry, function (error, response, body) {
-      if (error || !response.statusCode == 200) {
-        callback(error);
+    var newEntry = new Entry(entry);
+    newEntry.save(function(err, newEntry, numberAffected) {
+      if(err) {
+        callback(err);
       }
-    });
+      else {
+        callback(null, newEntry);
+      }
+    })
   },
 
   /*
@@ -39,7 +60,6 @@ module.exports = {
 
   */
   removeEntry: function(id, callback) {
-    request.del();
 
   },
 
@@ -49,7 +69,6 @@ module.exports = {
 
   */
   editEntry: function(modifiedEntry, callback) {
-    request.put();
 
   },
 
@@ -59,7 +78,7 @@ module.exports = {
 
   */
   createCategory: function(name, callback) {
-    request.post();
+
 
   },
 
@@ -69,7 +88,6 @@ module.exports = {
 
   */
   removeCategory: function(id, callback) {
-    request.del();
 
   },
 
@@ -79,7 +97,6 @@ module.exports = {
 
   */
   editCategory: function(newName, callback) {
-    request.put();
 
   }
 };
