@@ -64,10 +64,8 @@ module.exports = {
       if (err) {
         callback(err);
       }
-      else {
         callback(null, data);
-      }
-    })
+    }).remove();
   },
 
   /*
