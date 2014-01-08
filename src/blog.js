@@ -60,7 +60,14 @@ module.exports = {
 
   */
   removeEntry: function(id, callback) {
-
+    Entry.remove({'_id' : id}, function (err, data) {
+      if (err) {
+        callback(err);
+      }
+      else {
+        callback(null, data);
+      }
+    })
   },
 
   /*
