@@ -38,6 +38,38 @@ module.exports = {
     })
   },
 
+    /*
+  `getEntry(title, callback)`
+  ----------------------------
+  */
+
+  getEntries: function(limit, skip, callback) {
+    Entry.find({}, null, { skip: skip, limit: limit }).sort({date: -1}).execFind(err, result) {
+      if (err) {
+        callback(err);
+      }
+      else {
+        callback(null, result);
+      }
+    });
+  },
+
+    /*
+  `getEntry(title, callback)`
+  ----------------------------
+  */
+
+  getEntry: function(title, callback) {
+    Entry.find({'title' : title}, function (err, data) {
+      if (err) {
+        callback(err);
+      }
+      else {
+        callback(null, data);
+      }
+    })
+  },
+
   /*
   `createEntry(entry, callback)`
   ----------------------------
