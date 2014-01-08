@@ -26,17 +26,17 @@ var categorySchema = new Schema({
   name: String
 });
 
-var category = mongoose.model('Entry', categorySchema);
+var Category = mongoose.model('Entry', categorySchema);
 
 module.exports = {
 
-    /*
-  `getEntry(title, callback)`
+  /*
+  `getEntries(limit, skip, callback)`
   ----------------------------
   */
 
   getEntries: function(limit, skip, callback) {
-    Entry.find({}, null, { skip: skip, limit: limit }).sort({date: -1}).execFind(err, result) {
+    Entry.find({}, null, { skip: skip, limit: limit }).sort({date: -1}).execFind(function(err, result) {
       if (err) {
         callback(err);
       }
@@ -46,7 +46,7 @@ module.exports = {
     });
   },
 
-    /*
+  /*
   `getEntry(title, callback)`
   ----------------------------
   */
@@ -101,26 +101,54 @@ module.exports = {
 
   },
 
-    /*
-  `createCategory(name, callback)`
+  /*
+  `getCategories(callback)`
+  ----------------------------
+  */
+
+  getCategories: function(callback) {
+    Category.find({}, function(err, result) {
+      if (err) {
+        callback(err);
+      }
+      else {
+        callback(null, result);
+      }
+    });
+  },
+
+  /*
+  `createCategory(category, callback)`
   ----------------------------
 
   */
-  createCategory: function(name, callback) {
-
-
+  createCategory: function(category, callback) {
+    var newCategory = new Category(category);
+    newCategory.save(function(err, newCategory, numberAffected) {
+      if(err) {
+        callback(err);
+      }
+      else {
+        callback(null, newCategory);
+      }
+    })
   },
 
-    /*
+  /*
   `removecategory(id, callback)`
   ----------------------------
 
   */
-  removeCategory: function(id, callback) {
-
+  removeCategory: function(name, callback) {
+    Category.remove({'name' : name}, function (err, data) {
+      if (err) {
+        callback(err);
+      }
+        callback(null, data);
+    }).remove();
   },
 
-    /*
+  /*
   `editCategory(newName, callback)`
   ----------------------------
 
