@@ -30,22 +30,6 @@ var category = mongoose.model('Entry', categorySchema);
 
 module.exports = {
 
-  /*
-  `getEntry(title, callback)`
-  ----------------------------
-  */
-
-  getEntry: function(title, callback) {
-    Entry.find({'title' : title}, function (err, data) {
-      if (err) {
-        callback(err);
-      }
-      else {
-        callback(null, data);
-      }
-    })
-  },
-
     /*
   `getEntry(title, callback)`
   ----------------------------
