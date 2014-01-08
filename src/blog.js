@@ -22,6 +22,12 @@ var entrySchema = new Schema({
 
 var Entry = mongoose.model('Entry', entrySchema);
 
+var categorySchema = new Schema({
+  name: String
+});
+
+var category = mongoose.model('Entry', categorySchema);
+
 module.exports = {
 
   /*
