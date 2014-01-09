@@ -11,14 +11,37 @@ var userSchema = new Schema({
   lastname,
   email,
   password,
-  createDate: { type: Date, default: Date.now },
+  signupDate: { type: Date, default: Date.now },
 });
 
 var User = mongoose.model('User', userSchema);
 
 module.exports = {
+
   /*
-  `save(info, callback)`
+  get(id, callback)`
+  ----------------------------
+  
+  Parameters
+  `id`       User id
+  `callback` Contains an err as first argument 
+             if any and data of user (firstname,
+             lastname, email, signup date)
+  */
+
+  get: function(id, callback) {
+    newUser.find({id: id}, 'firstname lastname email signupDate', function(err, data, numberAffected) {
+      if(err) {
+        callback(err);
+      }
+      else {
+        callback(null, data);
+      }
+    })
+  },
+
+  /*
+  `create(info, callback)`
   ----------------------------
   
   Parameters
@@ -58,8 +81,6 @@ module.exports = {
     }).remove();
   },
 
-
-
     /*
   `checkPassword(login, callback)`
   ----------------------------
@@ -68,9 +89,9 @@ module.exports = {
   `login`       user login as integer
   `password`    user password
   `callback` Contains an err as first argument 
-             if any
+             if any and JSON object with boolean 
+             if check is passed and user id.
 
-  returns bool if passwords match
   */
 
   checkPassword: function(email, password, callback) {
@@ -80,9 +101,9 @@ module.exports = {
       }
       else {
         if(data.password == password) {
-          callback(null, true);
+          callback(null, {check: false, userId: null});
         } else {
-          callback(null, false);
+          callback(null, {check: true, userId: data._id});
         }
       }
     })
