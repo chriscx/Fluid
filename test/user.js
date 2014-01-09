@@ -51,4 +51,46 @@ describe("user", function() {
       });
     });
   });
+
+  it("checks the password", function(next) {
+    var newUser = { 
+      firstname: "firstname",
+      lastname: "lastname",
+      email: "firstname.lastname@fluid.org",
+      password: "password",
+      signupDate: new Date(),
+    };
+
+    return user.create(newUser, function(err, createdUser) {
+      if(err) {
+        return next(err);
+      }
+      user.checkPassword("firstname.lastname@fluid.org", "password", function(err, res) {
+        if(err) {
+          return next(err);
+        }
+        console.log(res);
+        res.check.should.be.ok;
+        user.get(createdUser._id, function(err, retrievedUser) {
+          if(err) {
+            return next(err);
+          }
+          retrievedUser[0].email.should.eql("firstname.lastname@fluid.org");
+          var id = retrievedUser[0]._id;
+          user.remove(id, function(err, deletedUser) {
+            if(err) {
+              return next(err);
+            }
+            user.get(id, function(err, data) {
+              if(err){
+                return next(err);
+              }
+              data.should.be.empty;
+              next();
+            })
+          })
+        });
+      });
+    });
+  });
 });

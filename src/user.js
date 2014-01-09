@@ -98,10 +98,10 @@ module.exports = {
         callback(err);
       }
       else {
-        if(data.password == password) {
-          callback(null, {check: false, userId: null});
+        if(data[0].password === password) {
+          callback(null, {check: true, userId: data[0]._id});
         } else {
-          callback(null, {check: true, userId: data._id});
+          callback(null, {check: false, userId: null});
         }
       }
     })
