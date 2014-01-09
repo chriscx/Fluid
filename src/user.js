@@ -1,34 +1,67 @@
+var mongoose;
+
+mongoose  = require('mongoose');
+
+mongoose.connect('mongodb://localhost/fluiddb');
+
+var Schema = mongoose.Schema;
+
+var userSchema = new Schema({
+  firstname,
+  lastname,
+  email,
+  password,
+  createDate: { type: Date, default: Date.now },
+});
+
+var User = mongoose.model('User', userSchema);
+
 module.exports = {
   /*
-  `save(login, callback)`
+  `save(info, callback)`
   ----------------------------
   
   Parameters
-  `login`       user login as email format
-  `password`    user password
+  `info`       JSON object with properties of user (see userSchema)
   `callback` Contains an err as first argument 
              if any
   */
 
-  create: function(login, password, callback) {
+  create: function(info, callback) {
+    var newUser = new User(info);
+    newUser.save(function(err, newUser, numberAffected) {
+      if(err) {
+        callback(err);
+      }
+      else {
+        callback(null, newUser);
+      }
+    })
   },
 
   /*
-  `remove(login, callback)`
+  `remove(id, callback)`
   ----------------------------
   
   Parameters
-  `login`       user login as email format
+  `id`       user id as email format
   `callback` Contains an err as first argument 
              if any
   */
 
-  remove: function(login, callback) {
-
+  remove: function(id, callback) {
+    User.remove({'_id' : id}, function (err, data) {
+      if (err) {
+        callback(err);
+      }
+        callback(null, data);
+    }).remove();
   },
 
+
+
     /*
-  `check(login, callback)`
+  `checkPassword(login, callback)`
   ----------------------------
   
   Parameters
@@ -40,7 +73,18 @@ module.exports = {
   returns bool if passwords match
   */
 
-  check: function(login, password, callback) {
-
+  checkPassword: function(email, password, callback) {
+    User.find({'email' : email}, function (err, data) {
+      if (err) {
+        callback(err);
+      }
+      else {
+        if(data.password == password) {
+          callback(null, true);
+        } else {
+          callback(null, false);
+        }
+      }
+    })
   }
 };
