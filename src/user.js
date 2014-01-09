@@ -2,8 +2,6 @@ var mongoose;
 
 mongoose  = require('mongoose');
 
-mongoose.connect('mongodb://localhost/fluiddb');
-
 var Schema = mongoose.Schema;
 
 var userSchema = new Schema({

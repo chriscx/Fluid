@@ -1,12 +1,21 @@
-var exec, should, blog;
+var exec, should, blog, mongoose;
 
-exec = require('child_process').exec;
-
+mongoose  = require('mongoose');
 should = require('should');
-
 blog = require('../src/blog');
 
 describe("blog", function() {
+
+  before(function() {
+    if(!mongoose.connection.readyState){
+      mongoose.connect('mongodb://localhost/fluiddb');
+    }
+  })
+
+  after(function() {
+    mongoose.disconnect();
+  });
+
   it("save, get & delete an entry", function(next) {
     var entry = { 
       title: "This is a test entry",

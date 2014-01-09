@@ -1,12 +1,22 @@
-var exec, should, user;
+var exec, should, user, mongoose, connexion;
 
-exec = require('child_process').exec;
-
+mongoose  = require('mongoose');
+mongoose.connect('mongodb://localhost/fluiddb');
 should = require('should');
-
 user = require('../src/user');
 
 describe("user", function() {
+
+  before(function() {
+    if(!mongoose.connection.readyState){
+      mongoose.connect('mongodb://localhost/fluiddb');
+    }
+  })
+
+  after(function() {
+    mongoose.disconnect();
+  });
+
   it("create & delete a user", function(next) {
     var newUser = { 
       firstname: "firstname",
