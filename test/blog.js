@@ -23,14 +23,14 @@ describe("blog", function() {
         console.log(err);
         return next(err);
       }
-      console.log('create: ' + data);
+      // console.log('create: ' + data);
       var id;
       blog.getEntry("This is a test entry", function(err, retrievedEntry) {
         if(err) {
           console.log(err);
           return next(err);
         }
-        console.log('get 1: ' + retrievedEntry);
+        // console.log('get 1: ' + retrievedEntry);
         retrievedEntry[0].body.should.be.eql("This is me writing my first blog post");
         id = retrievedEntry[0]._id;
 
@@ -39,13 +39,13 @@ describe("blog", function() {
             console.log(err);
             return next(err);
           }
-          console.log('remove: ' + deletedEntry);
+          // console.log('remove: ' + deletedEntry);
           blog.getEntry("This is a test entry", function(err, data) {
             if(err) {
               console.log(err);
               return next(err);
             }
-            console.log("get 2: " + data);
+            // console.log("get 2: " + data);
             data.should.be.empty;
             next();
           })

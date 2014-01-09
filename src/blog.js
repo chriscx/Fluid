@@ -1,7 +1,5 @@
-var request, database, mongoose, db;
+var mongoose;
 
-request   = require('request');
-database  = require('./../config/database');
 mongoose  = require('mongoose');
 
 mongoose.connect('mongodb://localhost/fluiddb');
@@ -26,7 +24,7 @@ var categorySchema = new Schema({
   name: String
 });
 
-var Category = mongoose.model('Entry', categorySchema);
+var Category = mongoose.model('Category', categorySchema);
 
 module.exports = {
 
