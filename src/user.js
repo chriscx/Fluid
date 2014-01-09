@@ -7,10 +7,10 @@ mongoose.connect('mongodb://localhost/fluiddb');
 var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
-  firstname,
-  lastname,
-  email,
-  password,
+  firstname: String,
+  lastname: String,
+  email: String,
+  password: String,
   signupDate: { type: Date, default: Date.now },
 });
 
