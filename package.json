@@ -1,20 +1,23 @@
 {
-    "name": "Fluid",
-    "version": "0.0.0",
-    "dependencies": { 
-      "express": "*",
-      "jade": "*",
-      "stylus": "*",
-      "supervisor": "*",
-      "underscore":"*",
-      "markdown": "*",
-      "mongoose": "*",
-      "session-mongoose": "*",
-      "request": "*"
-    },
-    "devDependencies": { 
-      "request": "*",
-      "mocha": "*",
-      "should": "*"
-    }
+  "name": "Fluid",
+  "version": "0.0.0",
+  "dependencies": {
+    "express": "*",
+    "jade": "*",
+    "stylus": "*",
+    "supervisor": "*",
+    "underscore": "*",
+    "markdown": "*",
+    "mongoose": "*",
+    "session-mongoose": "*",
+    "request": "*",
+    "coveralls": "~2.6.1",
+    "mocha-lcov-reporter": "0.0.1",
+    "istanbul": "~0.2.3"
+  },
+  "devDependencies": {
+    "request": "*",
+    "mocha": "*",
+    "should": "*"
+  }
 }
