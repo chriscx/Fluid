@@ -12,7 +12,7 @@ var userSchema = new Schema({
   email: String,
   password: String,
   signupDate: { type: Date, default: Date.now },
-});
+}, {collection: 'users'});
 
 var User = mongoose.model('User', userSchema);
 
@@ -30,7 +30,7 @@ module.exports = {
   */
 
   get: function(id, callback) {
-    newUser.find({id: id}, 'firstname lastname email signupDate', function(err, data, numberAffected) {
+    User.find({_id: id}, 'firstname lastname email signupDate', function(err, data, numberAffected) {
       if(err) {
         callback(err);
       }

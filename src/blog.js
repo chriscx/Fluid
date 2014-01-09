@@ -16,7 +16,7 @@ var entrySchema = new Schema({
   comments: [{ body: String, date: Date }],
   date: { type: Date, default: Date.now },
   published: Boolean,
-});
+}, {collection: 'entries'});
 
 var Entry = mongoose.model('Entry', entrySchema);
 

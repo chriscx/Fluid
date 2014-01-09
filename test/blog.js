@@ -24,7 +24,6 @@ describe("blog", function() {
         return next(err);
       }
       // console.log('create: ' + data);
-      var id;
       blog.getEntry("This is a test entry", function(err, retrievedEntry) {
         if(err) {
           console.log(err);
@@ -32,9 +31,8 @@ describe("blog", function() {
         }
         // console.log('get 1: ' + retrievedEntry);
         retrievedEntry[0].body.should.be.eql("This is me writing my first blog post");
-        id = retrievedEntry[0]._id;
 
-        blog.removeEntry(id, function(err, deletedEntry) {
+        blog.removeEntry(retrievedEntry[0]._id, function(err, deletedEntry) {
           if(err) {
             console.log(err);
             return next(err);
