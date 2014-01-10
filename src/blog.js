@@ -10,7 +10,7 @@ var entrySchema = new Schema({
   url:    String,
   body:   String,
   tags: [{name: String}],
-  categories: String,
+  category: String,
   comments: [{ body: String, date: Date }],
   date: { type: Date, default: Date.now },
   published: Boolean,
@@ -20,7 +20,7 @@ var Entry = mongoose.model('Entry', entrySchema);
 
 var categorySchema = new Schema({
   name: String
-});
+}, {collection: 'categories'});
 
 var Category = mongoose.model('Category', categorySchema);
 
@@ -93,19 +93,20 @@ module.exports = {
   ----------------------------
 
   */
-  editEntry: function(modifiedEntry, callback) {
-    if(modifiedEntry.hasOwnProperty(_id)) {
-      var id = modifiedEntry._id;
+  editEntry: function(id, modifiedEntry, callback) {
+    if(modifiedEntry.hasOwnProperty('_id')) {
       delete modifiedEntry._id;
-      Entry.update({_id: id}, modifiedEntry, {upsert: true}, function(err){
-        if (err) {
-          callback(err);
-        };
-      });
     }
-    else {
-      callback("No id provided. Couldn't update entry");
-    }
+    Entry.findOneAndUpdate({_id: id}, modifiedEntry, {new: true}, function(err, data) {
+      if(err) {
+        console.log(err);
+        callback(err);
+      }
+      else {
+        console.log(data);
+        callback(null, data);
+      }
+    });
   },
 
   /*
@@ -156,11 +157,23 @@ module.exports = {
   },
 
   /*
-  `editCategory(newName, callback)`
+  `editCategory(id, newCategory, callback)`
   ----------------------------
 
   */
-  editCategory: function(newName, callback) {
-
+  editCategory: function(id, modifiedCategory, callback) {
+    if(modifiedCategory.hasOwnProperty('_id')) {
+      console.log('id: ' + modifiedCategory._id);
+      var id = modifiedCategory._id;
+      delete modifiedCategory._id;
+      Category.update({_id: id}, modifiedCategory, {upsert: true}, function(err){
+        if (err) {
+          callback(err);
+        };
+      });
+    }
+    else {
+      callback("No id provided. Couldn't update category");
+    }
   }
 };

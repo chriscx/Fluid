@@ -69,7 +69,6 @@ describe("user", function() {
         if(err) {
           return next(err);
         }
-        console.log(res);
         res.check.should.be.ok;
         user.get(createdUser._id, function(err, retrievedUser) {
           if(err) {
