@@ -146,8 +146,8 @@ module.exports = {
   ----------------------------
 
   */
-  removeCategory: function(name, callback) {
-    Category.remove({'name' : name}, function (err, data) {
+  removeCategory: function(id, callback) {
+    Category.remove({'_id' : id}, function (err, data) {
       if (err) {
         callback(err);
       }
