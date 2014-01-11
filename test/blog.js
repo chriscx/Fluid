@@ -10,7 +10,7 @@ describe("blog", function() {
     if(!mongoose.connection.readyState){
       mongoose.connect('mongodb://localhost/fluiddb');
     }
-  })
+  });
 
   after(function() {
     mongoose.disconnect();
@@ -151,7 +151,6 @@ describe("blog", function() {
         blog.editEntry(retrievedEntry[0]._id, {title: 'This is a modified entry 2'}, function(err, data) {
 
           blog.getEntry('This is a modified entry 2', function(err, data) {
-            console.log(data);
             data[0].title.should.be.eql('This is a modified entry 2');
             blog.removeEntry(data[0]._id, function(err, deletedEntry) {
               if(err) {
@@ -173,6 +172,55 @@ describe("blog", function() {
         });
       });
     });
+  });
+
+  it("gets entries", function(next) {
+    // TODO check dates are desc and pagination works
+    for(var i = 1; i < 21; i++) {
+      var entry = { 
+        title: "entry " + i,
+        author: "root", 
+        url: "this-is-a-test-entry",
+        body: "This is me writing my first blog post",
+        tags: [{name: 'tag'}],
+        category: 'category',
+        comments: [{body: "this is a comment", date: new Date()}],
+        date: new Date(new Date().getTime() + (i * (24 * 60 * 60 * 1000))),
+        published: true
+      };
+
+      blog.createEntry(entry, function(err, data) {});
+    }
+
+    var limit = 5, skip = 0, j;
+    setTimeout(function() {
+      blog.getEntries(limit, skip, function(err, data) {
+        if(err) {
+          next(err);
+        }
+        for(j = 0; j < limit; j++) {
+          // console.log(data[j].title + ' ' + data[j].id + ' ' + data[j].date);
+          data[j].title.should.be.eql('entry ' + (20 - j));
+        }
+      });
+    }, 200);
+
+    limit = 20, skip = 0;
+    setTimeout(function() {
+      blog.getEntries(limit, skip, function(err, data) {
+        if(err) {
+          next(err);
+        }
+        for(j = 0; j < limit; j++) {
+          blog.removeEntry(data[j]._id, function(err, removedEntry) {
+            if(err) {
+              next(err);
+            }
+          })
+        }
+        next();
+      })
+    }, 400);
   });
 
   // it("create, get & delete a category", function(next) {

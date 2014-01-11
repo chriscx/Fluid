@@ -32,7 +32,7 @@ module.exports = {
   */
 
   getEntries: function(limit, skip, callback) {
-    Entry.find({}, null, { skip: skip, limit: limit }).sort({date: -1}).execFind(function(err, result) {
+    Entry.find({}, null, { skip: skip, limit: limit }).sort({date: 'desc'}).exec(function(err, result) {
       if (err) {
         callback(err);
       }
@@ -103,7 +103,6 @@ module.exports = {
         callback(err);
       }
       else {
-        console.log(data);
         callback(null, data);
       }
     });
