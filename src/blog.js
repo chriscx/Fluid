@@ -132,7 +132,7 @@ module.exports = {
   */
 
   getCategory: function(id, callback) {
-    Category.find({'_id', id}, function (err, data) {
+    Category.find({'_id': id}, function (err, data) {
       if (err) {
         callback(err);
       }

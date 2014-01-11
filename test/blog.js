@@ -4,7 +4,7 @@ mongoose  = require('mongoose');
 should = require('should');
 blog = require('../src/blog');
 
-describe("blog", function() {
+describe("blog:", function() {
 
   before(function() {
     if(!mongoose.connection.readyState){
@@ -16,7 +16,7 @@ describe("blog", function() {
     mongoose.disconnect();
   });
 
-  it("create an entry", function(next) {
+  it("creates an entry", function(next) {
     var entry = { 
       title: "test1",
       author: "root", 
@@ -174,7 +174,7 @@ describe("blog", function() {
     });
   });
 
-  it("gets entries", function(next) {
+  it("get entries", function(next) {
     // TODO check dates are desc and pagination works
     for(var i = 1; i < 21; i++) {
       var entry = { 
@@ -223,11 +223,90 @@ describe("blog", function() {
     }, 400);
   });
 
-  // it("create, get & delete a category", function(next) {
+  it("create a category", function(next) {
+    var category = { 
+      name: 'category 1'
+    };
+    
+    return blog.createCategory(category, function(err, data) {
+      if(err) {
+        console.log(err);
+        return next(err);
+      }
+      data.name.should.be.eql("category 1");
 
-  // });
+      blog.removeCategory(data._id, function(err, deletedEntry) {
+        if(err) {
+          console.log(err);
+          return next(err);
+        }
+        next();
+      });
+    });
+  });
 
-  // it("edit a category", function(next) {
+  it("get categories", function(next) {
+    var category = { 
+      name: 'category 3'
+    };
+    
+    return blog.createCategory(category, function(err, data) {
+      if(err) {
+        console.log(err);
+        return next(err);
+      }
 
-  // });
+      blog.getCategories(function(err, data) {
+        if(err) {
+          console.log(err);
+          return next(err);
+        }
+        data.should.not.be.empty;
+
+        for(var i = 0; i < data.length; i++) {
+          if(data[i].name === "category 3") {
+            blog.removeCategory(data[i]._id, function(err, data) {
+              if(err) {
+                next(err);
+              }
+              next();
+            });
+            break;
+          }
+        }
+      });
+    });
+  });
+
+  it("delete a category", function(next) {
+    var category = {
+      name: 'category 2'
+    };
+    
+    return blog.createCategory(category, function(err, data) {
+      if(err) {
+        console.log(err);
+        return next(err);
+      }
+
+      blog.removeCategory(data._id, function(err, deletedEntry) {
+        if(err) {
+          console.log(err);
+          return next(err);
+        }
+        // console.log('remove: ' + deletedEntry);
+        blog.getCategories(function(err, data) {
+          if(err) {
+            console.log(err);
+            return next(err);
+          }
+          // console.log("get 2: " + data);
+          for(var i = 0; i < data.length; i++) {
+            data[i].name.should.not.be.eql('category 2');
+          }
+          next();
+        })
+      });
+    });
+  });
 });
