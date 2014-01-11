@@ -45,6 +45,7 @@ module.exports = {
   /*
   `getEntry(title, callback)`
   ----------------------------
+    TODO change id by {id: id, name: name} as options
   */
 
   getEntry: function(title, callback) {
@@ -125,6 +126,23 @@ module.exports = {
   },
 
   /*
+  `getCategory(id, callback)`
+  TODO change id by {id: id, name: name} as options
+  ----------------------------
+  */
+
+  getCategory: function(id, callback) {
+    Category.find({'_id', id}, function (err, data) {
+      if (err) {
+        callback(err);
+      }
+      else {
+        callback(null, data);
+      }
+    })
+  },
+
+  /*
   `createCategory(category, callback)`
   ----------------------------
 
@@ -162,17 +180,16 @@ module.exports = {
   */
   editCategory: function(id, modifiedCategory, callback) {
     if(modifiedCategory.hasOwnProperty('_id')) {
-      console.log('id: ' + modifiedCategory._id);
-      var id = modifiedCategory._id;
       delete modifiedCategory._id;
-      Category.update({_id: id}, modifiedCategory, {upsert: true}, function(err){
-        if (err) {
-          callback(err);
-        };
-      });
     }
-    else {
-      callback("No id provided. Couldn't update category");
-    }
+    Entry.findOneAndUpdate({_id: id}, modifiedEntry, {new: true}, function(err, data) {
+      if(err) {
+        console.log(err);
+        callback(err);
+      }
+      else {
+        callback(null, data);
+      }
+    });
   }
 };
