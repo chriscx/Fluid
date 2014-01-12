@@ -11,9 +11,10 @@
     "mongoose": "*",
     "session-mongoose": "*",
     "request": "*",
-    "coveralls": "~2.6.1",
-    "mocha-lcov-reporter": "0.0.1",
-    "istanbul": "~0.2.3"
+    "coveralls": "*",
+    "mocha-lcov-reporter": "*",
+    "istanbul": "*",
+    "request": "*"
   },
   "devDependencies": {
     "request": "*",

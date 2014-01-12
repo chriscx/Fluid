@@ -9,7 +9,7 @@ describe("user", function() {
 
   before(function() {
     if(!mongoose.connection.readyState){
-      mongoose.connect('mongodb://localhost/fluiddb');
+      mongoose.connect('mongodb://localhost/fluiddb_test');
     }
   })
 

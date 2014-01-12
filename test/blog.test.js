@@ -3,6 +3,7 @@ var exec, should, blog, mongoose;
 mongoose  = require('mongoose');
 should = require('should');
 blog = require('../src/blog');
+eventEmitter = require('events').EventEmitter;
 
 describe("blog", function() {
 
@@ -179,25 +180,9 @@ describe("blog", function() {
 
   it("should get entries", function(next) {
     // TODO check dates are desc and pagination works
-    for(var i = 1; i < 21; i++) {
-      var entry = { 
-        title: "entry " + i,
-        author: "root", 
-        url: "this-is-a-test-entry",
-        body: "This is me writing my first blog post",
-        tags: [{name: 'tag'}],
-        category: 'category',
-        comments: [{body: "this is a comment", date: new Date()}],
-        date: new Date(new Date().getTime() + (i * (24 * 60 * 60 * 1000))),
-        published: true
-      };
+    var limit = 5, skip = 0, j, chainEvent = new eventEmitter();
 
-      blog.createEntry(entry, function(err, data) {});
-    }
-
-    var limit = 5, skip = 0, j;
-
-    setTimeout(function() {
+    chainEvent.on("ready", function() {
       blog.getEntries(limit, skip, function(err, data) {
         if(err) {
           next(err);
@@ -206,12 +191,14 @@ describe("blog", function() {
         for(j = 0; j < limit; j++) {
           data[j].title.should.be.eql('entry ' + (20 - j));
         }
+        console.log("clean");
+        chainEvent.emit("clean");
       });
-    }, 200);
+    });
 
     limit = 20, skip = 0;
 
-    setTimeout(function() {
+    chainEvent.on("clean", function() {
       blog.getEntries(limit, skip, function(err, data) {
         if(err) {
           next(err);
@@ -224,10 +211,32 @@ describe("blog", function() {
             }
           })
         }
-
+        console.log("done");
         next();
       })
-    }, 400);
+    });
+
+    var entry;
+
+    for(var i = 1; i < 21; i++) {
+      entry = { 
+        title: "entry " + i,
+        author: "root", 
+        url: "this-is-a-test-entry",
+        body: "This is me writing my first blog post",
+        tags: [{name: 'tag'}],
+        category: 'category',
+        comments: [{body: "this is a comment", date: new Date()}],
+        date: new Date(new Date().getTime() + (i * (24 * 60 * 60 * 1000))),
+        published: true
+      };
+      console.log(i + ': ' + entry.title);
+      if(i < 20)
+        blog.createEntry(entry, function(err, data) {});
+    }
+    blog.createEntry(entry, function(err) {
+      chainEvent.emit('ready');
+    })
   });
 
   it("should create a category", function(next) {
@@ -397,7 +406,7 @@ describe("blog", function() {
                 console.log(err);
                 return next(err);
               }
-              
+
               next();
             })
           });
