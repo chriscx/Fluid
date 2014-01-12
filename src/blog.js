@@ -182,7 +182,7 @@ module.exports = {
     if(modifiedCategory.hasOwnProperty('_id')) {
       delete modifiedCategory._id;
     }
-    Entry.findOneAndUpdate({_id: id}, modifiedEntry, {new: true}, function(err, data) {
+    Category.findOneAndUpdate({_id: id}, modifiedCategory, {new: true}, function(err, data) {
       if(err) {
         console.log(err);
         callback(err);
