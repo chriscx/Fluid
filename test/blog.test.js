@@ -4,11 +4,11 @@ mongoose  = require('mongoose');
 should = require('should');
 blog = require('../src/blog');
 
-describe("blog:", function() {
+describe("blog", function() {
 
   before(function() {
     if(!mongoose.connection.readyState){
-      mongoose.connect('mongodb://localhost/fluiddb');
+      mongoose.connect('mongodb://localhost/fluiddb_test');
     }
   });
 
@@ -16,7 +16,7 @@ describe("blog:", function() {
     mongoose.disconnect();
   });
 
-  it("creates an entry", function(next) {
+  it("should create an entry", function(next) {
     var entry = { 
       title: "test1",
       author: "root", 
@@ -34,6 +34,7 @@ describe("blog:", function() {
         console.log(err);
         return next(err);
       }
+
       data.body.should.be.eql("This is me writing my first blog post");
 
       blog.removeEntry(data._id, function(err, deletedEntry) {
@@ -41,12 +42,13 @@ describe("blog:", function() {
           console.log(err);
           return next(err);
         }
+
         next();
       });
     });
   });
 
-  it("get an entry", function(next) {
+  it("should get an entry", function(next) {
     var entry = { 
       title: "test2",
       author: "root", 
@@ -64,13 +66,13 @@ describe("blog:", function() {
         console.log(err);
         return next(err);
       }
-      // console.log('create: ' + data);
+
       blog.getEntry("test2", function(err, retrievedEntry) {
         if(err) {
           console.log(err);
           return next(err);
         }
-        // console.log('get 1: ' + retrievedEntry);
+
         retrievedEntry[0].body.should.be.eql("This is me writing my first blog post");
 
         blog.removeEntry(retrievedEntry[0]._id, function(err, deletedEntry) {
@@ -84,7 +86,7 @@ describe("blog:", function() {
     });
   });
 
-  it("delete an entry", function(next) {
+  it("should delete an entry", function(next) {
     var entry = { 
       title: "test3",
       author: "root", 
@@ -102,18 +104,19 @@ describe("blog:", function() {
         console.log(err);
         return next(err);
       }
+
       blog.removeEntry(data._id, function(err, deletedEntry) {
         if(err) {
           console.log(err);
           return next(err);
         }
-        // console.log('remove: ' + deletedEntry);
+
         blog.getEntry("test3", function(err, data) {
           if(err) {
             console.log(err);
             return next(err);
           }
-          // console.log("get 2: " + data);
+
           data.should.be.empty;
           next();
         })
@@ -121,7 +124,7 @@ describe("blog:", function() {
     });
   });
 
-  it("edit an entry", function(next) {
+  it("should edit an entry", function(next) {
     var entry = { 
       title: "This is a test entry 2",
       author: "root", 
@@ -139,13 +142,13 @@ describe("blog:", function() {
         console.log(err);
         return next(err);
       }
-      // console.log('create: ' + data);
+
       blog.getEntry("This is a test entry 2", function(err, retrievedEntry) {
         if(err) {
           console.log(err);
           return next(err);
         }
-        // console.log('get 1: ' + retrievedEntry);
+
         retrievedEntry[0].body.should.be.eql("This is me writing my first blog post");
 
         blog.editEntry(retrievedEntry[0]._id, {title: 'This is a modified entry 2'}, function(err, data) {
@@ -157,13 +160,13 @@ describe("blog:", function() {
                 console.log(err);
                 return next(err);
               }
-              // console.log('remove: ' + deletedEntry);
+
               blog.getEntry("This is a modified entry", function(err, data) {
                 if(err) {
                   console.log(err);
                   return next(err);
                 }
-                // console.log("get 2: " + data);
+
                 data.should.be.empty;
                 next();
               })
@@ -174,7 +177,7 @@ describe("blog:", function() {
     });
   });
 
-  it("get entries", function(next) {
+  it("should get entries", function(next) {
     // TODO check dates are desc and pagination works
     for(var i = 1; i < 21; i++) {
       var entry = { 
@@ -193,24 +196,27 @@ describe("blog:", function() {
     }
 
     var limit = 5, skip = 0, j;
+
     setTimeout(function() {
       blog.getEntries(limit, skip, function(err, data) {
         if(err) {
           next(err);
         }
+
         for(j = 0; j < limit; j++) {
-          // console.log(data[j].title + ' ' + data[j].id + ' ' + data[j].date);
           data[j].title.should.be.eql('entry ' + (20 - j));
         }
       });
     }, 200);
 
     limit = 20, skip = 0;
+
     setTimeout(function() {
       blog.getEntries(limit, skip, function(err, data) {
         if(err) {
           next(err);
         }
+
         for(j = 0; j < limit; j++) {
           blog.removeEntry(data[j]._id, function(err, removedEntry) {
             if(err) {
@@ -218,12 +224,13 @@ describe("blog:", function() {
             }
           })
         }
+
         next();
       })
     }, 400);
   });
 
-  it("create a category", function(next) {
+  it("should create a category", function(next) {
     var category = { 
       name: 'category 1'
     };
@@ -233,6 +240,7 @@ describe("blog:", function() {
         console.log(err);
         return next(err);
       }
+
       data.name.should.be.eql("category 1");
 
       blog.removeCategory(data._id, function(err, deletedEntry) {
@@ -240,12 +248,13 @@ describe("blog:", function() {
           console.log(err);
           return next(err);
         }
+
         next();
       });
     });
   });
 
-  it("get categories", function(next) {
+  it("should get categories", function(next) {
     var category = { 
       name: 'category 3'
     };
@@ -261,6 +270,7 @@ describe("blog:", function() {
           console.log(err);
           return next(err);
         }
+
         data.should.not.be.empty;
 
         for(var i = 0; i < data.length; i++) {
@@ -269,6 +279,7 @@ describe("blog:", function() {
               if(err) {
                 next(err);
               }
+
               next();
             });
             break;
@@ -278,7 +289,7 @@ describe("blog:", function() {
     });
   });
 
-  it("delete a category", function(next) {
+  it("should delete a category", function(next) {
     var category = {
       name: 'category 2'
     };
@@ -294,23 +305,24 @@ describe("blog:", function() {
           console.log(err);
           return next(err);
         }
-        // console.log('remove: ' + deletedEntry);
+
         blog.getCategories(function(err, data) {
           if(err) {
             console.log(err);
             return next(err);
           }
-          // console.log("get 2: " + data);
+
           for(var i = 0; i < data.length; i++) {
             data[i].name.should.not.be.eql('category 2');
           }
+
           next();
         })
       });
     });
   });
 
-  it("get a category", function(next) {
+  it("should get a category", function(next) {
     var category = {
       name: 'category 4'
     };
@@ -333,13 +345,13 @@ describe("blog:", function() {
             console.log(err);
             return next(err);
           }
-          // console.log('remove: ' + deletedEntry);
+
           blog.getCategory(deletedEntry._id, function(err, data) {
             if(err) {
               console.log(err);
               return next(err);
             }
-            // console.log("get 2: " + data);
+
             next();
           })
         });
@@ -347,7 +359,7 @@ describe("blog:", function() {
     });
   });
 
-  it("edit a category", function(next) {
+  it("should edit a category", function(next) {
     var category = {
       name: 'category 5'
     };
@@ -379,18 +391,18 @@ describe("blog:", function() {
               console.log(err);
               return next(err);
             }
-            // console.log('remove: ' + deletedEntry);
+
             blog.getCategory(deletedEntry._id, function(err, data) {
               if(err) {
                 console.log(err);
                 return next(err);
               }
-              // console.log("get 2: " + data);
+              
               next();
             })
           });
         });
       });
     });
-  })
+  });
 });
