@@ -309,4 +309,41 @@ describe("blog:", function() {
       });
     });
   });
+
+  it("gets a category", function(next) {
+       var category = {
+      name: 'category 4'
+    };
+    
+    return blog.createCategory(category, function(err, data) {
+      if(err) {
+        console.log(err);
+        return next(err);
+      }
+
+      blog.getCategory(data._id, function(err, data) {
+        if(err) {
+          next(err);
+        }
+
+        data[0].name.should.be.eql('category 4');
+
+        blog.removeCategory(data[0]._id, function(err, deletedEntry) {
+          if(err) {
+            console.log(err);
+            return next(err);
+          }
+          // console.log('remove: ' + deletedEntry);
+          blog.getCategory(deletedEntry._id, function(err, data) {
+            if(err) {
+              console.log(err);
+              return next(err);
+            }
+            // console.log("get 2: " + data);
+            next();
+          })
+        });
+      });
+    });
+  });
 });
