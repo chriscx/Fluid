@@ -3,7 +3,7 @@ var exec, should, user, mongoose, connexion;
 mongoose  = require('mongoose');
 mongoose.connect('mongodb://localhost/fluiddb');
 should = require('should');
-user = require('../src/user');
+user = require('../lib/user');
 
 describe("user", function() {
 

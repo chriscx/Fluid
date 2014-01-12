@@ -2,7 +2,7 @@ var exec, should, blog, mongoose;
 
 mongoose  = require('mongoose');
 should = require('should');
-blog = require('../src/blog');
+blog = require('../lib/blog');
 eventEmitter = require('events').EventEmitter;
 
 describe("blog", function() {
