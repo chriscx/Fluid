@@ -3,7 +3,7 @@ var app, checkAuth, connect, SessionStore, store, express, http, stylus, undersc
 http = require('http');
 stylus = require('stylus');
 express = require('express');
-user = require('./user');
+user = require('../lib/user');
 underscore = require('underscore');
 connect = require('connect'),
 SessionStore = require("session-mongoose")(connect);
@@ -22,7 +22,7 @@ app.use(express.session({
   secret: 'DD9E5F7F98E47AD47932ACBF77912',
   store: store
   })
-}));
+);
 app.use(app.router);
 app.use(stylus.middleware("" + __dirname + "/../public"));
 app.use(express["static"]("" + __dirname + "/../public"));
@@ -68,6 +68,10 @@ app.post("/login", function(req, res, next) {
     return res.redirect('/');
   });
 });
+
+// app.get("/post/:uri", function(req, res) {
+
+// });
 
 app.get("/logout", checkAuth, function(req, res) {
   delete req.session.logged_in;
