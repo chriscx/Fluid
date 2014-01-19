@@ -69,6 +69,12 @@ app.post("/login", function(req, res, next) {
   });
 });
 
+app.get("/admin", function(req, res) {
+  return res.render('admin', {
+    title: 'Fluid Admin'
+  })
+});
+
 // app.get("/post/:uri", function(req, res) {
 
 // });

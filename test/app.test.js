@@ -19,8 +19,22 @@ describe("app", function() {
     mongoose.disconnect();
   });
 
+  it('should get index page', function(next) {
+  	request('http://localhost:3333', function (err, res, body) {
+  		res.statusCode.should.be.eql(200);
+  		next();
+  	});
+  }),
+
   it('should get login page', function(next) {
   	request('http://localhost:3333/login', function (err, res, body) {
+  		res.statusCode.should.be.eql(200);
+  		next();
+  	});
+  }),
+
+  it('should get admin page', function(next) {
+  	request('http://localhost:3333/admin', function (err, res, body) {
   		res.statusCode.should.be.eql(200);
   		next();
   	});
