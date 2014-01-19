@@ -1,0 +1,12 @@
+include layout
+body
+  div.row
+    - var classes = ['col-md-8']
+    div(class=classes)
+      form(role='form')
+        div.form-group
+          label(for='entryTitle') Title
+          input(type="text" class="form-control"  id="entryTitle" placeholder="Enter Title")
+        div.form-group
+          label(for='entryTags') Tags
+          input(type="text" class="form-control"  id="entryTags" placeholder="Enter Tags separated by commas")
