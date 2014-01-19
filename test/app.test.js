@@ -3,7 +3,7 @@ var should, blog, user, mongoose, request;
 mongoose  = require('mongoose');
 should = require('should');
 blog = require('../lib/blog');
-user = require('../lib/user')
+user = require('../lib/user');
 eventEmitter = require('events').EventEmitter;
 request = require('request');
 
