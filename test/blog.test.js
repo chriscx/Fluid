@@ -1,4 +1,4 @@
-var exec, should, blog, mongoose;
+var should, blog, mongoose;
 
 mongoose  = require('mongoose');
 should = require('should');
@@ -17,6 +17,9 @@ describe("blog", function() {
     mongoose.disconnect();
   });
 
+  /*
+  
+  */
   it("should create an entry", function(next) {
     var entry = { 
       title: "test1",
@@ -49,6 +52,9 @@ describe("blog", function() {
     });
   });
 
+  /*
+  
+  */
   it("should get an entry", function(next) {
     var entry = { 
       title: "test2",
@@ -87,6 +93,9 @@ describe("blog", function() {
     });
   });
 
+  /*
+  
+  */
   it("should delete an entry", function(next) {
     var entry = { 
       title: "test3",
@@ -125,6 +134,9 @@ describe("blog", function() {
     });
   });
 
+  /*
+  
+  */
   it("should edit an entry", function(next) {
     var entry = { 
       title: "This is a test entry 2",
@@ -178,6 +190,9 @@ describe("blog", function() {
     });
   });
 
+  /*
+  
+  */
   it("should get entries", function(next) {
     // TODO check dates are desc and pagination works
     var limit = 5, skip = 0, j, chainEvent = new eventEmitter();
@@ -191,7 +206,6 @@ describe("blog", function() {
         for(j = 0; j < limit; j++) {
           data[j].title.should.be.eql('entry ' + (20 - j));
         }
-        console.log("clean");
         chainEvent.emit("clean");
       });
     });
@@ -211,7 +225,6 @@ describe("blog", function() {
             }
           })
         }
-        console.log("done");
         next();
       })
     });
@@ -230,7 +243,6 @@ describe("blog", function() {
         date: new Date(new Date().getTime() + (i * (24 * 60 * 60 * 1000))),
         published: true
       };
-      console.log(i + ': ' + entry.title);
       if(i < 20)
         blog.createEntry(entry, function(err, data) {});
     }
@@ -238,7 +250,10 @@ describe("blog", function() {
       chainEvent.emit('ready');
     })
   });
-
+  
+  /*
+  
+  */
   it("should create a category", function(next) {
     var category = { 
       name: 'category 1'
@@ -263,6 +278,9 @@ describe("blog", function() {
     });
   });
 
+  /*
+  
+  */
   it("should get categories", function(next) {
     var category = { 
       name: 'category 3'
@@ -298,6 +316,9 @@ describe("blog", function() {
     });
   });
 
+  /*
+  
+  */
   it("should delete a category", function(next) {
     var category = {
       name: 'category 2'
@@ -331,6 +352,9 @@ describe("blog", function() {
     });
   });
 
+  /*
+  
+  */
   it("should get a category", function(next) {
     var category = {
       name: 'category 4'
@@ -368,6 +392,9 @@ describe("blog", function() {
     });
   });
 
+  /*
+  
+  */
   it("should edit a category", function(next) {
     var category = {
       name: 'category 5'

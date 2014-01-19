@@ -1,4 +1,4 @@
-var exec, should, user, mongoose, connexion;
+var should, user, mongoose, connexion;
 
 mongoose  = require('mongoose');
 mongoose.connect('mongodb://localhost/fluiddb');
