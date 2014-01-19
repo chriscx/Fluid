@@ -14,7 +14,8 @@
     "coveralls": "*",
     "mocha-lcov-reporter": "*",
     "istanbul": "*",
-    "request": "*"
+    "request": "*",
+    "forever": "*"
   },
   "devDependencies": {
     "request": "*",
