@@ -4,6 +4,7 @@ node_js:
 services: mongodb
 before_script:
   - npm install
+  - node src/app.js
 script: 
   - ./node_modules/.bin/mocha test/*
 after_script:
