@@ -66,9 +66,11 @@ describe("user", function() {
         return next(err);
       }
       user.checkPassword("firstname.lastname@fluid.org", "password", function(err, res) {
+        should.not.exist(err);
         if(err) {
           return next(err);
         }
+        res.should.have property('check');
         res.check.should.be.ok;
         user.get(createdUser._id, function(err, retrievedUser) {
           if(err) {
