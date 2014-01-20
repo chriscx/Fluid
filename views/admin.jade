@@ -1,12 +1,101 @@
 include layout
 body
+  nav.navbar.navbar-default(role='navigation')
+      .navbar-header
+          button.navbar-toggle(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1')
+            span.sr-only Toggle navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.navbar-brand(href='#') Brand
+        #bs-example-navbar-collapse-1.collapse.navbar-collapse
+          ul.nav.navbar-nav
+            li.active
+              a(href='#') Link
+            li
+              a(href='#') Link
+            li.dropdown
+              a.dropdown-toggle(href='#', data-toggle='dropdown')
+                | Dropdown
+                b.caret
+              ul.dropdown-menu
+                li
+                  a(href='#') Action
+                li
+                  a(href='#') Another action
+                li
+                  a(href='#') Something else here
+                li.divider
+                li
+                  a(href='#') Separated link
+                li.divider
+                li
+                  a(href='#') One more separated link
+          form.navbar-form.navbar-left(role='search')
+            .form-group
+              input.form-control(type='text', placeholder='Search')
+            button.btn.btn-default(type='submit') Submit
+          ul.nav.navbar-nav.navbar-right
+            li
+              a(href='#') Link
+            li.dropdown
+              a.dropdown-toggle(href='#', data-toggle='dropdown')
+                | Dropdown
+                b.caret
+              ul.dropdown-menu
+                li
+                  a(href='#') Action
+                li
+                  a(href='#') Another action
+                li
+                  a(href='#') Something else here
+                li.divider
+                li
+                  a(href='#') Separated link
+
   div.row
-    - var classes = ['col-md-8']
-    div(class=classes)
-      form(role='form')
-        div.form-group
-          label(for='entryTitle') Title
-          input(type="text" class="form-control"  id="entryTitle" placeholder="Enter Title")
-        div.form-group
-          label(for='entryTags') Tags
-          input(type="text" class="form-control"  id="entryTags" placeholder="Enter Tags separated by commas")
+    div.container
+      - var classes = ['col-md-4']
+      div(class=classes)
+        - classes = ['table table-hover']
+        table(class=classes)
+          tr
+            th Title
+            th State
+            th Category
+            th date
+          tr.active
+            td Post 1
+            td Del
+            td
+            td
+          tr.success
+            td Post 1
+            td Del
+            td
+            td
+          tr.warning
+            td Post 1
+            td Del
+            td
+            td
+          tr.danger
+            td Post 1
+            td Del
+            td
+            td
+      - classes = ['col-md-8']
+      div(class=classes)
+        form(role='form')
+          div.form-group
+            label(for='entryTitle') Title
+            input(type="text" class="form-control"  id="entryTitle" placeholder="Enter Title")
+          div.form-group
+            label(for='entryTags') Tags
+            input(type="text" class="form-control"  id="entryTags" placeholder="Enter Tags separated by commas")
+          div.form-group
+            label(for='entryContent') Content
+            textarea(class="form-control" rows="20")
+          div.form-group
+            button(type="submit" class="btn btn-default") Post
+            button(type="submit" class="btn btn-default") Delete
