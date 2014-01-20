@@ -62,6 +62,7 @@ describe("user", function() {
     };
 
     return user.create(newUser, function(err, createdUser) {
+      should.not.exist(err);
       if(err) {
         return next(err);
       }
@@ -70,19 +71,22 @@ describe("user", function() {
         if(err) {
           return next(err);
         }
-        res.should.have property('check');
+        res.should.have.property('check');
         res.check.should.be.ok;
         user.get(createdUser._id, function(err, retrievedUser) {
+          should.not.exist(err);
           if(err) {
             return next(err);
           }
           retrievedUser[0].email.should.eql("firstname.lastname@fluid.org");
           var id = retrievedUser[0]._id;
           user.remove(id, function(err, deletedUser) {
+            should.not.exist(err);
             if(err) {
               return next(err);
             }
             user.get(id, function(err, data) {
+              should.not.exist(err);
               if(err){
                 return next(err);
               }
