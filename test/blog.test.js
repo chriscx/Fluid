@@ -50,6 +50,7 @@ describe("blog", function() {
     return blog.createEntry(entry, function(err, data) {
       should.not.exist(err);
       if(err) {
+        err.should.not.be.empty;
         console.log(err);
         return next(err);
       }

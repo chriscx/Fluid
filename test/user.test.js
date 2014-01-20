@@ -88,6 +88,8 @@ describe("user", function() {
         user.get(createdUser._id, function(err, retrievedUser) {
           should.not.exist(err);
           if(err) {
+            err[0].should.eql("couldn't find user");
+            err[1].should.not.be.empty;
             return next(err);
           }
           retrievedUser[0].email.should.eql("firstname.lastname@fluid.org");
