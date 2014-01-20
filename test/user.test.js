@@ -78,36 +78,43 @@ describe("user", function() {
       if(err) {
         return next(err);
       }
-      user.checkPassword("firstname.lastname@fluid.org", "password", function(err, res) {
+      user.checkPassword("firstname.lastname@fluid.org", "fakepassword", function(err, res) {
         should.not.exist(err);
-        if(err) {
-          return next(err);
-        }
-        res.should.have.property('check');
-        res.check.should.be.ok;
-        user.get(createdUser._id, function(err, retrievedUser) {
-          should.not.exist(err);
-          if(err) {
-            err[0].should.eql("couldn't find user");
-            err[1].should.not.be.empty;
-            return next(err);
-          }
-          retrievedUser[0].email.should.eql("firstname.lastname@fluid.org");
-          var id = retrievedUser[0]._id;
-          user.remove(id, function(err, deletedUser) {
+        res.check.should.not.be.ok;
+
+        user.checkPassword("fakeemail", "fakepassword", function(err, res) {
+          should.exist(err);
+  
+          user.checkPassword("firstname.lastname@fluid.org", "password", function(err, res) {
             should.not.exist(err);
             if(err) {
               return next(err);
             }
-            user.get(id, function(err, data) {
+            res.should.have.property('check');
+            res.check.should.be.ok;
+            user.get(createdUser._id, function(err, retrievedUser) {
               should.not.exist(err);
-              if(err){
+              if(err) {
                 return next(err);
               }
-              data.should.be.empty;
-              next();
-            })
-          })
+              retrievedUser[0].email.should.eql("firstname.lastname@fluid.org");
+              var id = retrievedUser[0]._id;
+              user.remove(id, function(err, deletedUser) {
+                should.not.exist(err);
+                if(err) {
+                  return next(err);
+                }
+                user.get(id, function(err, data) {
+                  should.not.exist(err);
+                  if(err){
+                    return next(err);
+                  }
+                  data.should.be.empty;
+                  next();
+                })
+              })
+            });
+          });
         });
       });
     });
