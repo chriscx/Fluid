@@ -17,6 +17,20 @@ describe("blog", function() {
     mongoose.disconnect();
   });
 
+  it("should have the blog properties", function(next) {
+    blog.should.have.properties('getEntry');
+    blog.should.have.properties('createEntry');
+    blog.should.have.properties('getEntries');
+    blog.should.have.properties('removeEntry');
+    blog.should.have.properties('editEntry');
+    blog.should.have.properties('getCategory');
+    blog.should.have.properties('getCategories');
+    blog.should.have.properties('removeCategory');
+    blog.should.have.properties('editCategory');
+    blog.should.have.properties('createCategory');
+    next();
+  })
+
   /*
   
   */
@@ -34,6 +48,7 @@ describe("blog", function() {
     };
     
     return blog.createEntry(entry, function(err, data) {
+      should.not.exist(err);
       if(err) {
         console.log(err);
         return next(err);
@@ -42,6 +57,7 @@ describe("blog", function() {
       data.body.should.be.eql("This is me writing my first blog post");
 
       blog.removeEntry(data._id, function(err, deletedEntry) {
+        should.not.exist(err);
         if(err) {
           console.log(err);
           return next(err);
@@ -69,12 +85,14 @@ describe("blog", function() {
     };
     
     return blog.createEntry(entry, function(err, data) {
+      should.not.exist(err);
       if(err) {
         console.log(err);
         return next(err);
       }
 
       blog.getEntry("test2", function(err, retrievedEntry) {
+        should.not.exist(err);
         if(err) {
           console.log(err);
           return next(err);
@@ -83,6 +101,7 @@ describe("blog", function() {
         retrievedEntry[0].body.should.be.eql("This is me writing my first blog post");
 
         blog.removeEntry(retrievedEntry[0]._id, function(err, deletedEntry) {
+          should.not.exist(err);
           if(err) {
             console.log(err);
             return next(err);
@@ -110,18 +129,21 @@ describe("blog", function() {
     };
     
     return blog.createEntry(entry, function(err, data) {
+      should.not.exist(err);
       if(err) {
         console.log(err);
         return next(err);
       }
 
       blog.removeEntry(data._id, function(err, deletedEntry) {
+        should.not.exist(err);
         if(err) {
           console.log(err);
           return next(err);
         }
 
         blog.getEntry("test3", function(err, data) {
+          should.not.exist(err);
           if(err) {
             console.log(err);
             return next(err);
@@ -151,12 +173,14 @@ describe("blog", function() {
     };
     
     return blog.createEntry(entry, function(err, data) {
+      should.not.exist(err);
       if(err) {
         console.log(err);
         return next(err);
       }
 
       blog.getEntry("This is a test entry 2", function(err, retrievedEntry) {
+        should.not.exist(err);
         if(err) {
           console.log(err);
           return next(err);
@@ -169,12 +193,14 @@ describe("blog", function() {
           blog.getEntry('This is a modified entry 2', function(err, data) {
             data[0].title.should.be.eql('This is a modified entry 2');
             blog.removeEntry(data[0]._id, function(err, deletedEntry) {
+              should.not.exist(err);
               if(err) {
                 console.log(err);
                 return next(err);
               }
 
               blog.getEntry("This is a modified entry", function(err, data) {
+                should.not.exist(err);
                 if(err) {
                   console.log(err);
                   return next(err);
@@ -199,6 +225,7 @@ describe("blog", function() {
 
     chainEvent.on("ready", function() {
       blog.getEntries(limit, skip, function(err, data) {
+        should.not.exist(err);
         if(err) {
           next(err);
         }
@@ -214,12 +241,14 @@ describe("blog", function() {
 
     chainEvent.on("clean", function() {
       blog.getEntries(limit, skip, function(err, data) {
+        should.not.exist(err);
+        should.exist(data);
         if(err) {
           next(err);
         }
-
         for(j = 0; j < limit; j++) {
           blog.removeEntry(data[j]._id, function(err, removedEntry) {
+            should.not.exist(err);
             if(err) {
               next(err);
             }
@@ -260,6 +289,7 @@ describe("blog", function() {
     };
     
     return blog.createCategory(category, function(err, data) {
+      should.not.exist(err);
       if(err) {
         console.log(err);
         return next(err);
@@ -268,6 +298,7 @@ describe("blog", function() {
       data.name.should.be.eql("category 1");
 
       blog.removeCategory(data._id, function(err, deletedEntry) {
+        should.not.exist(err);
         if(err) {
           console.log(err);
           return next(err);
@@ -287,12 +318,14 @@ describe("blog", function() {
     };
     
     return blog.createCategory(category, function(err, data) {
+      should.not.exist(err);
       if(err) {
         console.log(err);
         return next(err);
       }
 
       blog.getCategories(function(err, data) {
+        should.not.exist(err);
         if(err) {
           console.log(err);
           return next(err);
@@ -303,6 +336,7 @@ describe("blog", function() {
         for(var i = 0; i < data.length; i++) {
           if(data[i].name === "category 3") {
             blog.removeCategory(data[i]._id, function(err, data) {
+              should.not.exist(err);
               if(err) {
                 next(err);
               }
@@ -325,18 +359,21 @@ describe("blog", function() {
     };
     
     return blog.createCategory(category, function(err, data) {
+      should.not.exist(err);
       if(err) {
         console.log(err);
         return next(err);
       }
 
       blog.removeCategory(data._id, function(err, deletedEntry) {
+        should.not.exist(err);
         if(err) {
           console.log(err);
           return next(err);
         }
 
         blog.getCategories(function(err, data) {
+          should.not.exist(err);
           if(err) {
             console.log(err);
             return next(err);
@@ -361,12 +398,14 @@ describe("blog", function() {
     };
     
     return blog.createCategory(category, function(err, data) {
+      should.not.exist(err);
       if(err) {
         console.log(err);
         return next(err);
       }
 
       blog.getCategory(data._id, function(err, data) {
+        should.not.exist(err);
         if(err) {
           next(err);
         }
@@ -374,12 +413,14 @@ describe("blog", function() {
         data[0].name.should.be.eql('category 4');
 
         blog.removeCategory(data[0]._id, function(err, deletedEntry) {
+          should.not.exist(err);
           if(err) {
             console.log(err);
             return next(err);
           }
 
           blog.getCategory(deletedEntry._id, function(err, data) {
+            should.not.exist(err);
             if(err) {
               console.log(err);
               return next(err);
@@ -401,6 +442,7 @@ describe("blog", function() {
     };
     
     return blog.createCategory(category, function(err, data) {
+      should.not.exist(err);
       if(err) {
         console.log(err);
         return next(err);
@@ -409,12 +451,14 @@ describe("blog", function() {
       var id = data._id;
 
       blog.editCategory(id, {name: "mod category 5"}, function(err, data) {
+        should.not.exist(err);
         if(err) {
           console.log(err);
           return next(err);
         }
 
         blog.getCategory(id, function(err, data) {
+          should.not.exist(err);
           if(err) {
             console.log(err);
             return next(err);
@@ -423,12 +467,14 @@ describe("blog", function() {
           data[0].name.should.be.eql('mod category 5');
 
           blog.removeCategory(data[0]._id, function(err, deletedEntry) {
+            should.not.exist(err);
             if(err) {
               console.log(err);
               return next(err);
             }
 
             blog.getCategory(deletedEntry._id, function(err, data) {
+              should.not.exist(err);
               if(err) {
                 console.log(err);
                 return next(err);

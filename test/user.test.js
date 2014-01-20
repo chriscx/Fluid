@@ -17,6 +17,14 @@ describe("user", function() {
     mongoose.disconnect();
   });
 
+  it("should have the blog properties", function(next) {
+    user.should.have.properties('get');
+    user.should.have.properties('create');
+    user.should.have.properties('remove');
+    user.should.have.properties('checkPassword');
+    next();
+  })
+
   it("create & delete a user", function(next) {
     var newUser = { 
       firstname: "firstname",
@@ -27,20 +35,24 @@ describe("user", function() {
     };
 
     return user.create(newUser, function(err, createdUser) {
+      should.not.exist(err);
       if(err) {
         return next(err);
       }
       user.get(createdUser._id, function(err, retrievedUser) {
+        should.not.exist(err);
         if(err) {
           return next(err);
         }
         retrievedUser[0].email.should.eql("firstname.lastname@fluid.org");
         var id = retrievedUser[0]._id;
         user.remove(id, function(err, deletedUser) {
+          should.not.exist(err);
           if(err) {
             return next(err);
           }
           user.get(id, function(err, data) {
+            should.not.exist(err);
             if(err){
               return next(err);
             }
