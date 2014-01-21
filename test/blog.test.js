@@ -43,7 +43,8 @@ describe("blog", function() {
       tags: [{name: 'tag'}],
       category: 'category',
       comments: [{body: "this is a comment", date: new Date()}],
-      date: new Date(),
+      creationDate: new Date(),
+      updateDate: new Date(),
       published: true
     };
     
@@ -81,7 +82,8 @@ describe("blog", function() {
       tags: [{name: 'tag'}],
       category: 'category',
       comments: [{body: "this is a comment", date: new Date()}],
-      date: new Date(),
+      creationDate: new Date(),
+      updateDate: new Date(),
       published: true
     };
     
@@ -125,7 +127,8 @@ describe("blog", function() {
       tags: [{name: 'tag'}],
       category: 'category',
       comments: [{body: "this is a comment", date: new Date()}],
-      date: new Date(),
+      creationDate: new Date(),
+      updateDate: new Date(),
       published: true
     };
     
@@ -169,7 +172,8 @@ describe("blog", function() {
       tags: [{name: 'tag'}],
       category: 'category',
       comments: [{body: "this is a comment", date: new Date()}],
-      date: new Date(),
+      creationDate: new Date(),
+      updateDate: new Date(),
       published: true
     };
     
@@ -270,7 +274,7 @@ describe("blog", function() {
         tags: [{name: 'tag'}],
         category: 'category',
         comments: [{body: "this is a comment", date: new Date()}],
-        date: new Date(new Date().getTime() + (i * (24 * 60 * 60 * 1000))),
+        creationDate: new Date(new Date().getTime() + (i * (24 * 60 * 60 * 1000))),
         published: true
       };
       if(i < 20)
