@@ -7,57 +7,21 @@ body
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          a.navbar-brand(href='#') Brand
+          a.navbar-brand(href='#') Fluid Admin
         #bs-example-navbar-collapse-1.collapse.navbar-collapse
           ul.nav.navbar-nav
             li.active
-              a(href='#') Link
-            li
-              a(href='#') Link
-            li.dropdown
-              a.dropdown-toggle(href='#', data-toggle='dropdown')
-                | Dropdown
-                b.caret
-              ul.dropdown-menu
-                li
-                  a(href='#') Action
-                li
-                  a(href='#') Another action
-                li
-                  a(href='#') Something else here
-                li.divider
-                li
-                  a(href='#') Separated link
-                li.divider
-                li
-                  a(href='#') One more separated link
-          form.navbar-form.navbar-left(role='search')
-            .form-group
-              input.form-control(type='text', placeholder='Search')
-            button.btn.btn-default(type='submit') Submit
+              a(href='#') Website
+
           ul.nav.navbar-nav.navbar-right
             li
               a(href='#') Link
-            li.dropdown
-              a.dropdown-toggle(href='#', data-toggle='dropdown')
-                | Dropdown
-                b.caret
-              ul.dropdown-menu
-                li
-                  a(href='#') Action
-                li
-                  a(href='#') Another action
-                li
-                  a(href='#') Something else here
-                li.divider
-                li
-                  a(href='#') Separated link
 
   div.row
     div.container
       - var classes = ['col-md-4']
       div(class=classes)
-        - classes = ['table table-hover']
+        - classes = ['table table-hover table-bordered']
         table(class=classes)
           tr
             th Title
@@ -91,11 +55,27 @@ body
             label(for='entryTitle') Title
             input(type="text" class="form-control"  id="entryTitle" placeholder="Enter Title")
           div.form-group
-            label(for='entryTags') Tags
-            input(type="text" class="form-control"  id="entryTags" placeholder="Enter Tags separated by commas")
+            div.row
+              - classes = ['col-md-8']
+              div(class=classes)
+                label(for='entryTags') Tags
+                input(type="text" class="form-control"  id="entryTags" placeholder="Enter Tags separated by commas")
+              - classes = ['col-md-4']
+              div(class=classes)
+                label(for='entryCategory') Category
+                br
+                button(type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown") Dropdown
+                  span(class="caret")
+                ul(class="dropdown-menu")
+                  li
+                    a(href="#") Dropdown link
+                  li
+                    a(href="#") Dropdown link
           div.form-group
             label(for='entryContent') Content
             textarea(class="form-control" rows="20")
           div.form-group
-            button(type="submit" class="btn btn-default") Post
-            button(type="submit" class="btn btn-default") Delete
+            div.btn-group
+              button(type="submit" class="btn btn-default") Save
+              button(type="submit" class="btn btn-default") Post
+              button(type="submit" class="btn btn-default") Delete
