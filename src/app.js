@@ -75,9 +75,27 @@ app.get("/admin", function(req, res) {
   })
 });
 
-// app.get("/post/:uri", function(req, res) {
+app.get("/post/:uri", function(req, res) {
+  
+});
 
-// });
+app.post("/post/create", function(req, res) {
+  var title, entry;
+  
+  title = "New Post";
+  entry = { 
+    title: "New Post",
+    author: "root", 
+    url: encodeURI(title.toLowerCase()),
+    body: "",
+    tags: [],
+    category: null,
+    comments: [],
+    creationDate: new Date(),
+    updateDate: null,
+    published: true
+  };
+});
 
 app.get("/logout", checkAuth, function(req, res) {
   delete req.session.logged_in;

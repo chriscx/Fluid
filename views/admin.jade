@@ -24,26 +24,31 @@ body
         - classes = ['table table-hover table-bordered']
         table(class=classes)
           tr
+            th.hide id
             th Title
             th State
             th Category
             th date
           tr.active
+            td.hide
             td Post 1
             td Del
             td
             td
           tr.success
+            td.hide
             td Post 1
             td Del
             td
             td
           tr.warning
+            td.hide
             td Post 1
             td Del
             td
             td
           tr.danger
+            td.hide
             td Post 1
             td Del
             td
@@ -76,6 +81,7 @@ body
             textarea(class="form-control" rows="20")
           div.form-group
             div.btn-group
+              button(type="submit" class="btn btn-default") Preview
               button(type="submit" class="btn btn-default") Save
               button(type="submit" class="btn btn-default") Post
               button(type="submit" class="btn btn-default") Delete
