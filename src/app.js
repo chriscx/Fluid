@@ -67,7 +67,7 @@ app.post("/login", function(req, res, next) {
       req.session.userId = data.userId;
       expirationTimestamp = (new Date()).getTime();
       req.session.expirationDate = expirationTimestamp + 30 * 60 * 1000;
-      req.session.login : req.body.email
+      req.session.login = req.body.email;
       return res.redirect('/');
     }
     else {
@@ -83,7 +83,11 @@ app.get("/admin", function(req, res) {
 });
 
 app.get("/post/:uri", function(req, res) {
-
+  return blog.getEntry(req.param.uri, function(err, data) {
+    return res.render('post', {
+      data: data
+    });
+  });
 });
 
 app.post("/post/create", function(req, res) {
