@@ -84,7 +84,7 @@ describe("user", function() {
 
         user.checkPassword("fakeemail", "fakepassword", function(err, res) {
           should.exist(err);
-  
+          
           user.checkPassword("firstname.lastname@fluid.org", "password", function(err, res) {
             should.not.exist(err);
             if(err) {

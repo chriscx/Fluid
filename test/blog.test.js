@@ -94,7 +94,7 @@ describe("blog", function() {
         return next(err);
       }
 
-      blog.getEntry("test2", function(err, retrievedEntry) {
+      blog.getEntry({title: "test2"}, function(err, retrievedEntry) {
         should.not.exist(err);
         if(err) {
           console.log(err);
@@ -146,7 +146,7 @@ describe("blog", function() {
           return next(err);
         }
 
-        blog.getEntry("test3", function(err, data) {
+        blog.getEntry({title: "test3"}, function(err, data) {
           should.not.exist(err);
           if(err) {
             console.log(err);
@@ -184,7 +184,7 @@ describe("blog", function() {
         return next(err);
       }
 
-      blog.getEntry("This is a test entry 2", function(err, retrievedEntry) {
+      blog.getEntry({title: "This is a test entry 2"}, function(err, retrievedEntry) {
         should.not.exist(err);
         if(err) {
           console.log(err);
@@ -195,7 +195,7 @@ describe("blog", function() {
 
         blog.editEntry(retrievedEntry[0]._id, {title: 'This is a modified entry 2'}, function(err, data) {
 
-          blog.getEntry('This is a modified entry 2', function(err, data) {
+          blog.getEntry({title: 'This is a modified entry 2'}, function(err, data) {
             data[0].title.should.be.eql('This is a modified entry 2');
             blog.removeEntry(data[0]._id, function(err, deletedEntry) {
               should.not.exist(err);
@@ -204,7 +204,7 @@ describe("blog", function() {
                 return next(err);
               }
 
-              blog.getEntry("This is a modified entry", function(err, data) {
+              blog.getEntry({title: "This is a modified entry"}, function(err, data) {
                 should.not.exist(err);
                 if(err) {
                   console.log(err);
@@ -242,9 +242,8 @@ describe("blog", function() {
       });
     });
 
-    limit = 20, skip = 0;
-
     chainEvent.on("clean", function() {
+      limit = 20, skip = 0;
       blog.getEntries(limit, skip, function(err, data) {
         should.not.exist(err);
         should.exist(data);

@@ -1,10 +1,11 @@
-var app, checkAuth, connect, SessionStore, store, express, http, stylus, underscore, user;
+var app, checkAuth, connect, SessionStore, store, express, http, stylus, underscore, user, sha1;
 
 http = require('http');
 stylus = require('stylus');
 express = require('express');
 user = require('../lib/user');
 underscore = require('underscore');
+sha1 = require('sha1');
 connect = require('connect'),
 SessionStore = require("session-mongoose")(connect);
 store = new SessionStore({
@@ -56,16 +57,22 @@ app.get("/login", function(req, res) {
 app.post("/login", function(req, res, next) {
   var _data;
   _data = null;
-  return user.get(req.body.login, function(err, data) {
+  return user.checkPassword(req.body.login, sha1(req.body.password), function(err, data) {
     var expirationTimestamp;
     if (err) {
       return next(err);
     }
-    req.session.logged_in = true;
-    req.session.username = req.body.login;
-    expirationTimestamp = (new Date()).getTime();
-    req.session.expirationDate = expirationTimestamp + 30 * 60 * 1000;
-    return res.redirect('/');
+    if(data.check) {
+      req.session.logged_in = true;
+      req.session.userId = data.userId;
+      expirationTimestamp = (new Date()).getTime();
+      req.session.expirationDate = expirationTimestamp + 30 * 60 * 1000;
+      req.session.login : req.body.email
+      return res.redirect('/');
+    }
+    else {
+      return res.redirect('/login');
+    }
   });
 });
 
@@ -76,7 +83,7 @@ app.get("/admin", function(req, res) {
 });
 
 app.get("/post/:uri", function(req, res) {
-  
+
 });
 
 app.post("/post/create", function(req, res) {
@@ -85,7 +92,7 @@ app.post("/post/create", function(req, res) {
   title = "New Post";
   entry = { 
     title: "New Post",
-    author: "root", 
+    author: req.session.userId, 
     url: encodeURI(title.toLowerCase()),
     body: "",
     tags: [],
