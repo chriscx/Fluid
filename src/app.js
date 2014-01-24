@@ -83,19 +83,23 @@ app.get("/admin", function(req, res) {
 });
 
 app.get("/post/:uri", function(req, res) {
-  return blog.getEntry(req.param.uri, function(err, data) {
-    return res.render('post', {
-      data: data
-    });
+  return blog.getEntry({uri: req.param.uri}, function(err, data) {
+    if(data.length > 0) {
+      return res.render('post', {
+        data: data
+      });
+    }
+    else {
+      res.redirect('/404');
+    }
   });
 });
 
 app.post("/post/create", function(req, res) {
-  var title, entry;
-  
-  title = "New Post";
+  var entry, title;
+  title = (JSON.parse(req.body)).title;
   entry = { 
-    title: "New Post",
+    title: title,
     author: req.session.userId, 
     url: encodeURI(title.toLowerCase()),
     body: "",
@@ -106,11 +110,30 @@ app.post("/post/create", function(req, res) {
     updateDate: null,
     published: true
   };
+
+  blog.createEntry(entry, function(err, data) {
+    if(err) {
+      res.json(err);
+    }
+    res.json(data);
+  });
+});
+
+app.put("post/:uri", function(req, res) {
+
+});
+
+app.del("/post/:uri", function(req, res) {
+
 });
 
 app.get("/logout", checkAuth, function(req, res) {
   delete req.session.logged_in;
   return res.redirect("/login");
+});
+
+app.get("/404", function(req, res) {
+  return res.render('404');
 });
 
 http.createServer(app).listen(3333, function() {
