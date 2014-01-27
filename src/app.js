@@ -42,18 +42,36 @@ checkAuth = function(req, res, next) {
   }
 };
 
+/*
+ Get index page
+*/
 app.get('/', checkAuth, function(req, res) {
   return res.render('index', {
     title: 'Fluid'
   });
 });
 
+/*
+ Get login page
+*/
 app.get("/login", function(req, res) {
   return res.render('login', {
     title: 'Fluid'
   });
 });
 
+/*
+ Get admin page
+*/
+app.get("/admin", function(req, res) {
+  return res.render('admin', {
+    title: 'Fluid Admin'
+  })
+});
+
+/*
+ Post login
+*/
 app.post("/login", function(req, res, next) {
   var _data;
   _data = null;
@@ -76,16 +94,16 @@ app.post("/login", function(req, res, next) {
   });
 });
 
+/*
+ Get blog page
+*/
 app.get("/blog", function(req, res) {
   return res.render('blog');
 });
 
-app.get("/admin", function(req, res) {
-  return res.render('admin', {
-    title: 'Fluid Admin'
-  })
-});
-
+/*
+ get specific blog post
+*/
 app.get("blog/post/:uri", function(req, res) {
   return blog.getEntry({uri: req.param.uri}, function(err, data) {
     if(data.length > 0) {
@@ -94,12 +112,15 @@ app.get("blog/post/:uri", function(req, res) {
       });
     }
     else {
-      res.redirect('/404');
+      res.redirect('error/404');
     }
   });
 });
 
-app.post("/post/create", function(req, res) {
+/*
+ Post create blog post
+*/
+app.post("blog/post/create", function(req, res) {
   var entry, title;
   title = (JSON.parse(req.body)).title;
   entry = { 
@@ -123,21 +144,53 @@ app.post("/post/create", function(req, res) {
   });
 });
 
-app.put("post/:uri", function(req, res) {
-
+/*
+ Update blog post
+*/
+app.put("blog/post/:id", function(req, res) {
+  return blog.editEntry(req.param.id, JSON.parse(req.body), function(err, data) {
+    if(data.length > 0) {
+      return res.json({
+        result: 'OK'
+      });
+    }
+    else {
+      res.redirect('error/404');
+    }
+  });
 });
 
-app.del("/post/:uri", function(req, res) {
-
+/*
+ Delete blog post
+*/
+app.del("blog/post/:id", function(req, res) {
+  return blog.removeEntry(req.param.id, function(err, data) {
+    if(data.length > 0) {
+      return res.json({
+        result: 'OK'
+      });
+    }
+    else {
+      res.redirect('error/404');
+    }
+  });
 });
 
+/*
+ Logout page
+*/
 app.get("/logout", checkAuth, function(req, res) {
   delete req.session.logged_in;
   return res.redirect("/login");
 });
 
-app.get("/404", function(req, res) {
-  return res.render('404');
+/*
+ error redirection page
+*/
+app.get("error/:error", function(req, res) {
+  return res.render('error', {
+    error: req.param.error
+  });
 });
 
 http.createServer(app).listen(3333, function() {
