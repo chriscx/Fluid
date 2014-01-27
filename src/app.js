@@ -76,13 +76,17 @@ app.post("/login", function(req, res, next) {
   });
 });
 
+app.get("/blog", function(req, res) {
+  return res.render('blog');
+});
+
 app.get("/admin", function(req, res) {
   return res.render('admin', {
     title: 'Fluid Admin'
   })
 });
 
-app.get("/post/:uri", function(req, res) {
+app.get("blog/post/:uri", function(req, res) {
   return blog.getEntry({uri: req.param.uri}, function(err, data) {
     if(data.length > 0) {
       return res.render('post', {
