@@ -1,17 +1,21 @@
-var app, checkAuth, connect, SessionStore, store, express, http, stylus, underscore, user, sha1;
+var app, checkAuth, mongoose, connect, SessionStore, store, express, http, stylus, underscore, user, blog, sha1;
 
 http = require('http');
 stylus = require('stylus');
 express = require('express');
 user = require('../lib/user');
+blog = require('../lib/blog');
 underscore = require('underscore');
 sha1 = require('sha1');
 connect = require('connect'),
+mongoose = require('mongoose');
 SessionStore = require("session-mongoose")(connect);
 store = new SessionStore({
     url: "mongodb://localhost/session",
     interval: 120000 // expiration check worker run interval in millisec (default: 60000)
 });
+
+mongoose.connect('mongodb://localhost/fluiddb_test');
 
 app = express();
 app.set('views', __dirname + '/../views');
@@ -104,8 +108,11 @@ app.get("/blog", function(req, res) {
 /*
  get specific blog post
 */
-app.get("blog/post/:uri", function(req, res) {
-  return blog.getEntry({uri: req.param.uri}, function(err, data) {
+app.get("/blog/post/:uri", function(req, res) {
+  console.log(req.params.uri);
+  blog.getEntry({url: "test-request-blog-post"}, function(err, data) {
+    console.log(err);
+    console.log(data);
     if(data.length > 0) {
       return res.render('post', {
         data: data
@@ -120,7 +127,7 @@ app.get("blog/post/:uri", function(req, res) {
 /*
  Post create blog post
 */
-app.post("blog/post/create", function(req, res) {
+app.post("/blog/post/create", function(req, res) {
   var entry, title;
   title = (JSON.parse(req.body)).title;
   entry = { 
@@ -136,7 +143,7 @@ app.post("blog/post/create", function(req, res) {
     published: true
   };
 
-  blog.createEntry(entry, function(err, data) {
+  return blog.createEntry(entry, function(err, data) {
     if(err) {
       res.json(err);
     }
@@ -147,7 +154,7 @@ app.post("blog/post/create", function(req, res) {
 /*
  Update blog post
 */
-app.put("blog/post/:id", function(req, res) {
+app.put("/blog/post/:id", function(req, res) {
   return blog.editEntry(req.param.id, JSON.parse(req.body), function(err, data) {
     if(data.length > 0) {
       return res.json({
@@ -163,7 +170,7 @@ app.put("blog/post/:id", function(req, res) {
 /*
  Delete blog post
 */
-app.del("blog/post/:id", function(req, res) {
+app.del("/blog/post/:id", function(req, res) {
   return blog.removeEntry(req.param.id, function(err, data) {
     if(data.length > 0) {
       return res.json({
@@ -187,7 +194,7 @@ app.get("/logout", checkAuth, function(req, res) {
 /*
  error redirection page
 */
-app.get("error/:error", function(req, res) {
+app.get("/error/:error", function(req, res) {
   return res.render('error', {
     error: req.param.error
   });
