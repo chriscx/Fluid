@@ -1,17 +1,21 @@
-extends layout
+include layout
 body
-  header
-  nav
+  div.container
     div.row
-      div.container
-       div
-  section
+      div.col-md-8.col-md-offset-2
+        ul.nav.nav-tabs
+          li
+            a(href='../') Home
+          li.active
+            a(href='#') Blog
+          li
+            a(href='#') CV
+          li
+            a(href='http://github.com/chriscx') GitHub
+          li
+            a(href='http://www.linkedin.com/in/christophercailleaux') Linkedin
+          li
+            a(href='../contact') Contact
+
     div.row
-      div.container
-        div
-  // loop the display of posts by 5
-  article
-    div.row
-      div.container
-        div
-  
+      div.col-md-8.col-md-offset-2

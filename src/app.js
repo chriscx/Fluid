@@ -49,7 +49,7 @@ checkAuth = function(req, res, next) {
 /*
  Get index page
 */
-app.get('/', checkAuth, function(req, res) {
+app.get('/', function(req, res) {
   return res.render('index', {
     title: 'Fluid'
   });
