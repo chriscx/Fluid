@@ -224,7 +224,7 @@ describe("blog", function() {
   /*
   
   */
-  it("should get entries", function(next) {
+  it("should get, count entries & count entry pages", function(next) {
     // TODO check dates are desc and pagination works
     var limit = 5, skip = 0, j, chainEvent = new eventEmitter();
 
@@ -238,7 +238,24 @@ describe("blog", function() {
         for(j = 0; j < limit; j++) {
           data[j].title.should.be.eql('entry ' + (20 - j));
         }
-        chainEvent.emit("clean");
+
+        blog.countEntries(function(err, count) {
+          if(err) {
+            next(err);
+          }
+  
+          count.should.be.eql(20);
+
+          blog.countPages(5, function(err, count) {
+            if(err) {
+              next(err);
+            }
+    
+            count.should.be.eql(4);
+
+            chainEvent.emit("clean");
+          });
+        });
       });
     });
 
