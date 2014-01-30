@@ -1,10 +1,11 @@
-var app, checkAuth, mongoose, connect, SessionStore, store, express, http, stylus, underscore, user, blog, sha1;
+var app, checkAuth, mongoose, connect, SessionStore, store, express, http, stylus, underscore, user, blog, config, sha1;
 
 http = require('http');
 stylus = require('stylus');
 express = require('express');
 user = require('../lib/user');
 blog = require('../lib/blog');
+config = require('../lib/config');
 underscore = require('underscore');
 sha1 = require('sha1');
 connect = require('connect'),
