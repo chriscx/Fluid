@@ -1,4 +1,4 @@
-var app, checkAuth, mongoose, connect, SessionStore, store, express, http, stylus, underscore, user, blog, config, sha1;
+var app, checkAuth, mongoose, connect, SessionStore, store, express, http, stylus, underscore, user, blog, config, sha1, db_url;
 
 http = require('http');
 stylus = require('stylus');
@@ -16,7 +16,13 @@ store = new SessionStore({
     interval: 120000 // expiration check worker run interval in millisec (default: 60000)
 });
 
-mongoose.connect('mongodb://localhost/fluiddb_test');
+if(config.env() == 'development') {
+  db_url = 'mongodb://localhost/fluiddb_test';
+} else {
+  db_url = 'mongodb://localhost/fluiddb';
+}
+
+mongoose.connect(db_url);
 
 app = express();
 app.set('views', __dirname + '/../views');
