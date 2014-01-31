@@ -291,7 +291,7 @@ describe("blog", function() {
         category: 'category',
         comments: [{body: "this is a comment", date: new Date()}],
         creationDate: new Date(new Date().getTime() + (i * (24 * 60 * 60 * 1000))),
-        updateDate: null;
+        updateDate: null,
         published: true
       };
       if(i < 20)
