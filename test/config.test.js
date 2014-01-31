@@ -49,4 +49,9 @@ describe("config", function() {
   	  });
   	});
   });
+
+  it("should get env variable", function(next) {
+    config.env().should.not.be.empty;
+    next();
+  }); 
 });
