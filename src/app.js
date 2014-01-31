@@ -17,7 +17,7 @@ store = new SessionStore({
 });
 
 if(config.env() == 'development') {
-  db_url = 'mongodb://localhost/fluiddb_test';
+  db_url = 'mongodb://localhost/fluiddb_dev';
 } else {
   db_url = 'mongodb://localhost/fluiddb';
 }
@@ -109,7 +109,35 @@ app.post("/login", function(req, res, next) {
  Get blog page
 */
 app.get("/blog", function(req, res) {
-  return res.render('blog');
+  return blog.getEntries(5, 0, function(err, entries) {
+    if(err) {
+      res.redirect('error/404');
+    }
+    else {
+      res.render('blog', {
+        entries: entries
+      })
+    }
+  });
+});
+
+/*
+ Get pagination blog posts
+*/
+app.get("/blog/:l/:s", function(req, res) {
+  return blog.getEntries(req.params.l, req.params.s, function(err, entries) {
+    if(err) {
+      res.json({
+        error: 404
+      });
+    }
+    else {
+      res.json({
+        result: 'OK',
+        entries: entries
+      });
+    }
+  });
 });
 
 /*
@@ -118,11 +146,10 @@ app.get("/blog", function(req, res) {
 app.get("/blog/post/:uri", function(req, res) {
   console.log(req.params.uri);
   blog.getEntry({url: "test-request-blog-post"}, function(err, data) {
-    console.log(err);
-    console.log(data);
+    //TODO err verification
     if(data.length > 0) {
       return res.render('post', {
-        data: data
+        entry: data
       });
     }
     else {

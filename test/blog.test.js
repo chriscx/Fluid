@@ -1,4 +1,4 @@
-var should, blog, mongoose;
+var should, blog, mongoose, eventEmitter;
 
 mongoose  = require('mongoose');
 should = require('should');
@@ -291,6 +291,7 @@ describe("blog", function() {
         category: 'category',
         comments: [{body: "this is a comment", date: new Date()}],
         creationDate: new Date(new Date().getTime() + (i * (24 * 60 * 60 * 1000))),
+        updateDate: null;
         published: true
       };
       if(i < 20)
