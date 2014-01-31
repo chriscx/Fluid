@@ -8,7 +8,7 @@ body
           li
             a(href='../') Home
           li.active
-            a(href='#') Blog
+            a(href='../blog') Blog
           li
             a(href='#') CV
           li
@@ -20,14 +20,12 @@ body
 
     div.row
       div.col-md-8.col-md-offset-2
-        - for(var entry in entries) {
-          - JSON.stringify(entry);
-          - console.log(entry);
+        - for(var i = 0; i < entries.length; i++) {
           div.panel.panel-default
             div.panel-heading
-              h3.panel-title !{entry.title}
+              h3.panel-title !{entries[i].title}
             div.panel-body
-              | !{entry.body}
+              | !{entries[i].body}
         - }
     //- div.row
     //-   div.col-md-8.col-md-offset-2
