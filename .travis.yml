@@ -4,7 +4,7 @@ node_js:
 services: mongodb
 before_script:
   - npm install
-  - ./node_modules/.bin/NODE_ENV=development forever start src/app.js
+  - ./node_modules/.bin/forever start src/app.js
 script: 
   - ./node_modules/.bin/mocha test/*
 after_script:
