@@ -167,7 +167,7 @@ app.post("/blog/post/create", function(req, res) {
   entry = { 
     title: title,
     author: req.session.userId, 
-    url: encodeURI(title.toLowerCase()),
+    url: encodeURI(title.toLowerCase().replace(' ', '-')),
     body: "",
     tags: [],
     category: null,
@@ -221,7 +221,7 @@ app.del("/blog/post/:id", function(req, res) {
  Get posts by tags
 */
 app.get("/blog/tag/:name", function(req, res) {
-  return blog.getEntry({tags: req.params.name}, function(err, entries) {
+  return blog.getEntry({"tags.name": req.params.name}, function(err, entries) {
     if(err) {
       res.redirect('error/404');
     }
