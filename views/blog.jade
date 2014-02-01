@@ -23,9 +23,22 @@ body
         - for(var i = 0; i < entries.length; i++) {
           div.panel.panel-default
             div.panel-heading
-              h3.panel-title !{entries[i].title}
+              h3.panel-title 
+                a(href='#') !{entries[i].title}
+
+              - var creationDate = new Date(entries[i].creationDate);
+              - var updateDate = new Date(entries[i].updateDate);
+              span.text-right !{creationDate.getDate() + '/' + creationDate.getMonth() + '/' + creationDate.getFullYear()}
+
             div.panel-body
               | !{entries[i].body}
+
+            div.panel-footer
+              span.text-right 
+                - for (var j = 0; j < entries[i].tags.length; j++)
+                  a(href='#') !{entries[i].tags[j].name + ' '}
+                a(href='#') !{entries[i].category} 
+
         - }
     //- div.row
     //-   div.col-md-8.col-md-offset-2
@@ -46,7 +59,7 @@ body
     //-         a(href='#') »
     //-       span.sr-only (current)
     div.row
-      div.col-md-2.col-md-offset-5
-        p Copyright 2014
+      div.col-md-12.text-center Copyright 2014
+include includes/scripts
   
     
