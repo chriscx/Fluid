@@ -218,6 +218,38 @@ app.del("/blog/post/:id", function(req, res) {
 });
 
 /*
+ Get posts by tags
+*/
+app.get("/blog/tag/:name", function(req, res) {
+  return blog.getEntry({tags: req.params.name}, function(err, entries) {
+    if(err) {
+      res.redirect('error/404');
+    }
+    else {
+      res.render('blog', {
+        entries: entries
+      })
+    }
+  });
+});
+
+/*
+ Get posts by category
+*/
+app.get("/blog/category/:name", function(req, res) {
+  return blog.getEntry({category: req.params.name}, function(err, entries) {
+    if(err) {
+      res.redirect('error/404');
+    }
+    else {
+      res.render('blog', {
+        entries: entries
+      })
+    }
+  });
+});
+
+/*
  Logout page
 */
 app.get("/logout", checkAuth, function(req, res) {
