@@ -8,8 +8,7 @@ body
           li
             a(href='../../') Home
           li.active
-            - var baseurl = config.get('baseurl');
-            a(href= baseurl + 'blog') Blog
+            a(href= config['baseurl'] + 'blog') Blog
           li
             a(href='#') CV
           li

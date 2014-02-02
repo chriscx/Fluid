@@ -57,8 +57,10 @@ checkAuth = function(req, res, next) {
  Get index page
 */
 app.get('/', function(req, res) {
-  return res.render('index', {
-    title: 'Fluid'
+  return config.getAll(function(err, config) {
+    res.render('index', {
+      title: 'Fluid'
+    });
   });
 });
 
@@ -66,8 +68,10 @@ app.get('/', function(req, res) {
  Get login page
 */
 app.get("/login", function(req, res) {
-  return res.render('login', {
-    title: 'Fluid'
+  return config.getAll(function(err, config) {
+    res.render('login', {
+      title: 'Fluid'
+    });
   });
 });
 
@@ -75,9 +79,11 @@ app.get("/login", function(req, res) {
  Get admin page
 */
 app.get("/admin", function(req, res) {
-  return res.render('admin', {
-    title: 'Fluid Admin'
-  })
+  return config.getAll(function(err, config) {
+    res.render('admin', {
+      title: 'Fluid Admin'
+    });
+  });
 });
 
 /*
@@ -109,22 +115,24 @@ app.post("/login", function(req, res, next) {
  Get blog page
 */
 app.get("/blog", function(req, res) {
-  return blog.getEntries(5, 0, function(err, entries) {
-    if(err) {
-      res.redirect('error/404');
-    }
-    else {
-      res.render('blog', {
-        entries: entries
-      })
-    }
+  return config.getAll(function(err, config) {
+    blog.getEntries(5, 0, function(err, entries) {
+      if(err) {
+        res.redirect('error/404');
+      }
+      else {
+        res.render('blog', {
+          entries: entries
+        })
+      }
+    });
   });
 });
 
 // /*
 //  Get pagination blog posts
 // */
-// app.get("/blog/:l/:s", function(req, res) {
+// app.get("/blog/posts/:l/:s", function(req, res) {
 //   return blog.getEntries(req.params.l, req.params.s, function(err, entries) {
 //     if(err) {
 //       res.json({
@@ -144,19 +152,20 @@ app.get("/blog", function(req, res) {
  get specific blog post
 */
 app.get("/blog/post/:uri", function(req, res) {
-  console.log(decodeURIComponent(req.params.uri));
-  blog.getEntry({title: req.params.uri}, function(err, data) {
-    //TODO err verification
-    console.log(data);
-    if(data.length > 0) {
-      return res.render('post', {
-        entry: data,
-        config: config
-      });
-    }
-    else {
-      res.redirect('error/404');
-    }
+
+  return config.getAll(function(err, config) {
+
+    blog.getEntry({title: req.params.uri}, function(err, data) {
+      if(data.length > 0) {
+        return res.render('post', {
+          entry: data,
+          config: config
+        });
+      }
+      else {
+        res.redirect('error/404');
+      }
+    });
   });
 });
 
@@ -164,6 +173,7 @@ app.get("/blog/post/:uri", function(req, res) {
  Post create blog post
 */
 app.post("/blog/post/create", function(req, res) {
+
   var entry, title;
   title = (JSON.parse(req.body)).title;
   entry = { 
@@ -191,6 +201,7 @@ app.post("/blog/post/create", function(req, res) {
  Update blog post
 */
 app.put("/blog/post/:id", function(req, res) {
+
   return blog.editEntry(req.param.id, JSON.parse(req.body), function(err, data) {
     if(data.length > 0) {
       return res.json({
@@ -207,6 +218,7 @@ app.put("/blog/post/:id", function(req, res) {
  Delete blog post
 */
 app.del("/blog/post/:id", function(req, res) {
+
   return blog.removeEntry(req.param.id, function(err, data) {
     if(data.length > 0) {
       return res.json({
@@ -223,15 +235,20 @@ app.del("/blog/post/:id", function(req, res) {
  Get posts by tags
 */
 app.get("/blog/tag/:name", function(req, res) {
-  return blog.getEntry({"tags.name": "tag"}, function(err, entries) {
-    if(err) {
-      res.redirect('error/404');
-    }
-    else {
-      res.render('blog', {
-        entries: entries
-      })
-    }
+
+  return config.getAll(function(err, config) {
+
+    blog.getEntry({"tags.name": "tag"}, function(err, entries) {
+      if(err) {
+        res.redirect('error/404');
+      }
+      else {
+        res.render('blog', {
+          entries: entries,
+          config: config
+        })
+      }
+    });
   });
 });
 
@@ -239,15 +256,19 @@ app.get("/blog/tag/:name", function(req, res) {
  Get posts by category
 */
 app.get("/blog/category/:name", function(req, res) {
-  return blog.getEntry({category: req.params.name}, function(err, entries) {
-    if(err) {
-      res.redirect('error/404');
-    }
-    else {
-      res.render('blog', {
-        entries: entries
-      })
-    }
+
+  return config.getAll(function(err, config) {
+
+    blog.getEntry({category: req.params.name}, function(err, entries) {
+      if(err) {
+        res.redirect('error/404');
+      }
+      else {
+        res.render('blog', {
+          entries: entries
+        })
+      }
+    });
   });
 });
 
