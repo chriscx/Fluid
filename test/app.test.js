@@ -4,23 +4,35 @@ mongoose  = require('mongoose');
 should = require('should');
 blog = require('../lib/blog');
 user = require('../lib/user');
+config = require('../lib/config');
 eventEmitter = require('events').EventEmitter;
 request = require('request');
 
 describe("app", function() {
 
-  before(function() {
+  before(function(next) {
     if(!mongoose.connection.readyState){
-      mongoose.connect('mongodb://localhost/fluiddb_test');
+      mongoose.connect('mongodb://localhost/fluiddb_test', null, function() {
+        config.put('baseurl', 'http://localhost:3333', function() {
+          next();
+        });
+      });
+    }
+    else {
+      next();
     }
   });
 
-  after(function() {
-    mongoose.disconnect();
+  after(function(next) {
+    config.del('baseurl', function() {
+      mongoose.disconnect(function() {
+        next();
+      });
+    });
   });
 
   it('should get index page', function(next) {
-  	request('http://localhost:3333', function (err, res, body) {
+  	request('http://localhost:3333/', function (err, res, body) {
   		res.statusCode.should.be.eql(200);
   		next();
   	});

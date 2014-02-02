@@ -59,7 +59,8 @@ checkAuth = function(req, res, next) {
 app.get('/', function(req, res) {
   return config.getAll(function(err, config) {
     res.render('index', {
-      title: 'Fluid'
+      title: 'Fluid',
+      config: config
     });
   });
 });
@@ -70,7 +71,8 @@ app.get('/', function(req, res) {
 app.get("/login", function(req, res) {
   return config.getAll(function(err, config) {
     res.render('login', {
-      title: 'Fluid'
+      title: 'Fluid',
+      config: config
     });
   });
 });
@@ -81,7 +83,8 @@ app.get("/login", function(req, res) {
 app.get("/admin", function(req, res) {
   return config.getAll(function(err, config) {
     res.render('admin', {
-      title: 'Fluid Admin'
+      title: 'Fluid Admin',
+      config: config
     });
   });
 });
@@ -122,7 +125,8 @@ app.get("/blog", function(req, res) {
       }
       else {
         res.render('blog', {
-          entries: entries
+          entries: entries,
+          config: config
         })
       }
     });
@@ -265,7 +269,8 @@ app.get("/blog/category/:name", function(req, res) {
       }
       else {
         res.render('blog', {
-          entries: entries
+          entries: entries,
+          config: config
         })
       }
     });
@@ -284,10 +289,15 @@ app.get("/logout", checkAuth, function(req, res) {
  error redirection page
 */
 app.get("/error/:error", function(req, res) {
-  return res.render('error', {
-    error: req.param.error
+  return config.getAll(function(err, config) {
+    res.render('error', {
+      error: req.param.error,
+      config: config
+    });
   });
 });
+
+
 
 http.createServer(app).listen(3333, function() {
   return console.log('http://localhost:3333');

@@ -7,14 +7,21 @@ eventEmitter = require('events').EventEmitter;
 
 describe("blog", function() {
 
-  before(function() {
+  before(function(next) {
     if(!mongoose.connection.readyState){
-      mongoose.connect('mongodb://localhost/fluiddb_test');
+      mongoose.connect('mongodb://localhost/fluiddb_test', null, function() {
+        next();
+      });
+    }
+    else {
+      next();
     }
   });
 
-  after(function() {
-    mongoose.disconnect();
+  after(function(next) {
+    mongoose.disconnect(function() {
+      next();
+    });
   });
 
   it("should have the blog properties", function(next) {

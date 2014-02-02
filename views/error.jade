@@ -6,9 +6,9 @@ body
       div.col-md-8.col-md-offset-2
         ul.nav.nav-tabs
           li
-            a(href='../') Home
+            a(href= config['baseurl'] + '/') Home
           li
-            a(href='../blog') Blog
+            a(href= config['baseurl'] + '/blog') Blog
           li
             a(href='#') CV
           li
@@ -16,7 +16,7 @@ body
           li
             a(href='') Linkedin
           li
-            a(href='../contact') Contact
+            a(href= config['baseurl'] + '/contact') Contact
     
     div.row
       div.col-md-8.col-md-offset-2
