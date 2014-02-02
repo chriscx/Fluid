@@ -121,35 +121,37 @@ app.get("/blog", function(req, res) {
   });
 });
 
-/*
- Get pagination blog posts
-*/
-app.get("/blog/:l/:s", function(req, res) {
-  return blog.getEntries(req.params.l, req.params.s, function(err, entries) {
-    if(err) {
-      res.json({
-        error: 404
-      });
-    }
-    else {
-      res.json({
-        result: 'OK',
-        entries: entries
-      });
-    }
-  });
-});
+// /*
+//  Get pagination blog posts
+// */
+// app.get("/blog/:l/:s", function(req, res) {
+//   return blog.getEntries(req.params.l, req.params.s, function(err, entries) {
+//     if(err) {
+//       res.json({
+//         error: 404
+//       });
+//     }
+//     else {
+//       res.json({
+//         result: 'OK',
+//         entries: entries
+//       });
+//     }
+//   });
+// });
 
 /*
  get specific blog post
 */
 app.get("/blog/post/:uri", function(req, res) {
-  console.log(req.params.uri);
-  blog.getEntry({url: "test-request-blog-post"}, function(err, data) {
+  console.log(decodeURIComponent(req.params.uri));
+  blog.getEntry({title: req.params.uri}, function(err, data) {
     //TODO err verification
+    console.log(data);
     if(data.length > 0) {
       return res.render('post', {
-        entry: data
+        entry: data,
+        config: config
       });
     }
     else {
@@ -167,7 +169,7 @@ app.post("/blog/post/create", function(req, res) {
   entry = { 
     title: title,
     author: req.session.userId, 
-    url: encodeURI(title.toLowerCase().replace(' ', '-')),
+    url: encodeURI(title.toLowerCase()),
     body: "",
     tags: [],
     category: null,
@@ -221,7 +223,7 @@ app.del("/blog/post/:id", function(req, res) {
  Get posts by tags
 */
 app.get("/blog/tag/:name", function(req, res) {
-  return blog.getEntry({"tags.name": req.params.name}, function(err, entries) {
+  return blog.getEntry({"tags.name": "tag"}, function(err, entries) {
     if(err) {
       res.redirect('error/404');
     }

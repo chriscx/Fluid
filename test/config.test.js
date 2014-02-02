@@ -30,22 +30,30 @@ describe("config", function() {
   	  		next(err);
   	  	}
         nextData.should.not.be.empty;
-  		nextData[0].name.should.be.eql('test');
-  		nextData[0].value.should.be.eql('testValue');
+  		  nextData[0].name.should.be.eql('test');
+  		  nextData[0].value.should.be.eql('testValue');
+  
+        config.getAll(function(err, allData) {
+          if(err) {
+            next(err);
+          }
+          allData.should.not.be.empty;
+          allData.test.should.be.eql('testValue');
 
-  		config.del('test', function(err) {
-  	      if(err) {
-  	      	next(err);
-  	      }
-
-  		  config.get('test', function(err, delData) {
-  		  	if(err) {
-  		  		next(err);
-  		  	}
-  		    delData.should.be.empty;
-  		    next();
-  		  });
-  		});
+          config.del('test', function(err) {
+            if(err) {
+              next(err);
+            }
+    
+            config.get('test', function(err, delData) {
+              if(err) {
+                next(err);
+              }
+              delData.should.be.empty;
+              next();
+            });
+          });
+        });
   	  });
   	});
   });

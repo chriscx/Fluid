@@ -24,7 +24,8 @@ body
           div.panel.panel-default
             div.panel-heading
               h3.panel-title 
-                a(href='#') !{entries[i].title}
+                a(href='blog/post/' + encodeURIComponent(entries[i].title))
+                  | !{entries[i].title}
 
               - var creationDate = new Date(entries[i].creationDate);
               - var updateDate = new Date(entries[i].updateDate);
