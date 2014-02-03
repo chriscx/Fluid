@@ -121,29 +121,29 @@ describe("app", function() {
 
   // })
 
-  it('should post new blog entry', function(next) {
-    return request.post({
-      uri: 'http://localhost:3333/blog/post/create',
-      headers: {
-        'content-type': 'application/json'
-      },
-      body: JSON.stringify({
-        title: "post-blog-entry-test"
-      })
-    }, function(err, res, body) {
+  // it('should post new blog entry', function(next) {
+  //   return request.post({
+  //     uri: 'http://localhost:3333/blog/post/create',
+  //     headers: {
+  //       'content-type': 'application/json'
+  //     },
+  //     body: JSON.stringify({
+  //       title: "post-blog-entry-test"
+  //     })
+  //   }, function(err, res, body) {
 
-      res.statusCode.should.be.eql(200);
-      JSON.parse(res.body).newEntry.should.not.be.empty;
+  //     res.statusCode.should.be.eql(200);
+  //     JSON.parse(res.body).newEntry.should.not.be.empty;
 
-      blog.getEntry({title: "post-blog-entry-test"}, function(err, data) {
+  //     blog.getEntry({title: "post-blog-entry-test"}, function(err, data) {
 
-        data[0].title.should.be.eql("post-blog-entry-test");
-        blog.removeEntry(data[0]._id, function() {
-          next();
-        });
-      });
-    });
-  })
+  //       data[0].title.should.be.eql("post-blog-entry-test");
+  //       blog.removeEntry(data[0]._id, function() {
+  //         next();
+  //       });
+  //     });
+  //   });
+  // })
 
   // it('should del blog entry', function() {
 
