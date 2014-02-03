@@ -134,7 +134,7 @@ describe("app", function() {
 
       res.statusCode.should.be.eql(200);
       JSON.parse(res.body).newEntry.should.not.be.empty;
-      
+
       blog.getEntry({title: "post-blog-entry-test"}, function(err, data) {
 
         data[0].title.should.be.eql("post-blog-entry-test");
@@ -147,6 +147,26 @@ describe("app", function() {
 
   // it('should del blog entry', function() {
 
+  //   var entry = {
+
+  //   }
+  //   return blog.createEntry(entry, function(err, data) {
+  //     request.del({
+  //       uri: 'http://localhost:3333/blog/post/' + data._id,
+  //       headers: {
+  //         'content-type': 'application/json'
+  //       },
+  //       body: ""
+  //     }, function(err, res, body) {
+
+  //       res.statusCode.should.be.eql(200);
+
+  //       blog.getEntry({_id: data._id}, function(err, entry) {
+
+  //         next();
+  //       })
+  //     });
+  //   })
   // })
 
   // it('should put blog entry', function() {
