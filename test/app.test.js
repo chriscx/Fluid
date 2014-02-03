@@ -12,14 +12,23 @@ describe("app", function() {
 
   before(function(next) {
     if(!mongoose.connection.readyState){
-      mongoose.connect('mongodb://localhost/fluiddb_test', null, function() {
+      mongoose.connect('mongodb://localhost/fluiddb_dev', null, function() {
         config.put('baseurl', 'http://localhost:3333', function() {
           next();
         });
       });
     }
     else {
-      next();
+
+      // in case connection is on another db, disconnect to change
+      // TODO see if can change db without disconnecting first.
+      mongoose.disconnect(function() {
+        mongoose.connect('mongodb://localhost/fluiddb_dev', null, function() {
+          config.put('baseurl', 'http://localhost:3333', function() {
+            next();
+          });
+        });
+      });
     }
   });
 
@@ -44,6 +53,18 @@ describe("app", function() {
   		next();
   	});
   }),
+
+  // it('should post login page', function() {
+
+  // })
+
+  it('should get logout page', function(next) {
+    request('http://localhost:3333/logout', function (err, res, body) {
+      res.statusCode.should.be.eql(200);
+      next();
+    });
+  }),
+
 
   it('should get admin page', function(next) {
   	request('http://localhost:3333/admin', function (err, res, body) {
@@ -88,12 +109,50 @@ describe("app", function() {
     });
   }),
 
-  it('should get logout page', function(next) {
-    request('http://localhost:3333/logout', function (err, res, body) {
+   // it('should get blog entries by pagination', function() {
+
+  // }) 
+
+  // it('should get blog entries by tag', function() {
+
+  // })
+
+  // it('should get blog entries by category', function() {
+
+  // })
+
+  it('should post new blog entry', function(next) {
+    return request.post({
+      uri: 'http://localhost:3333/blog/post/create',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        title: "post-blog-entry-test"
+      })
+    }, function(err, res, body) {
+
       res.statusCode.should.be.eql(200);
-      next();
+      JSON.parse(res.body).newEntry.should.not.be.empty;
+      
+      blog.getEntry({title: "post-blog-entry-test"}, function(err, data) {
+
+        data[0].title.should.be.eql("post-blog-entry-test");
+        blog.removeEntry(data[0]._id, function() {
+          next();
+        });
+      });
     });
-  }),
+  })
+
+  // it('should del blog entry', function() {
+
+  // })
+
+  // it('should put blog entry', function() {
+
+  // })
+
 
   it('should get error page', function(next) {
     request('http://localhost:3333/error/404', function (err, res, body) {
@@ -101,8 +160,4 @@ describe("app", function() {
       next();
     });
   })
-
-  // it('should post login page', function() {
-
-  // })
 });
