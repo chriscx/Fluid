@@ -1,28 +1,32 @@
 module.exports = {
 
 	/*
-	*
+	* Website's title
 	*/
 	"title": "Fluid",
 
 	/*
-	*
+	* REQUIRED
+	* base url of website 
 	*/
 	"baseurl": "http://localhost:3333",
 
 	/*
-	*
+	* environment variable
+	* DEFAULT: production
 	*/
 	"env": "development",
 
 	/*
-	*
+	* website's menu:
 	*/
 	"menu": {
 		"enabled": true,
 		"content": [
 			{"label": "Index", "path": "/"},
-			{"label": "Blog", "path": "/blog"},
+			{"label": "Blog", "path": "/blog", "sub": [
+				{"label": "example", "path": "/b-
+			},
 			{"label": "LinkedIn", "path": ""},
 			{"label": "GitHub", "path": ""},
 			{"label": "Contact", "path": "/contact"}
@@ -30,14 +34,15 @@ module.exports = {
 	},
 
 	/*
-	*
+	* Routes to single web pages link to a view
 	*/
 	"routes": [
 		{"path": "/", "view": "index", "title": ""}
 	],
 
 	/*
-	*
+	* REQUIRED
+	* blog enabling
 	*/
 	"blog": {
 		"enabled": true,
@@ -52,7 +57,7 @@ module.exports = {
 		"user": "",
 		"password": "",
 	},
-	
+
 	/*
 	*
 	*/
