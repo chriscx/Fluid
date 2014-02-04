@@ -4,7 +4,6 @@ mongoose  = require('mongoose');
 should = require('should');
 blog = require('../lib/blog');
 user = require('../lib/user');
-config = require('../lib/config');
 eventEmitter = require('events').EventEmitter;
 request = require('request');
 
@@ -13,9 +12,7 @@ describe("app", function() {
   before(function(next) {
     if(!mongoose.connection.readyState){
       mongoose.connect('mongodb://localhost/fluiddb_dev', null, function() {
-        config.put('baseurl', 'http://localhost:3333', function() {
-          next();
-        });
+        next();
       });
     }
     else {
@@ -24,19 +21,15 @@ describe("app", function() {
       // TODO see if can change db without disconnecting first.
       mongoose.disconnect(function() {
         mongoose.connect('mongodb://localhost/fluiddb_dev', null, function() {
-          config.put('baseurl', 'http://localhost:3333', function() {
-            next();
-          });
+          next();
         });
       });
     }
   });
 
   after(function(next) {
-    config.del('baseurl', function() {
-      mongoose.disconnect(function() {
-        next();
-      });
+    mongoose.disconnect(function() {
+      next();
     });
   });
 

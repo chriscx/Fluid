@@ -6,7 +6,7 @@ express = require('express');
 
 user = require('../lib/user');
 blog = require('../lib/blog');
-config = require('../lib/config');
+config = require('../config');
 routes = require('../lib/routes');
 
 underscore = require('underscore');
@@ -19,7 +19,7 @@ store = new SessionStore({
     interval: 120000 // expiration check worker run interval in millisec (default: 60000)
 });
 
-if(config.env() == 'development') {
+if(config.env == 'development') {
   db_url = 'mongodb://localhost/fluiddb_dev';
 } else {
   db_url = 'mongodb://localhost/fluiddb';
@@ -46,7 +46,11 @@ app.use(express.errorHandler({
   dumpExceptions: true
 }));
 
-routes(app);
+if(config.blog.enabled)
+  routes.blog(app);
+routes.site(app);
+routes.login(app);
+routes.error(app);
 
 http.createServer(app).listen(3333, function() {
   return console.log('http://localhost:3333');

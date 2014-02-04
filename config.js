@@ -1,30 +1,60 @@
 module.exports = {
 
-	title: "Fluid",
+	/*
+	*
+	*/
+	"title": "Fluid",
 
-	menu: {
-		enabled: true,
-		content: [
-			{label: "Index", path: "/"},
-			{label: "Blog", path: "/blog"},
-			{label: "LinkedIn", path: ""},
-			{label: "GitHub", path: ""},
-			{label: "Contact", path: "/contact"}
-			]}
+	/*
+	*
+	*/
+	"baseurl": "http://localhost:3333",
+
+	/*
+	*
+	*/
+	"env": "development",
+
+	/*
+	*
+	*/
+	"menu": {
+		"enabled": true,
+		"content": [
+			{"label": "Index", "path": "/"},
+			{"label": "Blog", "path": "/blog"},
+			{"label": "LinkedIn", "path": ""},
+			{"label": "GitHub", "path": ""},
+			{"label": "Contact", "path": "/contact"}
+		]
 	},
 
-	routes: [
-		{path: "/", view: "index"},
+	/*
+	*
+	*/
+	"routes": [
+		{"path": "/", "view": "index", "title": ""}
 	],
 
-	blog: {
-		enabled: true,
-	}
+	/*
+	*
+	*/
+	"blog": {
+		"enabled": true,
+	},
 
-	mongo: {
-		host: "",
-		db: "",
-		user: "",
-		password: "",
-	}
+	/*
+	*
+	*/
+	"mongo": {
+		"host": "",
+		"db": "",
+		"user": "",
+		"password": "",
+	},
+	
+	/*
+	*
+	*/
+	"secret": ""
 }
