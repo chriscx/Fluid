@@ -1,6 +1,8 @@
 var app, checkAuth, mongoose, connect, SessionStore, store, express, http, stylus, underscore, user, blog, config, sha1, db_url, routes;
 
 http = require('http');
+http.globalAgent.maxSockets = 64;
+
 stylus = require('stylus');
 express = require('express');
 
