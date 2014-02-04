@@ -1,7 +1,7 @@
-var should, user, mongoose, connexion;
+var should, user, mongoose, connexion, config;
 
 mongoose  = require('mongoose');
-mongoose.connect('mongodb://localhost/fluiddb');
+config = require('../config');
 should = require('should');
 user = require('../lib/user');
 
@@ -9,7 +9,7 @@ describe("user", function() {
 
   before(function(next) {
     if(!mongoose.connection.readyState){
-      mongoose.connect('mongodb://localhost/fluiddb_test', null, function() {
+      mongoose.connect('mongodb://' + config.mongo.development.host + '/' + config.mongo.development.db, null, function() {
         next();
       });
     }

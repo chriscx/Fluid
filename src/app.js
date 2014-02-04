@@ -17,14 +17,14 @@ connect = require('connect'),
 mongoose = require('mongoose');
 SessionStore = require("session-mongoose")(connect);
 store = new SessionStore({
-    url: "mongodb://localhost/session",
+    url: 'mongodb://' + config.mongo.development.host + '/' + config.mongo.production.db + "_session",
     interval: 120000 // expiration check worker run interval in millisec (default: 60000)
 });
 
 if(config.env == 'development') {
-  db_url = 'mongodb://localhost/fluiddb_dev';
+  db_url = 'mongodb://' + config.mongo.development.host + '/' + config.mongo.development.db;
 } else {
-  db_url = 'mongodb://localhost/fluiddb';
+  db_url = 'mongodb://' + config.mongo.production.host + '/' + config.mongo.production.db;
 }
 
 mongoose.connect(db_url);
@@ -34,9 +34,9 @@ app.set('views', __dirname + '/../views');
 app.set('view engine', 'jade');
 app.use(express.bodyParser());
 app.use(express.methodOverride());
-app.use(express.cookieParser('DD9E5F7F98E47AD47932ACBF77912'));
+app.use(express.cookieParser(config.secret));
 app.use(express.session({
-  secret: 'DD9E5F7F98E47AD47932ACBF77912',
+  secret: config.secret,
   store: store
   })
 );
@@ -50,10 +50,11 @@ app.use(express.errorHandler({
 
 if(config.blog.enabled)
   routes.blog(app);
+
 routes.site(app);
 routes.login(app);
 routes.error(app);
 
-http.createServer(app).listen(3333, function() {
+http.createServer(app).listen(config.port, function() {
   return console.log('http://localhost:3333');
 });

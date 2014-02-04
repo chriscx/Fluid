@@ -1,8 +1,9 @@
-var should, blog, user, mongoose, request;
+var should, blog, user, mongoose, request, config;
 
 mongoose  = require('mongoose');
 should = require('should');
 blog = require('../lib/blog');
+config = require('../config');
 user = require('../lib/user');
 eventEmitter = require('events').EventEmitter;
 request = require('request');
@@ -11,7 +12,7 @@ describe("app", function() {
 
   before(function(next) {
     if(!mongoose.connection.readyState){
-      mongoose.connect('mongodb://localhost/fluiddb_dev', null, function() {
+      mongoose.connect('mongodb://' + config.mongo.development.host + '/' + config.mongo.development.db, null, function() {
         next();
       });
     }
@@ -20,7 +21,7 @@ describe("app", function() {
       // in case connection is on another db, disconnect to change
       // TODO see if can change db without disconnecting first.
       mongoose.disconnect(function() {
-        mongoose.connect('mongodb://localhost/fluiddb_dev', null, function() {
+        mongoose.connect('mongodb://' + config.mongo.development.host + '/' + config.mongo.development.db, null, function() {
           next();
         });
       });
@@ -114,29 +115,29 @@ describe("app", function() {
 
   // })
 
-  // it('should post new blog entry', function(next) {
-  //   return request.post({
-  //     uri: 'http://localhost:3333/blog/post/create',
-  //     headers: {
-  //       'content-type': 'application/json'
-  //     },
-  //     body: JSON.stringify({
-  //       title: "post-blog-entry-test"
-  //     })
-  //   }, function(err, res, body) {
+  it('should post new blog entry', function(next) {
+    return request.post({
+      uri: 'http://localhost:3333/blog/post/create',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        title: "post-blog-entry-test"
+      })
+    }, function(err, res, body) {
 
-  //     res.statusCode.should.be.eql(200);
-  //     JSON.parse(res.body).newEntry.should.not.be.empty;
+      res.statusCode.should.be.eql(200);
+      JSON.parse(res.body).newEntry.should.not.be.empty;
 
-  //     blog.getEntry({title: "post-blog-entry-test"}, function(err, data) {
+      blog.getEntry({title: "post-blog-entry-test"}, function(err, data) {
 
-  //       data[0].title.should.be.eql("post-blog-entry-test");
-  //       blog.removeEntry(data[0]._id, function() {
-  //         next();
-  //       });
-  //     });
-  //   });
-  // })
+        data[0].title.should.be.eql("post-blog-entry-test");
+        blog.removeEntry(data[0]._id, function() {
+          next();
+        });
+      });
+    });
+  })
 
   // it('should del blog entry', function() {
 

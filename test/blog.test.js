@@ -1,15 +1,16 @@
-var should, blog, mongoose, eventEmitter;
+var should, blog, mongoose, eventEmitter, config;
 
 mongoose  = require('mongoose');
 should = require('should');
 blog = require('../lib/blog');
+config = require('../config');
 eventEmitter = require('events').EventEmitter;
 
 describe("blog", function() {
 
   before(function(next) {
     if(!mongoose.connection.readyState){
-      mongoose.connect('mongodb://localhost/fluiddb_test', null, function() {
+      mongoose.connect('mongodb://' + config.mongo.development.host + '/' + config.mongo.development.db, null, function() {
         next();
       });
     }
@@ -297,7 +298,7 @@ describe("blog", function() {
         tags: [{name: 'tag'}],
         category: 'category',
         comments: [{body: "this is a comment", date: new Date()}],
-        creationDate: new Date(new Date().getTime() + (i * (24 * 60 * 60 * 1000))),
+        creationDate: new Date(new Date().getTime() + ((i + 100)* (24 * 60 * 60 * 1000))),
         updateDate: null,
         published: true
       };

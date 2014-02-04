@@ -11,6 +11,8 @@ module.exports = {
 	*/
 	"baseurl": "http://localhost:3333",
 
+	"port": "3333",
+
 	/*
 	* environment variable
 	* DEFAULT: production
@@ -24,9 +26,7 @@ module.exports = {
 		"enabled": true,
 		"content": [
 			{"label": "Index", "path": "/"},
-			{"label": "Blog", "path": "/blog", "sub": [
-				{"label": "example", "path": "/blob"}]
-			},
+			{"label": "Blog", "path": "/blog"},
 			{"label": "LinkedIn", "path": ""},
 			{"label": "GitHub", "path": ""},
 			{"label": "Contact", "path": "/contact"}
@@ -49,17 +49,27 @@ module.exports = {
 	},
 
 	/*
-	*
+	* REQUIRED
+	* MongoDB connexion info
 	*/
 	"mongo": {
-		"host": "",
-		"db": "",
-		"user": "",
-		"password": "",
+		"development": {
+			"host": "localhost",
+			"db": "fluiddb_dev",
+			"user": "",
+			"password": ""
+		},
+		"production": {
+			"host": "localhost",
+			"db": "fluiddb",
+			"user": "",
+			"password": ""
+		}
 	},
 
 	/*
-	*
+	* REQUIRED
+	* 160 bits key generated (replace it when installing)
 	*/
-	"secret": ""
+	"secret": "DD9E5F7F98E47AD47932ACBF77912"
 }
