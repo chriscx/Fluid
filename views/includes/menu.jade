@@ -1,0 +1,10 @@
+- if(config.menu.enabled)
+  div.row
+    div.col-md-8.col-md-offset-2
+      ul.nav.nav-tabs
+      - for(var i in config.menu.content)
+        li
+        - var pathname = document.URL.replace(config.baseurl, "");
+        - alert(pathname);
+        - if(config.menu.content[i].path.startsWith(pathname))
+          a(href= config['baseurl'] + config.menu.content[i].path) !{config.menu.content[i].label}

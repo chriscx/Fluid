@@ -2,20 +2,7 @@ include includes/layout
 body
   div.container
 
-    div.row
-      div.col-md-8.col-md-offset-2
-        ul.nav.nav-tabs
-          li.active
-            a(href= config['baseurl'] + '/') Home
-          li
-            a(href= config['baseurl'] + '/blog') Blog
-          li
-            a(href='#') CV
-          li
-            a(href='') GitHub
-          li
-            a(href='') Linkedin
-          li
-            a(href= config['baseurl'] + '/contact') Contact
+    include includes/menu
+
 include includes/scripts
   
