@@ -1,10 +1,19 @@
-- if(config.menu.enabled)
+- if(config.menu.enabled) {
   div.row
     div.col-md-8.col-md-offset-2
       ul.nav.nav-tabs
-      - for(var i in config.menu.content)
-        li
-        - var pathname = document.URL.replace(config.baseurl, "");
-        - alert(pathname);
-        - if(config.menu.content[i].path.startsWith(pathname))
-          a(href= config['baseurl'] + config.menu.content[i].path) !{config.menu.content[i].label}
+
+        - for(var i in config.menu.content) {
+          - var pathname = new String(request.path.replace(config.baseurl + '/', ""));
+          - var path = new String(config.menu.content[i].path);
+
+          - if(pathname.indexOf(path) == 0 && (path.length >= pathname.length)) {
+            li.active
+              a(href= config['baseurl'] + config.menu.content[i].path) !{config.menu.content[i].label}
+          - }
+          - else {
+            li
+              a(href= config['baseurl'] + config.menu.content[i].path) !{config.menu.content[i].label}
+          - }
+        - }
+- }

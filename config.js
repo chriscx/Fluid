@@ -27,8 +27,8 @@ module.exports = {
 		"content": [
 			{"label": "Index", "path": "/"},
 			{"label": "Blog", "path": "/blog"},
-			{"label": "LinkedIn", "path": ""},
-			{"label": "GitHub", "path": ""},
+			{"label": "LinkedIn", "path": "#"},
+			{"label": "GitHub", "path": "#"},
 			{"label": "Contact", "path": "/contact"}
 		]
 	},
