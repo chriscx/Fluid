@@ -15,7 +15,8 @@ body
 
               - var creationDate = new Date(entries[i].creationDate);
               - var updateDate = new Date(entries[i].updateDate);
-              span.text-right !{creationDate.getDate() + '/' + creationDate.getMonth() + '/' + creationDate.getFullYear()}
+              - var formatedDate = moment(creationDate);
+              span.text-right !{formatedDate.format("DD/MM/YYYY")}
 
             div.panel-body
               | !{entries[i].body}

@@ -47,6 +47,7 @@ app.use(express.errorHandler({
   showStack: true,
   dumpExceptions: true
 }));
+app.locals.moment = require('moment');
 
 if(config.blog.enabled)
   routes.blog(app);
