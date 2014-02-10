@@ -1,8 +1,9 @@
-include includes/layout
-body
+extends includes/layout
+block append content
   div.container
 
     include includes/menu
+
 
     div.row
       div.col-md-8.col-md-offset-2
@@ -46,4 +47,5 @@ body
     //-       span.sr-only (current)
     div.row
       div.col-md-12.text-center Copyright 2014
-include includes/scripts
+
+block append includes/scripts
