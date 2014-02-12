@@ -1,0 +1,8 @@
+body {
+    background: url(../img/intro-bg.jpg) no-repeat bottom center scroll;
+	background-attachment: fixed;
+}
+
+.fl-nav{
+	margin-top: 40px;
+}

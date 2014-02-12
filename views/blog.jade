@@ -5,30 +5,54 @@ block append content
     include includes/menu
 
     div.row
-      div.col-md-8.col-md-offset-2
+      div.col-md-8.col-md-offset-1
         - for(var i = 0; i < entries.length; i++) {
-          div.panel.panel-default
-            div.panel-heading
-              h3.panel-title 
-                a(href=config.baseurl + '/blog/post/' + encodeURIComponent(entries[i].title))
-                  | !{entries[i].title}
+          div.row
+            div.col-md-12
+              div.panel.panel-default
+                div.panel-heading
+                  h3.panel-title 
+                    a(href=config.baseurl + '/blog/post/' + encodeURIComponent(entries[i].title))
+                      | !{entries[i].title}
 
-              - var creationDate = new Date(entries[i].creationDate);
-              - var updateDate = new Date(entries[i].updateDate);
-              - var formatedDate = moment(creationDate);
-              span.text-right !{formatedDate.format("DD/MM/YYYY")}
+                  - var creationDate = new Date(entries[i].creationDate);
+                  - var updateDate = new Date(entries[i].updateDate);
+                  - var formatedDate = moment(creationDate);
+                  span.text-right !{formatedDate.format("DD/MM/YYYY")}
 
-            div.panel-body
-              | !{entries[i].body}
+                div.panel-body
+                  | !{entries[i].body}
 
-            div.panel-footer
-              span.text-right 
-                - for (var j = 0; j < entries[i].tags.length; j++)
-                  a(href='#') !{entries[i].tags[j].name + ' '}
-                a(href='#') !{entries[i].category} 
+                div.panel-footer
+                  span.text-right 
+                    - for (var j = 0; j < entries[i].tags.length; j++)
+                      a(href='#') !{entries[i].tags[j].name + ' '}
+                    a(href='#') !{entries[i].category} 
         - }
+
+      div.col-md-2(id="nav-scrollspy")
+        div.panel.panel-default.affix-top(data-spy='affix', data-offset-top='0')
+          div.panel-heading
+            h3.panel-title Categories
+          div.panel-body
+            div
+              a(href='#section-3') tag 3
+            div
+              a(href='#section-3') tag 3
+            div
+              a(href='#section-3') tag 3
+          div.panel-heading
+            h3.panel-title Tags
+          div.panel-body
+            div
+              a(href='#section-3') tag 3
+            div
+              a(href='#section-3') tag 3
+            div
+              a(href='#section-3') tag 3
     div.row
       div.col-md-12.text-center Copyright 2014
-include includes/scripts
+      div.col-md-12.text-center Created with Fluid
+  
   
     
