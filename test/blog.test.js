@@ -31,6 +31,7 @@ describe("blog", function() {
     blog.should.have.properties('getEntries');
     blog.should.have.properties('removeEntry');
     blog.should.have.properties('editEntry');
+    blog.should.have.properties('getTags');
     blog.should.have.properties('getCategory');
     blog.should.have.properties('getCategories');
     blog.should.have.properties('removeCategory');
@@ -308,6 +309,63 @@ describe("blog", function() {
     blog.createEntry(entry, function(err) {
       chainEvent.emit('ready');
     })
+  });
+
+
+  /*
+
+  */
+  it("should get tags", function(next) {
+    var entry, chainEvent = new eventEmitter();
+    for(var i = 1; i < 5; i++) {
+      entry = { 
+        title: "entry-tag " + i,
+        author: "entry-tag", 
+        url: "this-is-a-test-entry",
+        body: "This is me writing my first blog post",
+        tags: [{name: 'tag'}, {name: "n" + i}],
+        category: 'category',
+        comments: [{body: "this is a comment", date: new Date()}],
+        creationDate: null,
+        updateDate: null,
+        published: true
+      };
+      if(i < 4)
+        blog.createEntry(entry, function(err, data) {});
+    }
+    blog.createEntry(entry, function(err) {
+      chainEvent.emit('tag-ready');
+    });
+
+    chainEvent.on('tag-ready', function() {
+      blog.getTags(function(err, tags) {
+        tags.tag.should.be.eql(4);
+        tags.n1.should.be.eql(1);
+        tags.n2.should.be.eql(1);
+        tags.n3.should.be.eql(1);
+        tags.n4.should.be.eql(1);
+        chainEvent.emit('tag-clean')
+      });
+    });
+
+    chainEvent.on('tag-clean', function() {
+      blog.getEntry({author: "entry-tag"}, function(err, data) {
+        should.not.exist(err);
+        should.exist(data);
+        if(err) {
+          next(err);
+        }
+        for(j = 0; j < data.length; j++) {
+          blog.removeEntry(data[j]._id, function(err, removedEntry) {
+            should.not.exist(err);
+            if(err) {
+              next(err);
+            }
+          })
+        }
+        next();
+      })
+    });
   });
   
   /*
