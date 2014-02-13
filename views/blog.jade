@@ -31,25 +31,26 @@ block append content
         - }
 
       div.col-md-2(id="nav-scrollspy")
-        div.panel.panel-default.affix-top(data-spy='affix', data-offset-top='0')
-          div.panel-heading
-            h3.panel-title Categories
-          div.panel-body
-            div
-              a(href='#section-3') tag 3
-            div
-              a(href='#section-3') tag 3
-            div
-              a(href='#section-3') tag 3
-          div.panel-heading
-            h3.panel-title Tags
-          div.panel-body
-            div
-              a(href='#section-3') tag 3
-            div
-              a(href='#section-3') tag 3
-            div
-              a(href='#section-3') tag 3
+        div.affix-top(data-spy='affix', data-offset-top='0')
+          div.panel.panel-default
+            div.panel-heading
+              h3.panel-title Categories
+            div.panel-body
+              - console.log(categories);
+              - for(var i in categories) {
+                div
+                  a(href='#section-3') !{categories[i].name}
+              - }
+          div.panel.panel-default
+            div.panel-heading
+              h3.panel-title Tags
+            div.panel-body
+              - console.log(tags);
+              - for(var key in tags) {
+                  span(class="badge")
+                    a(href=config.baseurl + '/blog/tag/' + key) !{key + ' (' + tags[key] + ')'}
+                  
+              - }
     div.row
       div.col-md-12.text-center Copyright 2014
       div.col-md-12.text-center Created with Fluid

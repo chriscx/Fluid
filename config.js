@@ -37,7 +37,7 @@ module.exports = {
 	* Routes to single web pages link to a view
 	*/
 	"routes": [
-		{"path": "/", "view": "index", "title": ""},
+		{"path": "/", "view": "index", "title": ""}
 	],
 
 	/*
