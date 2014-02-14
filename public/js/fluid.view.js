@@ -1,4 +1,4 @@
 $(function() {
     var $affixElement = $('div[data-spy="affix"]');
-    $affixElement.width($affixElement.parent().width() - 2);
+    $affixElement.width($affixElement.parent().width());
 });
