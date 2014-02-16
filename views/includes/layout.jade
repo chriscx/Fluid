@@ -3,9 +3,11 @@ html
   head
     title Fluid
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
-    link(rel='stylesheet', href= config['baseurl'] + '/css/bootstrap.css')
-    link(rel='stylesheet', href= config['baseurl'] + '/css/fluid.main.css')
+    link(rel='stylesheet', href= config['baseurl'] + '/bootstrap/css/bootstrap.css')
+    link(rel='stylesheet', href= 'http://yandex.st/highlightjs/8.0/styles/default.min.css')
     link(href="//fonts.googleapis.com/css?family=Open+Sans:300italic,300,400italic,400,600italic,600,700italic,700,800italic,800" rel="stylesheet" type="text/css")
+    link(rel='stylesheet', href= config['baseurl'] + '/fluid/fluid.main.css')
+
   block content
     body(data-spy="scroll" data-target="#nav-scrollspy")
     include scripts

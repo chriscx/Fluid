@@ -39,3 +39,4 @@ Thumbs.db
 *.sublime-workspace
 /node_modules
 populateDB.js
+/bower_components
