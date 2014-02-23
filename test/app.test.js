@@ -159,16 +159,16 @@ describe("app", function() {
         data[0].title.should.be.eql("del-blog-entry-test");
         request.del('http://localhost:3333/blog/post/' + data[0]._id, function(err, res, body) {
           res.statusCode.should.be.eql(200);
-          console.log(body);
+          JSON.parse(body).result.should.be.eql('OK');
           next();
         });
       });
     });
   });
 
-  it('should put blog entry', function() {
+  it('should put blog entry', function(next) {
     var entry = {
-      title: "del-blog-entry-test"
+      title: "put-blog-entry-test"
     };
     return request.post({
       uri: 'http://localhost:3333/blog/post/create',
@@ -181,13 +181,26 @@ describe("app", function() {
       res.statusCode.should.be.eql(200);
       JSON.parse(res.body).newEntry.should.not.be.empty;
 
-      blog.getEntry({title: "del-blog-entry-test"}, function(err, data) {
+      blog.getEntry({title: "put-blog-entry-test"}, function(err, data) {
 
-        data[0].title.should.be.eql("del-blog-entry-test");
-        request.put('http://localhost:3333/blog/post/' + data[0]._id, function(err, res, body) {
+        data[0].title.should.be.eql("put-blog-entry-test");
+
+        var newEntry = data[0];
+        newEntry.title = 'put-blog-entry-test-1'
+        request.put({
+          uri: 'http://localhost:3333/blog/post/' + data[0]._id, 
+          headers: {
+            'content-type': 'application/json'
+          },
+          body: JSON.stringify(newEntry)
+        }, function(err, res, body) {
+
           res.statusCode.should.be.eql(200);
+          JSON.parse(body).result.should.be.eql('OK');
           console.log(body);
-          next();
+          blog.removeEntry(newEntry._id, function() {
+            next();
+          })
         });
       });
     });
