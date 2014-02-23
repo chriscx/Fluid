@@ -36,7 +36,6 @@ block append content
             div.panel-heading
               h3.panel-title Categories
             div.panel-body
-              - console.log(categories);
               - for(var i in categories) {
                 div
                   a(href='#section-3') !{categories[i].name}
@@ -45,7 +44,6 @@ block append content
             div.panel-heading
               h3.panel-title Tags
             div.panel-body
-              - console.log(tags);
               - for(var key in tags) {
                   span(class="badge")
                     a(href=config.baseurl + '/blog/tag/' + key) !{key + ' (' + tags[key] + ')'}
