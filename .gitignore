@@ -35,8 +35,9 @@
 .Trashes
 ehthumbs.pdb
 Thumbs.db
+
 *.sublime-project
 *.sublime-workspace
 /node_modules
 populateDB.js
-/bower_components
+/bower_components/bootstrap/node_modules
