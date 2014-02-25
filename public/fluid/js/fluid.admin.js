@@ -34,3 +34,29 @@
 
 // Edit: To reproduce the issue in the first code with percentages, load 50 divs into it. When you load the next div, it'll add only 2% to the total document's height, meaning the next request will be triggered as soon as you scroll these 2% back to the 70% of the document's height. In my fixed example, the defined bottom offset will load new content only when the user is at a defined absolute pixels range from the bottom of the screen.
 
+createEntry = function(this, config) {
+	$.ajax({  
+    type: 'POST',  
+    url: config['baseurl'] + '/blog/post/', 
+    data: { id_note: id },
+    success: function(response) {
+
+        }
+    }});
+};
+
+removeEntry = function() {
+
+};
+
+updateEntry = function() {
+
+};
+
+getEntry = function() {
+
+};
+
+getCategories = function() {
+
+};

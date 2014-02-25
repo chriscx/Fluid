@@ -67,6 +67,12 @@ module.exports = {
 		}
 	},
 
+	"ssl": {
+		"enabled" : false,
+		"key": "",
+		"cert" :""
+	},
+
 	/*
 	* REQUIRED
 	* 160 bits key generated (replace it when installing)
