@@ -46,17 +46,45 @@ createEntry = function(this, config) {
 };
 
 removeEntry = function() {
+	$.ajax({  
+    type: 'DEL',  
+    url: config['baseurl'] + '/blog/post/', 
+    data: { id_note: id },
+    success: function(response) {
 
+        }
+    }});
 };
 
 updateEntry = function() {
+	$.ajax({  
+    type: 'PUT',  
+    url: config['baseurl'] + '/blog/post/', 
+    data: { id_note: id },
+    success: function(response) {
 
+        }
+    }});
 };
 
 getEntry = function() {
+	$.ajax({  
+    type: 'GET',  
+    url: config['baseurl'] + '/blog/post/', 
+    data: { id_note: id },
+    success: function(response) {
 
+        }
+    }});
 };
 
 getCategories = function() {
+	$.ajax({  
+    type: 'GET',  
+    url: config['baseurl'] + '/blog/categories/', 
+    data: { id_note: id },
+    success: function(response) {
 
+        }
+    }});
 };
