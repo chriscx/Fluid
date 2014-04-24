@@ -1,16 +1,17 @@
 extends includes/layout
 block append content
-  div.container
+  
+  .container
 
-    include includes/menu
+    //- include includes/menu
 
-    div.row
-      div.col-md-8.col-md-offset-1
+    .row
+      .col-md-8.col-md-offset-1
         - for(var i = 0; i < entries.length; i++) {
-          div.row
-            div.col-md-12
-              div.panel.panel-default
-                div.panel-heading
+          .row
+            .col-md-12
+              .panel.panel-default
+                .panel-heading
                   h3.panel-title 
                     a(href=config.baseurl + '/blog/post/' + encodeURIComponent(entries[i].title))
                       | !{entries[i].title}
@@ -20,38 +21,38 @@ block append content
                   - var formatedDate = moment(creationDate);
                   span.text-right !{formatedDate.format("DD/MM/YYYY")}
 
-                div.panel-body
+                .panel-body
                   | !{entries[i].body}
 
-                div.panel-footer
+                .panel-footer
                   span.text-right 
                     - for (var j = 0; j < entries[i].tags.length; j++)
                       a(href='#') !{entries[i].tags[j].name + ' '}
                     a(href='#') !{entries[i].category} 
         - }
 
-      div.col-md-2(id="nav-scrollspy")
-        div.affix-top(data-spy='affix', data-offset-top='0')
-          div.panel.panel-default
-            div.panel-heading
+      .col-md-2(id="nav-scrollspy")
+        .affix-top(data-spy='affix', data-offset-top='0')
+          .panel.panel-default
+            .panel-heading
               h3.panel-title Categories
-            div.panel-body
+            .panel-body
               - for(var i in categories) {
-                div
+                
                   a(href='#section-3') !{categories[i].name}
               - }
-          div.panel.panel-default
-            div.panel-heading
+          .panel.panel-default
+            .panel-heading
               h3.panel-title Tags
-            div.panel-body
+            .panel-body
               - for(var key in tags) {
                   span(class="badge")
                     a(href=config.baseurl + '/blog/tag/' + key) !{key + ' (' + tags[key] + ')'}
                   
               - }
-    div.row
-      div.col-md-12.text-center Copyright 2014
-      div.col-md-12.text-center Created with Fluid
+    .row
+      .col-md-12.text-center Copyright 2014
+      .col-md-12.text-center Created with Fluid
   
   
     
