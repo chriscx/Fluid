@@ -1,34 +1,30 @@
-extends includes/layout
+extends layout
 block append content
-  div.container
+  .container
+    .row
+      .col-md-8.col-md-offset-2
+        //- - for(var i = 0; i < entry.length; i++) {
+        //-   .panel.panel-default
+        //-     .panel-heading
+        //-       h3.panel-title
+        //-         | !{entry[i].title}
 
-    //- include includes/menu
+        //-       - var creationDate = new Date(entry[i].creationDate);
+        //-       - var updateDate = new Date(entry[i].updateDate);
+        //-       span.text-right !{creationDate.getDate() + '/' + creationDate.getMonth() + '/' + creationDate.getFullYear()}
 
+        //-     .panel-body
+        //-       | !{entry[i].body}
 
-    div.row
-      div.col-md-8.col-md-offset-2
-        - for(var i = 0; i < entry.length; i++) {
-          div.panel.panel-default
-            div.panel-heading
-              h3.panel-title
-                | !{entry[i].title}
+        //-     .panel-footer
+        //-       span.text-right 
+        //-         - for (var j = 0; j < entry[i].tags.length; j++)
+        //-           a(href='#') !{entry[i].tags[j].name + ' '}
+        //-         a(href='#') !{entry[i].category} 
 
-              - var creationDate = new Date(entry[i].creationDate);
-              - var updateDate = new Date(entry[i].updateDate);
-              span.text-right !{creationDate.getDate() + '/' + creationDate.getMonth() + '/' + creationDate.getFullYear()}
-
-            div.panel-body
-              | !{entry[i].body}
-
-            div.panel-footer
-              span.text-right 
-                - for (var j = 0; j < entry[i].tags.length; j++)
-                  a(href='#') !{entry[i].tags[j].name + ' '}
-                a(href='#') !{entry[i].category} 
-
-        - }
-    //- div.row
-    //-   div.col-md-8.col-md-offset-2
+        //- - }
+    //- .row
+    //-   .col-md-8.col-md-offset-2
     //-     ul.pagination
     //-       li.disabled
     //-         a(href='#') «
@@ -45,7 +41,5 @@ block append content
     //-       li
     //-         a(href='#') »
     //-       span.sr-only (current)
-    div.row
-      div.col-md-12.text-center Copyright 2014
-
-block append includes/scripts
+    .row
+      .col-md-12.text-center Copyright 2014

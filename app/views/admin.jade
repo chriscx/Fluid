@@ -1,4 +1,4 @@
-include includes/layout
+include layout
 block append content
   nav.navbar.navbar-default(role='navigation')
       .navbar-header
@@ -21,70 +21,69 @@ block append content
 
   div.row
     div.container
-      - var classes = ['col-md-4']
-      div(class=classes)
-        - classes = ['table table-hover table-bordered']
-        table(class=classes)
-          tr
-            th.hide id
-            th Title
-            th State
-            th Category
-            th date
-          tr.active
-            td.hide
-            td Post 1
-            td Del
-            td
-            td
-          tr.success
-            td.hide
-            td Post 1
-            td Del
-            td
-            td
-          tr.warning
-            td.hide
-            td Post 1
-            td Del
-            td
-            td
-          tr.danger
-            td.hide
-            td Post 1
-            td Del
-            td
-            td
-      - classes = ['col-md-8']
-      div(class=classes)
-        form(role='form')
-          div.form-group
-            label(for='entryTitle') Title
-            input(type="text" class="form-control"  id="entryTitle" placeholder="Enter Title")
-          div.form-group
-            div.row
-              - classes = ['col-md-8']
-              div(class=classes)
-                label(for='entryTags') Tags
-                input(type="text" class="form-control"  id="entryTags" placeholder="Enter Tags separated by commas")
-              - classes = ['col-md-4']
-              div(class=classes)
-                label(for='entryCategory') Category
-                br
-                button(type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown") Dropdown
-                  span(class="caret")
-                ul(class="dropdown-menu")
-                  li
-                    a(href="#") Dropdown link
-                  li
-                    a(href="#") Dropdown link
-          div.form-group
-            label(for='entryContent') Content
-            textarea(class="form-control" rows="20")
-          div.form-group
-            div.btn-group
-              button(type="submit" class="btn btn-default") Preview
-              button(type="submit" class="btn btn-default") Save
-              button(type="submit" class="btn btn-default") Post
-              button(type="submit" class="btn btn-default") Delete
-  include includes/scripts
+      //- - var classes = ['col-md-4']
+      //- div(class=classes)
+      //-   - classes = ['table table-hover table-bordered']
+      //-   table(class=classes)
+      //-     tr
+      //-       th.hide id
+      //-       th Title
+      //-       th State
+      //-       th Category
+      //-       th date
+      //-     tr.active
+      //-       td.hide
+      //-       td Post 1
+      //-       td Del
+      //-       td
+      //-       td
+      //-     tr.success
+      //-       td.hide
+      //-       td Post 1
+      //-       td Del
+      //-       td
+      //-       td
+      //-     tr.warning
+      //-       td.hide
+      //-       td Post 1
+      //-       td Del
+      //-       td
+      //-       td
+      //-     tr.danger
+      //-       td.hide
+      //-       td Post 1
+      //-       td Del
+      //-       td
+      //-       td
+      //- - classes = ['col-md-8']
+      //- div(class=classes)
+      //-   form(role='form')
+      //-     div.form-group
+      //-       label(for='entryTitle') Title
+      //-       input(type="text" class="form-control"  id="entryTitle" placeholder="Enter Title")
+      //-     div.form-group
+      //-       div.row
+      //-         - classes = ['col-md-8']
+      //-         div(class=classes)
+      //-           label(for='entryTags') Tags
+      //-           input(type="text" class="form-control"  id="entryTags" placeholder="Enter Tags separated by commas")
+      //-         - classes = ['col-md-4']
+      //-         div(class=classes)
+      //-           label(for='entryCategory') Category
+      //-           br
+      //-           button(type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown") Dropdown
+      //-             span(class="caret")
+      //-           ul(class="dropdown-menu")
+      //-             li
+      //-               a(href="#") Dropdown link
+      //-             li
+      //-               a(href="#") Dropdown link
+      //-     div.form-group
+      //-       label(for='entryContent') Content
+      //-       textarea(class="form-control" rows="20")
+      //-     div.form-group
+      //-       div.btn-group
+      //-         button(type="submit" class="btn btn-default") Preview
+      //-         button(type="submit" class="btn btn-default") Save
+      //-         button(type="submit" class="btn btn-default") Post
+      //-         button(type="submit" class="btn btn-default") Delete
