@@ -16,67 +16,67 @@ module.exports =
     #     `Get pagination blog posts`
     #    ----------------------------
     #
-    app.get "/blog/posts/:l/:s", (req, res) ->
-      blog.getEntries req.params.l, req.params.s, (err, entries) ->
-        if err
-          res.json error: 404
-        else
-          res.json
-            result: "OK"
-            entries: entries
+    app.get "/blog/posts/:l/:s.json", (req, res) ->
+      # blog.getEntries req.params.l, req.params.s, (err, entries) ->
+      #   if err
+      #     res.json error: 404
+      #   else
+      #     res.json
+      #       result: "OK"
+      #       entries: entries
 
     #
     #     `get specific blog post`
     #    ----------------------------
     #
-    app.get "/blog/post/:uri", (req, res) ->
-      res.render "post"
+    app.get "/blog/post/:uri.json", (req, res) ->
+      # res.render "post"
 
     #
     #     `Post create blog post`
     #    ----------------------------
     #
-    app.post "/blog/post/create", (req, res) ->
-      entry =
-        title: req.body.title
-        author: req.session.userId
-        url: encodeURI(req.body.title.toLowerCase())
-        body: ""
-        tags: []
-        category: null
-        comments: []
-        creationDate: new Date()
-        updateDate: null
-        published: true
-
-      blog.createEntry entry, (err, data) ->
-        if err
-          res.json
-            result: "error"
-            error: err
-
-        res.json
-          result: "OK"
-          newEntry: data
+    app.post "/blog/post/create.json", (req, res) ->
+      # entry =
+      #   title: req.body.title
+      #   author: req.session.userId
+      #   url: encodeURI(req.body.title.toLowerCase())
+      #   body: ""
+      #   tags: []
+      #   category: null
+      #   comments: []
+      #   creationDate: new Date()
+      #   updateDate: null
+      #   published: true
+      #
+      # blog.createEntry entry, (err, data) ->
+      #   if err
+      #     res.json
+      #       result: "error"
+      #       error: err
+      #
+      #   res.json
+      #     result: "OK"
+      #     newEntry: data
 
     #
     #     `Update blog post`
     #    ----------------------------
     #
-    app.put "/blog/post/:id", (req, res) ->
-      blog.editEntry req.params.id, req.body, (err, data) ->
-        unless err
-          res.json result: "OK"
-        else
-          res.json
-            result: "error"
-            err: err
+    app.put "/blog/post/:id.json", (req, res) ->
+      # blog.editEntry req.params.id, req.body, (err, data) ->
+      #   unless err
+      #     res.json result: "OK"
+      #   else
+      #     res.json
+      #       result: "error"
+      #       err: err
 
     #
     #     `Delete blog post`
     #    ----------------------------
     #
-    app.del "/blog/post/:id", (req, res) ->
+    app.del "/blog/post/:id.json", (req, res) ->
       blog.removeEntry req.params.id, (err, data) ->
         if data > 0 and not err
           res.json result: "OK"
@@ -89,16 +89,16 @@ module.exports =
     #     `Get posts by tags`
     #    ----------------------------
     #
-    app.get "/blog/tag/:name", (req, res) ->
-      res.render "blog",
+    app.get "/blog/tag/:name.json", (req, res) ->
+      # res.render "blog",
 
 
     #
     #     `Get posts by category`
     #    ----------------------------
     #
-    app.get "/blog/category/:name", (req, res) ->
-      res.render "blog",
+    app.get "/blog/category/:name.json", (req, res) ->
+      # res.render "blog",
 
 
   site: (app) ->
