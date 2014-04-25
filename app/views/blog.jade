@@ -1,5 +1,16 @@
 extends layout
 block append content
+script(type='text/javascript').
+  var FluidApp = angular.module('FluidApp', []);
+
+  FluidApp.controller('blogController',function($scope) {
+
+    //- $.get('playlists.json', function(data) {
+    //-   $scope.$apply(function(){
+    //-     $scope.playlist = data.content[0].content;
+    //-   });
+    //- });
+  });
   .container
     .row
       .col-md-8.col-md-offset-1
@@ -8,7 +19,7 @@ block append content
         //-     .col-md-12
         //-       .panel.panel-default
         //-         .panel-heading
-        //-           h3.panel-title 
+        //-           h3.panel-title
         //-             a(href=config.baseurl + '/blog/post/' + encodeURIComponent(entries[i].title))
         //-               | !{entries[i].title}
 
@@ -21,10 +32,10 @@ block append content
         //-           | !{entries[i].body}
 
         //-         .panel-footer
-        //-           span.text-right 
+        //-           span.text-right
         //-             - for (var j = 0; j < entries[i].tags.length; j++)
         //-               a(href='#') !{entries[i].tags[j].name + ' '}
-        //-             a(href='#') !{entries[i].category} 
+        //-             a(href='#') !{entries[i].category}
         //- - }
 
       .col-md-2(id="nav-scrollspy")
@@ -34,7 +45,7 @@ block append content
               h3.panel-title Categories
             .panel-body
               //- - for(var i in categories) {
-                
+
               //-     a(href='#section-3') !{categories[i].name}
               //- - }
           .panel.panel-default
@@ -44,11 +55,8 @@ block append content
               //- - for(var key in tags) {
               //-     span(class="badge")
               //-       a(href=config.baseurl + '/blog/tag/' + key) !{key + ' (' + tags[key] + ')'}
-                  
+
               //- - }
     .row
       .col-md-12.text-center Copyright 2014
       .col-md-12.text-center Created with Fluid
-  
-  
-    
