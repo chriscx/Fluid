@@ -1,23 +1,21 @@
-user = require "../lib/user"
-blog = require "../lib/blog"
 config = require "../config"
 sha1 = require "sha1"
 eventEmitter = require("events").EventEmitter
 
 module.exports =
   blog: (app) ->
-    
+
     #
     #     `Get blog page`
     #    ----------------------------
-    #    
+    #
     app.get "/blog", (req, res) ->
       res.render "blog",
 
     #
     #     `Get pagination blog posts`
     #    ----------------------------
-    #    
+    #
     app.get "/blog/posts/:l/:s", (req, res) ->
       blog.getEntries req.params.l, req.params.s, (err, entries) ->
         if err
@@ -26,18 +24,18 @@ module.exports =
           res.json
             result: "OK"
             entries: entries
-    
+
     #
     #     `get specific blog post`
     #    ----------------------------
-    #    
+    #
     app.get "/blog/post/:uri", (req, res) ->
       res.render "post"
-    
+
     #
     #     `Post create blog post`
     #    ----------------------------
-    #    
+    #
     app.post "/blog/post/create", (req, res) ->
       entry =
         title: req.body.title
@@ -60,11 +58,11 @@ module.exports =
         res.json
           result: "OK"
           newEntry: data
-    
+
     #
     #     `Update blog post`
     #    ----------------------------
-    #    
+    #
     app.put "/blog/post/:id", (req, res) ->
       blog.editEntry req.params.id, req.body, (err, data) ->
         unless err
@@ -77,7 +75,7 @@ module.exports =
     #
     #     `Delete blog post`
     #    ----------------------------
-    #    
+    #
     app.del "/blog/post/:id", (req, res) ->
       blog.removeEntry req.params.id, (err, data) ->
         if data > 0 and not err
@@ -86,29 +84,29 @@ module.exports =
           res.json
             result: "error"
             err: err
-    
+
     #
     #     `Get posts by tags`
     #    ----------------------------
-    #    
+    #
     app.get "/blog/tag/:name", (req, res) ->
       res.render "blog",
 
-    
+
     #
     #     `Get posts by category`
     #    ----------------------------
-    #    
+    #
     app.get "/blog/category/:name", (req, res) ->
       res.render "blog",
 
 
   site: (app) ->
-    
+
     #
     #    `Get index page`
     #    ----------------------------
-    #    
+    #
     for i of config.routes
       app.get config.routes[i].path, (req, res) ->
         res.render config.routes[i].view,
@@ -145,10 +143,10 @@ module.exports =
   #   res.redirect '/'
 
   error: (app) ->
-    
+
     #
     #     `error redirection page`
     #    ----------------------------
-    #    
+    #
     app.get "/error/:error", (req, res) ->
       res.render "error"
