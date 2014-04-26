@@ -1,6 +1,10 @@
+markdown = require 'markdown' .markdown
+
 module.exports =
   slugify: (text) ->
-    return text
-        .toLowerCase
+    text.toLowerCase
         .replace /\040/g,'-'
         .replace /[^\w-]+/g,''
+
+  convertMarkdown: (markdown) ->
+    markdown.toHTML markdown
