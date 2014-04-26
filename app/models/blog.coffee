@@ -1,8 +1,8 @@
-mongoose = require('mongoose')
+mongoose = require 'mongoose'
 
 Schema = mongoose.Schema
 
-entrySchema = new Schema(
+EntrySchema = new Schema(
   title:
     type: String
     index:
@@ -25,8 +25,8 @@ entrySchema = new Schema(
   published: Boolean
 )
 
-Entry = mongoose.model('Entry', entrySchema)
+Entry = mongoose.model 'Entry', entrySchema
 
 module.exports =
   Entry: Entry
-  Schema: entrySchema
+  Schema: EntrySchema
