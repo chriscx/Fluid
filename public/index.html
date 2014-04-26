@@ -11,6 +11,18 @@
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
   </head>
   <body data-spy="scroll" data-target="#nav-scrollspy"></body>
+  <script type="text/javascript">
+    var FluidApp = angular.module('FluidApp', []);
+    
+    FluidApp.controller('indexController',function($scope) {
+    
+      //- $.get('playlists.json', function(data) {
+      //-   $scope.$apply(function(){
+      //-     $scope.playlist = data.content[0].content;
+      //-   });
+      //- });
+    });
+  </script>
   <div class="container">
     <div class="row">
       <section class="col-md-10 col-md-offset-1">
@@ -24,14 +36,14 @@
           </p>
           <h3>Menu Navigation & Routes</h3>
           <p>
-            Adding, removing & editing routes of the website is managed in the config.js file. 
+            Adding, removing & editing routes of the website is managed in the config.js file.
             Add a JSON object with path, associated view and title in the array defining the routes key.
-            Example: 
-            <pre><code>"routes": [{"path": "/", "view": "index", "title": "Fluid"}]</code></pre>Then create a jade view file. You can inspire yourself with the index view to create new ones.
+            Example:
+            <pre><code>'routes': [{'path': '/', 'view': 'index', 'title': 'Fluid'}]</code></pre>Then create a jade view file. You can inspire yourself with the index view to create new ones.
           </p>
           <p>
             Enable the menu display by setting the 'enabled' attribute of menu in config.js. Then set the different elements of the menu
-            with the path of the routes you declared. 
+            with the path of the routes you declared.
           </p>
           <h3>Blog Engine</h3>
           <p>Enable the blog engine by setting the 'enabled' attribute of blog in config.js. Not much is to be done, the route to the blog should be /blog.</p>

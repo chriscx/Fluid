@@ -3,20 +3,20 @@ module.exports =
   #
   #	* Website's title
   #	
-  title: "Fluid"
+  title: 'Fluid'
   
   #
   #	* REQUIRED
   #	* base url of website 
   #	
-  baseurl: "http://localhost:3333"
-  port: "3333"
+  baseurl: 'http://localhost:3333'
+  port: '3333'
   
   #
   #	* environment variable
   #	* DEFAULT: production
   #	
-  env: "development"
+  env: 'development'
   
   #
   #	* website's menu:
@@ -25,24 +25,24 @@ module.exports =
     enabled: true
     content: [
       {
-        label: "Index"
-        path: "/"
+        label: 'Index'
+        path: '/'
       }
       {
-        label: "Blog"
-        path: "/blog"
+        label: 'Blog'
+        path: '/blog'
       }
       {
-        label: "LinkedIn"
-        path: "#"
+        label: 'LinkedIn'
+        path: '#'
       }
       {
-        label: "GitHub"
-        path: "#"
+        label: 'GitHub'
+        path: '#'
       }
       {
-        label: "Contact"
-        path: "/contact"
+        label: 'Contact'
+        path: '/contact'
       }
     ]
 
@@ -51,9 +51,9 @@ module.exports =
   #	* Routes to single web pages link to a view
   #	
   routes: [
-    path: "/"
-    view: "index"
-    title: ""
+    path: '/'
+    view: 'index'
+    title: ''
   ]
   
   #
@@ -70,25 +70,25 @@ module.exports =
   #	
   mongo:
     development:
-      host: "localhost"
-      db: "fluiddb_dev"
-      user: ""
-      password: ""
+      host: 'localhost'
+      db: 'fluiddb_dev'
+      user: ''
+      password: ''
 
     production:
-      host: "localhost"
-      db: "fluiddb"
-      user: ""
-      password: ""
+      host: 'localhost'
+      db: 'fluiddb'
+      user: ''
+      password: ''
 
   ssl:
     enabled: false
-    key: ""
-    cert: ""
+    key: ''
+    cert: ''
 
   
   #
   #	* REQUIRED
   #	* 160 bits key generated (replace it when installing)
   #	
-  secret: "DD9E5F7F98E47AD47932ACBF77912"
+  secret: 'DD9E5F7F98E47AD47932ACBF77912'

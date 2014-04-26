@@ -5,7 +5,7 @@
 //-         ul.nav.nav-pills.nav-justified
 
 //-           - for(var i in config.menu.content) {
-//-             - var pathname = new String(request.path.replace(config.baseurl + '/', ""));
+//-             - var pathname = new String(request.path.replace(config.baseurl + '/', ''));
 //-             - var menupath = new String(config.menu.content[i].path);
 
 //-             - if(pathname.indexOf(menupath) === 0 && (menupath.length >= pathname.length)) {
@@ -14,7 +14,7 @@
 //-             - }
 //-             - else {
 //-               li
-//-                 - if(menupath.indexOf("http://") === 0) {
+//-                 - if(menupath.indexOf('http://') === 0) {
 //-                   a(href= config.menu.content[i].path) !{config.menu.content[i].label}
 //-                 - }
 //-                 - else {

@@ -1,4 +1,4 @@
-mongoose = require("mongoose")
+mongoose = require('mongoose')
 
 Schema = mongoose.Schema
 
@@ -25,7 +25,7 @@ entrySchema = new Schema(
   published: Boolean
 )
 
-Entry = mongoose.model("Entry", entrySchema)
+Entry = mongoose.model('Entry', entrySchema)
 
 module.exports =
   Entry: Entry

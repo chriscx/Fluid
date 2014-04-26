@@ -11,6 +11,18 @@
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
   </head>
   <body data-spy="scroll" data-target="#nav-scrollspy"></body>
+  <script type="text/javascript">
+    var FluidApp = angular.module('FluidApp', []);
+    
+    FluidApp.controller('blogController',function($scope) {
+    
+      //- $.get('playlists.json', function(data) {
+      //-   $scope.$apply(function(){
+      //-     $scope.playlist = data.content[0].content;
+      //-   });
+      //- });
+    });
+  </script>
   <div class="container">
     <div class="row">
       <div class="col-md-8 col-md-offset-1">

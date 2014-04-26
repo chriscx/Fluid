@@ -15,7 +15,7 @@
 
 // if ($(window).scrollTop() >= ($(document).height() - $(window).height())*0.7){
 //     processing = true; //sets a processing AJAX request flag
-//     $.post("url", '<params>', function(data){ //or $.ajax, $.get, $.load etc.
+//     $.post('url', '<params>', function(data){ //or $.ajax, $.get, $.load etc.
 //         //load the content to your div
 //         processing = false; //resets the ajax flag once the callback concludes
 //     });

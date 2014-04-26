@@ -1,16 +1,16 @@
 extends layout
 block append content
   script(type='text/javascript').
-  var FluidApp = angular.module('FluidApp', []);
+    var FluidApp = angular.module('FluidApp', []);
 
-  FluidApp.controller('indexController',function($scope) {
+    FluidApp.controller('indexController',function($scope) {
 
-    //- $.get('playlists.json', function(data) {
-    //-   $scope.$apply(function(){
-    //-     $scope.playlist = data.content[0].content;
-    //-   });
-    //- });
-  });
+      //- $.get('playlists.json', function(data) {
+      //-   $scope.$apply(function(){
+      //-     $scope.playlist = data.content[0].content;
+      //-   });
+      //- });
+    });
   .container
     .row
       section.col-md-10.col-md-offset-1
@@ -28,7 +28,7 @@ block append content
             | Add a JSON object with path, associated view and title in the array defining the routes key.
             | Example:
             pre
-              code "routes": [{"path": "/", "view": "index", "title": "Fluid"}]
+              code 'routes': [{'path': '/', 'view': 'index', 'title': 'Fluid'}]
             | Then create a jade view file. You can inspire yourself with the index view to create new ones.
           p
             | Enable the menu display by setting the 'enabled' attribute of menu in config.js. Then set the different elements of the menu

@@ -1,6 +1,6 @@
-config = require "../config"
-sha1 = require "sha1"
-eventEmitter = require("events").EventEmitter
+config = require '../config'
+sha1 = require 'sha1'
+eventEmitter = require('events').EventEmitter
 
 module.exports =
   blog: (app) ->
@@ -9,39 +9,39 @@ module.exports =
     #     `Get blog page`
     #    ----------------------------
     #
-    app.get "/blog", (req, res) ->
-      res.render "blog",
+    app.get '/blog', (req, res) ->
+      res.render 'blog',
 
     #
     #     `Get pagination blog posts`
     #    ----------------------------
     #
-    app.get "/blog/posts/:l/:s.json", (req, res) ->
+    app.get '/blog/posts/:l/:s.json', (req, res) ->
       # blog.getEntries req.params.l, req.params.s, (err, entries) ->
       #   if err
       #     res.json error: 404
       #   else
       #     res.json
-      #       result: "OK"
+      #       result: 'OK'
       #       entries: entries
 
     #
     #     `get specific blog post`
     #    ----------------------------
     #
-    app.get "/blog/post/:uri.json", (req, res) ->
-      # res.render "post"
+    app.get '/blog/post/:uri.json', (req, res) ->
+      # res.render 'post'
 
     #
     #     `Post create blog post`
     #    ----------------------------
     #
-    app.post "/blog/post/create.json", (req, res) ->
+    app.post '/blog/post/create.json', (req, res) ->
       # entry =
       #   title: req.body.title
       #   author: req.session.userId
       #   url: encodeURI(req.body.title.toLowerCase())
-      #   body: ""
+      #   body: ''
       #   tags: []
       #   category: null
       #   comments: []
@@ -52,53 +52,53 @@ module.exports =
       # blog.createEntry entry, (err, data) ->
       #   if err
       #     res.json
-      #       result: "error"
+      #       result: 'error'
       #       error: err
       #
       #   res.json
-      #     result: "OK"
+      #     result: 'OK'
       #     newEntry: data
 
     #
     #     `Update blog post`
     #    ----------------------------
     #
-    app.put "/blog/post/:id.json", (req, res) ->
+    app.put '/blog/post/:id.json', (req, res) ->
       # blog.editEntry req.params.id, req.body, (err, data) ->
       #   unless err
-      #     res.json result: "OK"
+      #     res.json result: 'OK'
       #   else
       #     res.json
-      #       result: "error"
+      #       result: 'error'
       #       err: err
 
     #
     #     `Delete blog post`
     #    ----------------------------
     #
-    app.del "/blog/post/:id.json", (req, res) ->
+    app.del '/blog/post/:id.json', (req, res) ->
       blog.removeEntry req.params.id, (err, data) ->
         if data > 0 and not err
-          res.json result: "OK"
+          res.json result: 'OK'
         else
           res.json
-            result: "error"
+            result: 'error'
             err: err
 
     #
     #     `Get posts by tags`
     #    ----------------------------
     #
-    app.get "/blog/tag/:name.json", (req, res) ->
-      # res.render "blog",
+    app.get '/blog/tag/:name.json', (req, res) ->
+      # res.render 'blog',
 
 
     #
     #     `Get posts by category`
     #    ----------------------------
     #
-    app.get "/blog/category/:name.json", (req, res) ->
-      # res.render "blog",
+    app.get '/blog/category/:name.json', (req, res) ->
+      # res.render 'blog',
 
 
   site: (app) ->
@@ -125,7 +125,7 @@ module.exports =
   #   Account.register new Account(username: req.body.username), req.body.password, (err, account) ->
   #     if err
   #       res.render 'register',
-  #         info: "Sorry. That username already exists. Try again."
+  #         info: 'Sorry. That username already exists. Try again.'
   #
   #     passport.authenticate 'local', (req, res) ->
   #       res.redirect '/'
@@ -148,5 +148,5 @@ module.exports =
     #     `error redirection page`
     #    ----------------------------
     #
-    app.get "/error/:error", (req, res) ->
-      res.render "error"
+    app.get '/error/:error', (req, res) ->
+      res.render 'error'
