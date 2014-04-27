@@ -1,6 +1,4 @@
 mongoose = require 'mongoose'
-Playlist = require './playlist'
-PlaylistSchema = Playlist.Schema
 Schema = mongoose.Schema
 passportLocalMongoose = require 'passport-local-mongoose'
 
@@ -10,7 +8,6 @@ AccountSchema = new Schema(
     index: true
     unique: true
   birthdate: Date
-  playlists: [PlaylistSchema]
   )
 
 AccountSchema.plugin passportLocalMongoose

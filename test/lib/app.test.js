@@ -10,7 +10,7 @@ request = require('request');
 describe('app', function() {
   before(function(next) {
     if (!mongoose.connection.readyState) {
-      return mongoose.connect('mongodb://localhost/fluiddb', null, function() {
+      return mongoose.connect('mongodb://localhost/fluiddb_dev', null, function() {
         return next();
       });
     }

@@ -5,7 +5,7 @@ request = require 'request'
 describe 'app', ->
   before (next) ->
     unless mongoose.connection.readyState
-      mongoose.connect 'mongodb://localhost/fluiddb', null, ->
+      mongoose.connect 'mongodb://localhost/fluiddb_dev', null, ->
         next()
 
   after (next) ->
