@@ -25,7 +25,7 @@ module.exports =
     #     `Get pagination blog posts`
     #    ----------------------------
     #
-    app.get '/blog/posts/:l/:s.json', (req, res) ->
+    app.get '/blog/posts/:s-:e/posts.json', (req, res) ->
       # blog.getEntries req.params.l, req.params.s, (err, entries) ->
       #   if err
       #     res.json error: 404
@@ -38,14 +38,14 @@ module.exports =
     #     `get specific blog post`
     #    ----------------------------
     #
-    app.get '/blog/post/:uri.json', (req, res) ->
+    app.get '/blog/post/:id.json', (req, res) ->
       # res.render 'post'
 
     #
     #     `Post create blog post`
     #    ----------------------------
     #
-    app.post '/blog/post/create.json', (req, res) ->
+    app.post '/blog/post/id.json', (req, res) ->
       # entry =
       #   title: req.body.title
       #   author: req.session.userId
@@ -98,7 +98,7 @@ module.exports =
     #     `Get posts by tags`
     #    ----------------------------
     #
-    app.get '/blog/tag/:name.json', (req, res) ->
+    app.get '/blog/tag/:name/posts.json', (req, res) ->
       # res.render 'blog',
 
 

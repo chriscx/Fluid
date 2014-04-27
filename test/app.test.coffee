@@ -63,26 +63,35 @@ describe 'app', ->
       res.statusCode.should.be.eql 200
       next()
 
-  it 'should get admin page', (next) ->
-    request 'http://localhost:3333/admin', (err, res, body) ->
-      res.statusCode.should.be.eql 200
-      next()
+  # it 'should get admin page', (next) ->
+  #   request 'http://localhost:3333/admin', (err, res, body) ->
+  #     res.statusCode.should.be.eql 200
+  #     next()
 
   it 'should get blog page', (next) ->
     request 'http://localhost:3333/blog', (err, res, body) ->
       res.statusCode.should.be.eql 200
       next()
 
-  it 'should get blog post page', (next) ->
+  it 'should get single entry in json', (next) ->
+    request 'http://localhost:3333/blog/post/title-1.json', (err, res, body) ->
+      res.statusCode.should.be.eql 200
+      # add test
     next()
 
-  it 'should get blog entries by pagination', (next) ->
+  it 'should get blog entries by pagination in json', (next) ->
+    request 'http://localhost:3333/blog/posts/0-2/data.json', (err, res, body) ->
+      res.statusCode.should.be.eql 200
     next()
 
-  it 'should get blog entries by tag', (next) ->
+  it 'should get blog entries by tag in json', (next) ->
+    request 'http://localhost:3333/blog/tag/:name/posts.json', (err, res, body) ->
+      res.statusCode.should.be.eql 200
     next()
 
-  it 'should get blog entries by category', (next) ->
+  it 'should get blog entries by category in json', (next) ->
+    request 'http://localhost:3333/blog/category/:name/posts.json', (err, res, body) ->
+      res.statusCode.should.be.eql 200
     next()
 
   it 'should post new blog entry', (next) ->
