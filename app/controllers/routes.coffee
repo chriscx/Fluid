@@ -2,6 +2,15 @@ config = require '../config'
 sha1 = require 'sha1'
 eventEmitter = require('events').EventEmitter
 
+entry = require('../models/blog').Entry
+entrySchema = require('../models/blog').Schema
+
+category = require('../models/category').Category
+categorySchema = require('../models/category').Schema
+
+account = require('../models/account').Account
+accountSchema = require('../models/account').Schema
+
 module.exports =
   blog: (app) ->
 

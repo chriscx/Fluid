@@ -13,7 +13,9 @@
     "forever": "0.10.11",
     "sha1": "1.1.0",
     "less": "~1.6.2",
-    "moment": "~2.5.1"
+    "moment": "~2.5.1",
+    "passport": "^0.2.0",
+    "passport-local-mongoose": "^0.3.0"
   },
   "devDependencies": {
     "coffee-script": "1.7.1",

@@ -2,7 +2,7 @@ mongoose = require 'mongoose'
 
 Schema = mongoose.Schema
 
-EntrySchema = new Schema(
+EntrySchema = new Schema
   title:
     type: String
     index:
@@ -23,9 +23,8 @@ EntrySchema = new Schema(
     type: Date
     default: Date.now
   published: Boolean
-)
 
-Entry = mongoose.model 'Entry', entrySchema
+Entry = mongoose.model 'Entry', EntrySchema
 
 module.exports =
   Entry: Entry

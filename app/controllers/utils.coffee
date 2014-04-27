@@ -1,4 +1,4 @@
-markdown = require 'markdown' .markdown
+markdown = require('markdown').markdown
 
 module.exports =
   slugify: (text) ->

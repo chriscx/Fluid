@@ -1,14 +1,47 @@
 mongoose = require 'mongoose'
 should = require 'should'
 request = require 'request'
+events = require 'events'
+eventEmitter = new events.EventEmitter()
+
+utils = require '../app/controllers/utils'
+
+entry = require('../app/models/blog').Entry
+entrySchema = require('../app/models/blog').Schema
+
+category = require('../app/models/category').Category
+categorySchema = require('../app/models/category').Schema
+
+account = require('../app/models/account').Account
+accountSchema = require('../app/models/account').Schema
 
 describe 'app', ->
   before (next) ->
+
     unless mongoose.connection.readyState
       mongoose.connect 'mongodb://localhost/fluiddb_dev', null, ->
         next()
+    else
+      eventEmitter.emit 'MongoConnected'
+
+    eventEmitter.on 'MongoConnected', () ->
+      for i in [1..10] by 1
+        do (i) ->
+          entrySchema.title = 'title ' + i
+          entrySchema.author = 'author'
+          entrySchema.url = utils.slugify 'title'
+          entrySchema.body = 'This is a test post'
+          entrySchema.tags = [{name: 'tag1'}]
+          entrySchema.category = 'test'
+          entrySchema.comments = []
+          entrySchema.creationDate = new Date()
+          entrySchema.updateDate = null
+          entrySchema.published = true
+          entry.save entrySchema, (err) ->
+            throw err if err
 
   after (next) ->
+    entry.find({body: 'This is a test post'}).remove().exec()
     mongoose.disconnect ->
       next()
 
