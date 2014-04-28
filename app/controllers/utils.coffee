@@ -2,7 +2,7 @@ markdown = require('markdown').markdown
 
 module.exports =
   slugify: (text) ->
-    text.toLowerCase
+    text.toLowerCase()
         .replace /\040/g,'-'
         .replace /[^\w-]+/g,''
 

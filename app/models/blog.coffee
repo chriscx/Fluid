@@ -8,7 +8,7 @@ EntrySchema = new Schema
     index:
       unique: true
   author: String
-  url: String
+  id: String
   body: String
   tags: [name: String]
   category: String

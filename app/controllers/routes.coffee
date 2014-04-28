@@ -25,21 +25,32 @@ module.exports =
     #     `Get pagination blog posts`
     #    ----------------------------
     #
-    app.get '/blog/posts/:s-:e/posts.json', (req, res) ->
-      # blog.getEntries req.params.l, req.params.s, (err, entries) ->
-      #   if err
-      #     res.json error: 404
-      #   else
-      #     res.json
-      #       result: 'OK'
-      #       entries: entries
+    app.get '/blog/posts/:s/:l/posts.json', (req, res) ->
+      # check params for negative value or if non numerical values
+      entry.find {}, null, {'skip': req.params.s, 'limit': req.params.l}
+        .sort {creationDate: 'desc'}
+        .exec (err, data) ->
+          if err
+            res.json result: 'error'
+          else 
+            res.json
+              result: 'OK'
+              entries: data
 
     #
     #     `get specific blog post`
     #    ----------------------------
     #
     app.get '/blog/post/:id.json', (req, res) ->
-      # res.render 'post'
+      entry.find {"id": req.params.id}, (err, data) ->
+        if err
+          res.json
+            result: 'error'
+            type: '404'
+        else 
+          res.json
+            result: 'OK'
+            entries: data
 
     #
     #     `Post create blog post`
@@ -99,15 +110,26 @@ module.exports =
     #    ----------------------------
     #
     app.get '/blog/tag/:name/posts.json', (req, res) ->
-      # res.render 'blog',
-
+      entry.find {'tags.name': req.params.name}, (err, data) ->
+        if err
+          res.json result: 'error'
+        else 
+          res.json
+            result: 'OK'
+            entries: data
 
     #
     #     `Get posts by category`
     #    ----------------------------
     #
-    app.get '/blog/category/:name.json', (req, res) ->
-      # res.render 'blog',
+    app.get '/blog/category/:name/posts.json', (req, res) ->
+      entry.find {'category': req.params.name}, (err, data) ->
+        if err
+          res.json result: 'error'
+        else 
+          res.json
+            result: 'OK'
+            entries: data
 
 
   site: (app) ->

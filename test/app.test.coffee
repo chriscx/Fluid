@@ -20,6 +20,7 @@ describe 'app', ->
 
     unless mongoose.connection.readyState
       mongoose.connect 'mongodb://localhost/fluiddb_dev', null, ->
+        eventEmitter.emit 'MongoConnected'
         next()
     else
       eventEmitter.emit 'MongoConnected'
@@ -27,23 +28,25 @@ describe 'app', ->
     eventEmitter.on 'MongoConnected', () ->
       for i in [1..10] by 1
         do (i) ->
-          entrySchema.title = 'title ' + i
-          entrySchema.author = 'author'
-          entrySchema.url = utils.slugify 'title'
-          entrySchema.body = 'This is a test post'
-          entrySchema.tags = [{name: 'tag1'}]
-          entrySchema.category = 'test'
-          entrySchema.comments = []
-          entrySchema.creationDate = new Date()
-          entrySchema.updateDate = null
-          entrySchema.published = true
-          entry.save entrySchema, (err) ->
+          newPost = new entry(
+            title: 'title ' + i
+            author: 'author'
+            id: utils.slugify 'title'
+            body: 'This is a test post'
+            tags: [{name: 'tag1'}]
+            category: 'test'
+            comments: []
+            creationDate: new Date()
+            updateDate: null
+            published: true
+          )
+          newPost.save (err) ->
             throw err if err
 
   after (next) ->
     entry.find({body: 'This is a test post'}).remove().exec()
-    mongoose.disconnect ->
-      next()
+    mongoose.disconnect
+    next()
 
   it 'should get index page', (next) ->
     request 'http://localhost:3333/', (err, res, body) ->
@@ -77,22 +80,22 @@ describe 'app', ->
     request 'http://localhost:3333/blog/post/title-1.json', (err, res, body) ->
       res.statusCode.should.be.eql 200
       # add test
-    next()
+      next()
 
   it 'should get blog entries by pagination in json', (next) ->
-    request 'http://localhost:3333/blog/posts/0-2/data.json', (err, res, body) ->
+    request 'http://localhost:3333/blog/posts/0/2/posts.json', (err, res, body) ->
       res.statusCode.should.be.eql 200
-    next()
+      next()
 
   it 'should get blog entries by tag in json', (next) ->
-    request 'http://localhost:3333/blog/tag/:name/posts.json', (err, res, body) ->
+    request 'http://localhost:3333/blog/tag/tag1/posts.json', (err, res, body) ->
       res.statusCode.should.be.eql 200
-    next()
+      next()
 
   it 'should get blog entries by category in json', (next) ->
-    request 'http://localhost:3333/blog/category/:name/posts.json', (err, res, body) ->
+    request 'http://localhost:3333/blog/category/test/posts.json', (err, res, body) ->
       res.statusCode.should.be.eql 200
-    next()
+      next()
 
   it 'should post new blog entry', (next) ->
     next()
