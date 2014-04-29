@@ -31,7 +31,7 @@ describe 'app', ->
           newPost = new entry(
             title: 'title ' + i
             author: 'author'
-            id: utils.slugify 'title'
+            id: utils.slugify('title ' + i)
             body: 'This is a test post'
             tags: [{name: 'tag1'}]
             category: 'test'
@@ -79,21 +79,36 @@ describe 'app', ->
   it 'should get single entry in json', (next) ->
     request 'http://localhost:3333/blog/post/title-1.json', (err, res, body) ->
       res.statusCode.should.be.eql 200
-      # add test
+      data = JSON.parse body
+      data.result.should.be.eql 'OK'
+      data.entries[0].id.should.be.eql 'title-1'
       next()
 
   it 'should get blog entries by pagination in json', (next) ->
     request 'http://localhost:3333/blog/posts/0/2/posts.json', (err, res, body) ->
       res.statusCode.should.be.eql 200
+      data = JSON.parse body
+      data.result.should.be.eql 'OK'
+      data.entries.length.should.be.eql 2
+      data.entries[0].id.should.be.eql 'title-10'
+      data.entries[1].id.should.be.eql 'title-9'
       next()
 
   it 'should get blog entries by tag in json', (next) ->
     request 'http://localhost:3333/blog/tag/tag1/posts.json', (err, res, body) ->
       res.statusCode.should.be.eql 200
+      data = JSON.parse body
+      data.result.should.be.eql 'OK'
+      data.entries.should.not.be.empty
+      data.entries[0].tags[0].name.should.be.eql 'tag1'
       next()
 
   it 'should get blog entries by category in json', (next) ->
     request 'http://localhost:3333/blog/category/test/posts.json', (err, res, body) ->
+      data = JSON.parse body
+      data.result.should.be.eql 'OK'
+      data.entries.should.not.be.empty
+      data.entries[0].category.should.be.eql 'test'
       res.statusCode.should.be.eql 200
       next()
 

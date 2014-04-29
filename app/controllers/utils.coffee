@@ -1,10 +1,8 @@
 markdown = require('markdown').markdown
-
+getSlug = require 'speakingurl'
 module.exports =
   slugify: (text) ->
-    text.toLowerCase()
-        .replace /\040/g,'-'
-        .replace /[^\w-]+/g,''
+    getSlug text
 
   convertMarkdown: (markdown) ->
     markdown.toHTML markdown
