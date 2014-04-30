@@ -36,7 +36,7 @@ describe 'app', ->
             tags: [{name: 'tag1'}]
             category: 'test'
             comments: []
-            creationDate: new Date() + i*60
+            creationDate: (new Date()).getTime() + (i * 24 * 60 * 60 * 1000)
             updateDate: null
             published: true
           )
@@ -44,7 +44,10 @@ describe 'app', ->
             throw err if err
 
   after (next) ->
-    entry.find({body: 'This is a test post'}).remove().exec()
+    entry.find
+      body: 'This is a test post'
+    .remove()
+    .exec()
     mongoose.disconnect
     next()
 
