@@ -36,7 +36,7 @@ describe 'app', ->
             tags: [{name: 'tag1'}]
             category: 'test'
             comments: []
-            creationDate: new Date()
+            creationDate: new Date() + i*60
             updateDate: null
             published: true
           )
@@ -113,6 +113,27 @@ describe 'app', ->
       next()
 
   it 'should post new blog entry', (next) ->
+    request.post(
+      uri: 'http://localhost:3333/blog/post/create'
+      headers:
+        'content-type': 'application/json'
+      body: JSON.stringify
+        title: 'post test'
+        author: 'author'
+        id: utils.slugify('post test')
+        body: 'This is a test post'
+        tags: [{name: 'tag1'}]
+        category: 'test'
+        comments: []
+        creationDate: new Date() - 60*60*24
+        updateDate: null
+        published: true
+    , (err, res, body) ->
+      res.statusCode.should.be.eql 200
+      entry.find {"id": "post-test"}, (err, data) ->
+        data.should.not.be.empty
+        data[0].title.should.be.eql 'post test'
+    )
     next()
 
   it 'should del blog entry', (next) ->

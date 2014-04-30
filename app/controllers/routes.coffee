@@ -28,7 +28,8 @@ module.exports =
     app.get '/blog/posts/:s/:l/posts.json', (req, res) ->
       # check params for negative value or if non numerical values
       entry.find {}, null, {'skip': req.params.s, 'limit': req.params.l}
-        .sort {creationDate: 'desc'}
+        .sort
+          creationDate: 'desc'
         .exec (err, data) ->
           if err
             res.json result: 'error'
@@ -57,47 +58,48 @@ module.exports =
     #    ----------------------------
     #
     app.post '/blog/post/id.json', (req, res) ->
-      # entry =
-      #   title: req.body.title
-      #   author: req.session.userId
-      #   url: encodeURI(req.body.title.toLowerCase())
-      #   body: ''
-      #   tags: []
-      #   category: null
-      #   comments: []
-      #   creationDate: new Date()
-      #   updateDate: null
-      #   published: true
-      #
-      # blog.createEntry entry, (err, data) ->
-      #   if err
-      #     res.json
-      #       result: 'error'
-      #       error: err
-      #
-      #   res.json
-      #     result: 'OK'
-      #     newEntry: data
+      newPost = new entry(
+        title: req.body.title
+        author: req.body.author
+        id: utils.slugify(req.body.title)
+        body: req.body.body
+        tags: req.body.tags
+        category: 'test'
+        comments: []
+        creationDate: new Date()
+        updateDate: null
+        published: req.body.published
+      )
+      newPost.save (err) ->
+        unless err
+          res.json result: 'OK'
+        else
+          res.json
+            result: 'error'
+            err: err
 
     #
     #     `Update blog post`
     #    ----------------------------
     #
     app.put '/blog/post/:id.json', (req, res) ->
-      # blog.editEntry req.params.id, req.body, (err, data) ->
-      #   unless err
-      #     res.json result: 'OK'
-      #   else
-      #     res.json
-      #       result: 'error'
-      #       err: err
+      entry.findOneAndUpdate '_id': id,
+        modifiedEntry, 
+        new: true, 
+          (err, data) ->
+          unless err
+            res.json result: 'OK'
+          else
+            res.json
+              result: 'error'
+              err: err
 
     #
     #     `Delete blog post`
     #    ----------------------------
     #
     app.del '/blog/post/:id.json', (req, res) ->
-      blog.removeEntry req.params.id, (err, data) ->
+      entry.remove '_id' : id, (err, data) ->
         if data > 0 and not err
           res.json result: 'OK'
         else
