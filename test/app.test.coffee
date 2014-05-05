@@ -56,18 +56,18 @@ describe 'app', ->
       res.statusCode.should.be.eql 200
       next()
 
-  it 'should get login page', (next) ->
-    request 'http://localhost:3333/login', (err, res, body) ->
-      res.statusCode.should.be.eql 200
-      next()
+#  it 'should get login page', (next) ->
+#    request 'http://localhost:3333/login', (err, res, body) ->
+#      res.statusCode.should.be.eql 200
+#      next()
 
-  it 'should post login page', (next) ->
-    next()
+#  it 'should post login page', (next) ->
+#    next()
 
-  it 'should get logout page', (next) ->
-    request 'http://localhost:3333/logout', (err, res, body) ->
-      res.statusCode.should.be.eql 200
-      next()
+#  it 'should get logout page', (next) ->
+#    request 'http://localhost:3333/logout', (err, res, body) ->
+#      res.statusCode.should.be.eql 200
+#      next()
 
   # it 'should get admin page', (next) ->
   #   request 'http://localhost:3333/admin', (err, res, body) ->
@@ -128,7 +128,7 @@ describe 'app', ->
         tags: [{name: 'tag1'}]
         category: 'test'
         comments: []
-        creationDate: new Date() - 60*60*24
+        creationDate: new Date() - (24 * 60 * 60 * 1000)
         updateDate: null
         published: true
     , (err, res, body) ->
@@ -152,7 +152,7 @@ describe 'app', ->
         tags: [{name: 'tag1'}]
         category: 'test'
         comments: []
-        creationDate: new Date() - 60*60*24
+        creationDate: new Date() - (24 * 60 * 60 * 1000)
         updateDate: null
         published: true
     , (err, res, body) ->
@@ -161,7 +161,10 @@ describe 'app', ->
         data.should.not.be.empty
         data[0].title.should.be.eql 'post test'
         request.del 'http://localhost:3333/blog/post/post-test.json'
-        next()
+        , (err, res, body) ->
+          entry.find {"id": "post-test"}, (err, data) ->
+            data.should.be.empty
+            next()
     )
 
   it 'should put blog entry', (next) ->
