@@ -167,7 +167,40 @@ describe 'app', ->
     )
 
   it 'should put blog entry', (next) ->
-    next()
+    request.post(
+      uri: 'http://localhost:3333/blog/post/put-test.json'
+      headers:
+        'content-type': 'application/json'
+      body: JSON.stringify
+        title: 'put test 1'
+        author: 'author'
+        body: 'This is a test post'
+        tags: [{name: 'tag1'}]
+        category: 'test'
+        comments: []
+        creationDate: new Date() - (24 * 60 * 60 * 1000)
+        updateDate: null
+        published: true
+    , (err, res, body) ->
+      res.statusCode.should.be.eql 200
+      entry.find {"id": "put-test"}, (err, data) ->
+        data.should.not.be.empty
+        data[0].title.should.be.eql 'put test 1'
+
+        request.put(
+          uri: 'http://localhost:3333/blog/post/put-test.json'
+          headers:
+            'content-type': 'application/json'
+          body: JSON.stringify
+            title: 'put test 2'
+
+        , (err, res, body) ->
+          entry.find {"id": "put-test"}, (err, data) ->
+            data.should.not.be.empty
+            data[0].title.should.be.eql 'put test 2'
+            next()
+        )      
+    )
 
   it 'should get error page', (next) ->
     request 'http://localhost:3333/error/404', (err, res, body) ->

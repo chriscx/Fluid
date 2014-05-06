@@ -84,15 +84,17 @@ module.exports =
     #
     app.put '/blog/post/:id.json', (req, res) ->
       entry.findOneAndUpdate 'id': req.params.id,
-        modifiedEntry, 
+        req.body, 
         new: true, 
           (err, data) ->
-          unless err
-            res.json result: 'OK'
-          else
-            res.json
-              result: 'error'
-              err: err
+            unless err
+              console.log data
+              res.json result: 'OK'
+            else
+              console.log err
+              res.json
+                result: 'error'
+                err: err
 
     #
     #     `Delete blog post`
