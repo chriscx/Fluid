@@ -141,13 +141,12 @@ describe 'app', ->
 
   it 'should del blog entry', (next) ->
     request.post(
-      uri: 'http://localhost:3333/blog/post/post-test.json'
+      uri: 'http://localhost:3333/blog/post/del-test.json'
       headers:
         'content-type': 'application/json'
       body: JSON.stringify
-        title: 'post test'
+        title: 'del test'
         author: 'author'
-        id: utils.slugify('post test')
         body: 'This is a test post'
         tags: [{name: 'tag1'}]
         category: 'test'
@@ -157,12 +156,12 @@ describe 'app', ->
         published: true
     , (err, res, body) ->
       res.statusCode.should.be.eql 200
-      entry.find {"id": "post-test"}, (err, data) ->
+      entry.find {"id": "del-test"}, (err, data) ->
         data.should.not.be.empty
-        data[0].title.should.be.eql 'post test'
-        request.del 'http://localhost:3333/blog/post/post-test.json'
+        data[0].title.should.be.eql 'del test'
+        request.del 'http://localhost:3333/blog/post/del-test.json'
         , (err, res, body) ->
-          entry.find {"id": "post-test"}, (err, data) ->
+          entry.find {"id": "del-test"}, (err, data) ->
             data.should.be.empty
             next()
     )

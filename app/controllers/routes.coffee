@@ -57,11 +57,11 @@ module.exports =
     #     `Post create blog post`
     #    ----------------------------
     #
-    app.post '/blog/post/id.json', (req, res) ->
+    app.post '/blog/post/:id.json', (req, res) ->
       newPost = new entry(
         title: req.body.title
         author: req.body.author
-        id: utils.slugify(req.body.title)
+        id: req.params.id
         body: req.body.body
         tags: req.body.tags
         category: 'test'
@@ -83,7 +83,7 @@ module.exports =
     #    ----------------------------
     #
     app.put '/blog/post/:id.json', (req, res) ->
-      entry.findOneAndUpdate '_id': id,
+      entry.findOneAndUpdate 'id': req.params.id,
         modifiedEntry, 
         new: true, 
           (err, data) ->
@@ -99,7 +99,7 @@ module.exports =
     #    ----------------------------
     #
     app.del '/blog/post/:id.json', (req, res) ->
-      entry.remove '_id' : id, (err, data) ->
+      entry.remove 'id': req.params.id, (err, data) ->
         if data > 0 and not err
           res.json result: 'OK'
         else
