@@ -1,15 +1,17 @@
-http = require('http')
+http = require 'http'
 http.globalAgent.maxSockets = 64
-https = require('https')
-fs = require('fs')
-stylus = require('stylus')
-express = require('express')
-config = require('./config')
-routes = require('./controllers/routes')
-underscore = require('underscore')
-sha1 = require('sha1')
-connect = require('connect')
-mongoose = require('mongoose')
+https = require 'https'
+fs = require 'fs'
+stylus = require 'stylus'
+express = require 'express'
+config = require './config'
+routes = require './controllers/routes'
+underscore = require 'underscore'
+sha1 = require 'sha1'
+connect = require 'connect'
+mongoose = require 'mongoose'
+passport = require 'passport'
+Account = require('./models/account').Account
 
 SessionStore = require('session-mongoose')(connect)
 store = new SessionStore(
@@ -38,6 +40,12 @@ app.use express.errorHandler(
   showStack: true
   dumpExceptions: true
 )
+
+passport.use Account.createStrategy()
+
+passport.serializeUser Account.serializeUser()
+passport.deserializeUser Account.deserializeUser()
+
 app.locals.moment = require('moment')
 routes.blog app  if config.blog.enabled
 routes.site app

@@ -88,10 +88,8 @@ module.exports =
         new: true, 
           (err, data) ->
             unless err
-              console.log data
               res.json result: 'OK'
             else
-              console.log err
               res.json
                 result: 'error'
                 err: err
