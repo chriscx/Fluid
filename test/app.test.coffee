@@ -16,12 +16,12 @@ account = require('../app/models/account').Account
 accountSchema = require('../app/models/account').Schema
 
 describe 'app', ->
-  before (next) ->
 
+  before (done) ->
     unless mongoose.connection.readyState
       mongoose.connect 'mongodb://localhost/fluiddb_dev', null, ->
         eventEmitter.emit 'MongoConnected'
-        next()
+        done()
     else
       eventEmitter.emit 'MongoConnected'
 
@@ -43,13 +43,12 @@ describe 'app', ->
           newPost.save (err) ->
             throw err if err
 
-  after (next) ->
+  after (done) ->
     entry.find
       body: 'This is a test post'
     .remove()
     .exec()
-    mongoose.disconnect
-    next()
+    mongoose.disconnect done
 
   it 'should get index page', (next) ->
     request 'http://localhost:3333/', (err, res, body) ->

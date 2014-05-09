@@ -1,6 +1,7 @@
 config = require '../config'
 sha1 = require 'sha1'
 eventEmitter = require('events').EventEmitter
+passport = require 'passport'
 
 entry = require('../models/blog').Entry
 entrySchema = require('../models/blog').Schema
@@ -149,31 +150,30 @@ module.exports =
 
   login: (app) ->
 
-    # app.get '/register', (req, res) ->
-    #   res.render 'register',
-    #     title: 'Disko'
-    #     {}
-    #
-    # app.post '/register', (req, res) ->
-    #   Account.register new Account(username: req.body.username), req.body.password, (err, account) ->
-    #     if err
-    #       res.render 'register',
-    #         info: 'Sorry. That username already exists. Try again.'
-    #
-    #     passport.authenticate 'local', (req, res) ->
-    #       res.redirect '/'
-    #
-    # app.get '/login', (req, res) ->
-    #   res.render 'login',
-    #     title: 'Disko'
-    #     user: req.user
-    #
-    # app.post '/login', passport.authenticate 'local', (req, res) ->
-    #   res.redirect '/'
-    #
-    # app.get '/logout', (req, res) ->
-    #   req.logout()
-    #   res.redirect '/'
+    app.get '/register', (req, res) ->
+      res.render 'register',
+        title: 'Disko'
+    
+    app.post '/register', (req, res) ->
+      account.register new account(username: req.body.username), req.body.password, (err, account) ->
+        if err
+          res.render 'register',
+            info: 'Sorry. That username already exists. Try again.'
+    
+        passport.authenticate 'local', (req, res) ->
+          res.redirect '/'
+    
+    app.get '/login', (req, res) ->
+      res.render 'login',
+        title: 'Disko'
+        user: req.user
+    
+    app.post '/login', passport.authenticate 'local', (req, res) ->
+      res.redirect '/'
+    
+    app.get '/logout', (req, res) ->
+      req.logout()
+      res.redirect '/'
 
   error: (app) ->
 
