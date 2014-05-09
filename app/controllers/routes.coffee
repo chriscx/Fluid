@@ -150,14 +150,14 @@ module.exports =
 
   login: (app) ->
 
-    app.get '/register', (req, res) ->
-      res.render 'register',
+    app.get '/signup', (req, res) ->
+      res.render 'signup',
         title: 'Disko'
     
-    app.post '/register', (req, res) ->
+    app.post '/signup', (req, res) ->
       account.register new account(username: req.body.username), req.body.password, (err, account) ->
         if err
-          res.render 'register',
+          res.render 'signup',
             info: 'Sorry. That username already exists. Try again.'
     
         passport.authenticate 'local', (req, res) ->

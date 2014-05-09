@@ -37,26 +37,3 @@ block append content
         //-               a(href='#') !{entries[i].tags[j].name + ' '}
         //-             a(href='#') !{entries[i].category}
         //- - }
-
-      .col-md-2(id='nav-scrollspy')
-        .affix-top(data-spy='affix', data-offset-top='0')
-          .panel.panel-default
-            .panel-heading
-              h3.panel-title Categories
-            .panel-body
-              //- - for(var i in categories) {
-
-              //-     a(href='#section-3') !{categories[i].name}
-              //- - }
-          .panel.panel-default
-            .panel-heading
-              h3.panel-title Tags
-            .panel-body
-              //- - for(var key in tags) {
-              //-     span(class='badge')
-              //-       a(href=config.baseurl + '/blog/tag/' + key) !{key + ' (' + tags[key] + ')'}
-
-              //- - }
-    .row
-      .col-md-12.text-center Copyright 2014
-      .col-md-12.text-center Created with Fluid

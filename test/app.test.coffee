@@ -55,18 +55,26 @@ describe 'app', ->
       res.statusCode.should.be.eql 200
       next()
 
-#  it 'should get login page', (next) ->
-#    request 'http://localhost:3333/login', (err, res, body) ->
-#      res.statusCode.should.be.eql 200
-#      next()
+  it 'should get login page', (next) ->
+    request 'http://localhost:3333/login', (err, res, body) ->
+      res.statusCode.should.be.eql 200
+      next()
 
-#  it 'should post login page', (next) ->
-#    next()
+  it 'should post login page', (next) ->
+    next()
 
-#  it 'should get logout page', (next) ->
-#    request 'http://localhost:3333/logout', (err, res, body) ->
-#      res.statusCode.should.be.eql 200
-#      next()
+  it 'should get signup page', (next) ->
+    request 'http://localhost:3333/signup', (err, res, body) ->
+      res.statusCode.should.be.eql 200
+      next()
+
+  it 'should post signup page', (next) ->
+    next()
+
+  it 'should get logout page', (next) ->
+    request 'http://localhost:3333/logout', (err, res, body) ->
+      res.statusCode.should.be.eql 200
+      next()
 
   # it 'should get admin page', (next) ->
   #   request 'http://localhost:3333/admin', (err, res, body) ->
@@ -177,7 +185,7 @@ describe 'app', ->
         tags: [{name: 'tag1'}]
         category: 'test'
         comments: []
-        creationDate: new Date() - (24 * 60 * 60 * 1000)
+        creationDate: new Date() - (12 * 24 * 60 * 60 * 1000)
         updateDate: null
         published: true
     , (err, res, body) ->
