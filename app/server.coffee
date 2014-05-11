@@ -35,7 +35,7 @@ app.use express.session(
 )
 app.use app.router
 app.use stylus.middleware('' + __dirname + '/../public')
-app.use express['static']('' + __dirname + '/../public')
+app.use express.static('' + __dirname + '/../public')
 app.use express.errorHandler(
   showStack: true
   dumpExceptions: true

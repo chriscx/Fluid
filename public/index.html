@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,300,400italic,400,600italic,600,700italic,700,800italic,800" rel="stylesheet" type="text/css">
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
-    <script src="http://yui.yahooapis.com/pure/0.4.2/pure-min.css"></script>
+    <link href="/css/fluid.css" rel="stylesheet">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
@@ -25,29 +25,7 @@
   </script>
   <div class="container">
     <div class="row">
-      <section class="col-md-10 col-md-offset-1">
-        <div class="jumbotron">
-          <h2>Welcome on Fluid!</h2>
-          <h3>How does it work</h3>
-          <p>
-            Fluid is a static website with a blog engine written in Node.js with Express. The blog engine is powered with MongoDB.
-            Webpages can be personalized by editing the Jade views from the folder views of the main directory.
-            Configurations such as title, database, etc... are managed by the config.js file from the main directory.
-          </p>
-          <h3>Menu Navigation & Routes</h3>
-          <p>
-            Adding, removing & editing routes of the website is managed in the config.js file.
-            Add a JSON object with path, associated view and title in the array defining the routes key.
-            Example:
-            <pre><code>'routes': [{'path': '/', 'view': 'index', 'title': 'Fluid'}]</code></pre>Then create a jade view file. You can inspire yourself with the index view to create new ones.
-          </p>
-          <p>
-            Enable the menu display by setting the 'enabled' attribute of menu in config.js. Then set the different elements of the menu
-            with the path of the routes you declared.
-          </p>
-          <h3>Blog Engine</h3>
-          <p>Enable the blog engine by setting the 'enabled' attribute of blog in config.js. Not much is to be done, the route to the blog should be /blog.</p>
-        </div>
+      <section class="col-md-10 col-md-offset-1"><img src="/img/avatar.png" class="img-circle">
       </section>
     </div>
   </div>
