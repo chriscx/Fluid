@@ -5,11 +5,11 @@ block append content
 
     FluidApp.controller('blogController',function($scope) {
 
-      //- $.get('playlists.json', function(data) {
-      //-   $scope.$apply(function(){
-      //-     $scope.playlist = data.content[0].content;
-      //-   });
-      //- });
+      $.get('playlists.json', function(data) {
+        $scope.$apply(function(){
+          $scope.posts = data.content[0].content;
+        });
+      });
     });
   .container-fluid
     .row
@@ -17,9 +17,9 @@ block append content
         .row(ng-controller='blogController')
           .col-md-12.post
             .page-header
-              h3 Title
-              h6 by Author - 01.01.2014
-            p This is a first post
+              h3 {{posts.title}}
+              h6 by {{posts.author}} - {{posts.creationData}}
+            p {{posts.body}}
       .col-md-2
         .bio
           p
