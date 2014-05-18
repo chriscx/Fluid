@@ -5,9 +5,9 @@ block append content
 
     FluidApp.controller('blogController',function($scope) {
 
-      $.get('playlists.json', function(data) {
+      $.get('/blog/posts/0/5/posts.json', function(data) {
         $scope.$apply(function(){
-          $scope.posts = data.content[0].content;
+          $scope.posts = data.content[0];
         });
       });
     });

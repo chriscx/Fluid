@@ -6,9 +6,6 @@
     <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,300,400italic,400,600italic,600,700italic,700,800italic,800" rel="stylesheet" type="text/css">
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/fluid.css" rel="stylesheet">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
   </head>
   <body data-spy="scroll" data-target="#nav-scrollspy"></body>
   <script type="text/javascript">
@@ -16,11 +13,11 @@
     
     FluidApp.controller('blogController',function($scope) {
     
-      //- $.get('playlists.json', function(data) {
-      //-   $scope.$apply(function(){
-      //-     $scope.playlist = data.content[0].content;
-      //-   });
-      //- });
+      $.get('/blog/posts/0/5/posts.json', function(data) {
+        $scope.$apply(function(){
+          $scope.posts = data.content[0];
+        });
+      });
     });
   </script>
   <div class="container-fluid">
@@ -29,10 +26,10 @@
         <div ng-controller="blogController" class="row">
           <div class="col-md-12 post">
             <div class="page-header">
-              <h3>Title</h3>
-              <h6>by Author - 01.01.2014</h6>
+              <h3>{{posts.title}}</h3>
+              <h6>by {{posts.author}} - {{posts.creationData}}</h6>
             </div>
-            <p>This is a first post</p>
+            <p>{{posts.body}}</p>
           </div>
         </div>
       </div>
@@ -44,4 +41,7 @@
       </div>
     </div>
   </div>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
 </html>
