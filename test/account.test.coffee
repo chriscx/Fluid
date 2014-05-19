@@ -28,7 +28,6 @@ describe 'Account', ->
       username: "12345"
     , (err, account) ->
       account.username.should.eql "12345"
-      console.log "username: ", account.username
       next()
 
   afterEach (done) ->
