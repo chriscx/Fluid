@@ -6,20 +6,12 @@
     <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,300,400italic,400,600italic,600,700italic,700,800italic,800" rel="stylesheet" type="text/css">
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/fluid.css" rel="stylesheet">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
+    <script src="/js/controllers.js"></script>
   </head>
   <body data-spy="scroll" data-target="#nav-scrollspy"></body>
-  <script type="text/javascript">
-    var FluidApp = angular.module('FluidApp', []);
-    
-    FluidApp.controller('blogController',function($scope) {
-    
-      $.get('/blog/posts/0/5/posts.json', function(data) {
-        $scope.$apply(function(){
-          $scope.posts = data.content[0];
-        });
-      });
-    });
-  </script>
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-6 col-md-offset-2">
@@ -41,7 +33,4 @@
       </div>
     </div>
   </div>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
 </html>
