@@ -1,5 +1,18 @@
 extends layout
 block append content
+
+  script(type='text/javascript').
+    var FluidApp = angular.module('FluidApp', []);
+
+    FluidApp.controller('blogController',function($scope) {
+
+      $.get('/blog/posts/0/5/posts.json', function(data) {
+        $scope.$apply(function(){
+          $scope.posts = data.content[0];
+        });
+      });
+    });
+
   .container-fluid
     .row
       .col-md-6.col-md-offset-2
@@ -8,7 +21,7 @@ block append content
             .page-header
               h3 {{posts.title}}
               h6 by {{posts.author}} - {{posts.creationData}}
-            p {{posts.body}}
+            xmp(theme="united" style="display:none;") {{posts.body}}
       .col-md-2
         .bio
           p

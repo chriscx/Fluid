@@ -1,26 +1,22 @@
 module.exports =
-  
+
   #
   #	* Website's title
-  #	
-  title: 'Fluid'
-  
   #
-  #	* REQUIRED
-  #	* base url of website 
-  #	
-  baseurl: 'http://localhost:3333'
-  port: '3333'
+  title: 'Fluid'
+
   
+  port: '3333'
+
   #
   #	* environment variable
   #	* DEFAULT: production
-  #	
+  #
   env: 'development'
-  
+
   #
   #	* website's menu:
-  #	
+  #
   menu:
     enabled: true
     content: [
@@ -46,28 +42,28 @@ module.exports =
       }
     ]
 
-  
+
   #
   #	* Routes to single web pages link to a view
-  #	
+  #
   routes: [
     path: '/'
     view: 'index'
     title: ''
   ]
-  
+
   #
   #	* REQUIRED
   #	* blog enabling
-  #	
+  #
   blog:
     enabled: true
 
-  
+
   #
   #	* REQUIRED
   #	* MongoDB connexion info
-  #	
+  #
   mongo:
     development:
       host: 'localhost'
@@ -86,9 +82,9 @@ module.exports =
     key: ''
     cert: ''
 
-  
+
   #
   #	* REQUIRED
   #	* 160 bits key generated (replace it when installing)
-  #	
+  #
   secret: 'DD9E5F7F98E47AD47932ACBF77912'

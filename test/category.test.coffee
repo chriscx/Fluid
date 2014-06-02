@@ -3,7 +3,7 @@ mongoose = require 'mongoose'
 Category = require('../app/models/category').Category
 utils = require '../app/controllers/utils'
 
-describe 'Blog', ->
+describe 'Category', ->
   before (done) ->
     unless mongoose.connection.readyState
       mongoose.connect 'mongodb://localhost/fluiddb_dev', null, ->
@@ -24,7 +24,7 @@ describe 'Blog', ->
         console.log "no error"
       done()
 
-  it "find an category by id", (next) ->
+  it "find an category by name", (next) ->
     Category.findOne
       name: "category1"
     , (err, category) ->

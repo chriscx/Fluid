@@ -15,33 +15,21 @@
   <script type="text/javascript">
     var FluidApp = angular.module('FluidApp', []);
     
-    FluidApp.controller('blogController',function($scope) {
+    FluidApp.controller('adminController',function($scope) {
     
-      $.get('/blog/posts/0/5/posts.json', function(data) {
-        $scope.$apply(function(){
-          $scope.posts = data.content[0];
-        });
-      });
+      //- $.get('/blog/posts/0/5/posts.json', function(data) {
+      //-   $scope.$apply(function(){
+      //-     $scope.posts = data.content[0];
+      //-   });
+      //- });
     });
     
   </script>
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-6 col-md-offset-2">
-        <div ng-controller="blogController" class="row">
-          <div class="col-md-12 post">
-            <div class="page-header">
-              <h3>{{posts.title}}</h3>
-              <h6>by {{posts.author}} - {{posts.creationData}}</h6>
-            </div>
-            <xmp theme="united" style="display:none;">{{posts.body}}</xmp>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-2">
-        <div class="bio">
-          <p><img src="/img/avatar.png" class="img-circle"></p>
-          <p>Description on the blog</p>
+      <div class="col-md-8 col-md-offset-2">
+        <div ng-controller="adminController" class="row">
+          <div class="col-md-12"></div>
         </div>
       </div>
     </div>
