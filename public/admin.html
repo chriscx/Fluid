@@ -9,7 +9,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
-    <script src="//strapdownjs.com/v/0.2/strapdown.js"></script>
+    <script src="/js/markdown.min.js"></script>
   </head>
   <body data-spy="scroll" data-target="#nav-scrollspy"></body>
   <script type="text/javascript">
@@ -17,11 +17,11 @@
     
     FluidApp.controller('adminController',function($scope) {
     
-      //- $.get('/blog/posts/0/5/posts.json', function(data) {
-      //-   $scope.$apply(function(){
-      //-     $scope.posts = data.content[0];
-      //-   });
-      //- });
+      $.get('/blog/posts/0/100/posts.json', function(data) {
+        $scope.$apply(function(){
+          $scope.posts = data.entries;
+        });
+      });
     });
     
   </script>
@@ -29,7 +29,35 @@
     <div class="row">
       <div class="col-md-8 col-md-offset-2">
         <div ng-controller="adminController" class="row">
-          <div class="col-md-12"></div>
+          <div class="col-md-12">
+            <select class="form-control">
+              <option ng-repeat="post in posts | orderBy:sortingOrder:reverse" value="{{post.id}}">{{post.title}}</option>
+            </select>
+            <div class="input-group">
+              <input type="text" class="form-control"><span class="input-group-btn">
+                <button type="button" class="btn btn-default">Add</button></span>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <textarea rows="15" placeholder="Write your content here..." class="form-control"></textarea>
+            <button type="button" class="btn btn-default">Save</button>
+            <button type="button" class="btn btn-default">Delete</button>
+            <button type="button" class="btn btn-default">Publish</button>
+          </div>
+          <div class="col-md-12">
+            <select class="form-control">
+              <option value="{{id}}">{{title}} title</option>
+            </select>
+          </div>
+          <div class="col-md-12">
+            <input type="title" placeholder="Title" class="form-control">
+            <input type="route" placeholder="Route" class="form-control">
+            <input type="tags" placeholder="Tags" class="form-control">
+            <textarea rows="15" placeholder="Write your post here..." class="form-control"></textarea>
+            <button type="button" class="btn btn-default">Save</button>
+            <button type="button" class="btn btn-default">Delete</button>
+            <button type="button" class="btn btn-default">Publish</button>
+          </div>
         </div>
       </div>
     </div>

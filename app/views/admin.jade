@@ -6,11 +6,11 @@ block append content
 
     FluidApp.controller('adminController',function($scope) {
 
-      //- $.get('/blog/posts/0/5/posts.json', function(data) {
-      //-   $scope.$apply(function(){
-      //-     $scope.posts = data.content[0];
-      //-   });
-      //- });
+      $.get('/blog/posts/0/100/posts.json', function(data) {
+        $scope.$apply(function(){
+          $scope.posts = data.entries;
+        });
+      });
     });
 
   .container-fluid
@@ -18,3 +18,25 @@ block append content
       .col-md-8.col-md-offset-2
         .row(ng-controller='adminController')
           .col-md-12
+            select.form-control
+              option(ng-repeat='post in posts | orderBy:sortingOrder:reverse' value='{{post.id}}') {{post.title}}
+            .input-group
+              input.form-control(type='text')
+              span.input-group-btn
+                button.btn.btn-default(type='button') Add
+          .col-md-12
+            textarea.form-control(rows='15' placeholder="Write your content here...")
+            button.btn.btn-default(type='button') Save
+            button.btn.btn-default(type='button') Delete
+            button.btn.btn-default(type='button') Publish
+          .col-md-12
+            select.form-control
+              option(value='{{id}}') {{title}} title
+          .col-md-12
+            input.form-control(type='title' placeholder='Title')
+            input.form-control(type='route' placeholder='Route')
+            input.form-control(type='tags' placeholder='Tags')
+            textarea.form-control(rows='15' placeholder="Write your post here...")
+            button.btn.btn-default(type='button') Save
+            button.btn.btn-default(type='button') Delete
+            button.btn.btn-default(type='button') Publish

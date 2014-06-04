@@ -8,7 +8,7 @@ PageSchema = new Schema
     index:
       unique: true
   author: String
-  id: String
+  route: String
   body: String
   creationDate:
     type: Date

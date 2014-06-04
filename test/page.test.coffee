@@ -16,7 +16,7 @@ describe 'Pages', ->
     page = new Page
       title: 'page creation'
       author: 'author'
-      id: utils.slugify('page-creation')
+      route: utils.slugify('page-creation')
       body: 'This is a test page'
       creationDate: (new Date()).getTime() - (10 * 24 * 60 * 60 * 1000)
       updateDate: null

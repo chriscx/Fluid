@@ -7,8 +7,9 @@ block append content
     FluidApp.controller('blogController',function($scope) {
 
       $.get('/blog/posts/0/5/posts.json', function(data) {
+        console.log(data);
         $scope.$apply(function(){
-          $scope.posts = data.content[0];
+          $scope.posts = data.entries;
         });
       });
     });
@@ -17,11 +18,11 @@ block append content
     .row
       .col-md-6.col-md-offset-2
         .row(ng-controller='blogController')
-          .col-md-12.post
+          .col-md-12.post(ng-repeat='post in posts | orderBy:sortingOrder:reverse')
             .page-header
-              h3 {{posts.title}}
-              h6 by {{posts.author}} - {{posts.creationData}}
-            xmp(theme="united" style="display:none;") {{posts.body}}
+              h3 {{post.title}}
+              h6 by {{post.author}} - {{post.creationDate}}
+            p {{post.body}}
       .col-md-2
         .bio
           p

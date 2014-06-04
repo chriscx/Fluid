@@ -3,14 +3,17 @@ sha1 = require 'sha1'
 eventEmitter = require('events').EventEmitter
 passport = require 'passport'
 
-entry = require('../models/blog').Entry
-entrySchema = require('../models/blog').Schema
+Entry = require('../models/blog').Entry
+EntrySchema = require('../models/blog').Schema
 
-category = require('../models/category').Category
-categorySchema = require('../models/category').Schema
+Category = require('../models/category').Category
+CategorySchema = require('../models/category').Schema
 
-account = require('../models/account').Account
-accountSchema = require('../models/account').Schema
+Account = require('../models/account').Account
+AccountSchema = require('../models/account').Schema
+
+Page = require('../models/page').Page
+PageSchema = require('../models/page').Schema
 
 module.exports =
   blog: (app) ->
@@ -28,13 +31,13 @@ module.exports =
     #
     app.get '/blog/posts/:s/:l/posts.json', (req, res) ->
       # check params for negative value or if non numerical values
-      entry.find {}, null, {'skip': req.params.s, 'limit': req.params.l}
+      Entry.find {}, null, {'skip': req.params.s, 'limit': req.params.l}
         .sort
           creationDate: 'desc'
         .exec (err, data) ->
           if err
             res.json result: 'error'
-          else 
+          else
             res.json
               result: 'OK'
               entries: data
@@ -44,12 +47,12 @@ module.exports =
     #    ----------------------------
     #
     app.get '/blog/post/:id.json', (req, res) ->
-      entry.find {"id": req.params.id}, (err, data) ->
+      Entry.find {"id": req.params.id}, (err, data) ->
         if err
           res.json
             result: 'error'
             type: '404'
-        else 
+        else
           res.json
             result: 'OK'
             entries: data
@@ -59,13 +62,13 @@ module.exports =
     #    ----------------------------
     #
     app.post '/blog/post/:id.json', (req, res) ->
-      newPost = new entry(
+      newPost = new Entry(
         title: req.body.title
         author: req.body.author
         id: req.params.id
         body: req.body.body
         tags: req.body.tags
-        category: 'test'
+        Category: 'test'
         comments: []
         creationDate: new Date()
         updateDate: null
@@ -84,9 +87,9 @@ module.exports =
     #    ----------------------------
     #
     app.put '/blog/post/:id.json', (req, res) ->
-      entry.findOneAndUpdate 'id': req.params.id,
-        req.body, 
-        new: true, 
+      Entry.findOneAndUpdate 'id': req.params.id,
+        req.body,
+        new: true,
           (err, data) ->
             unless err
               res.json result: 'OK'
@@ -100,7 +103,7 @@ module.exports =
     #    ----------------------------
     #
     app.del '/blog/post/:id.json', (req, res) ->
-      entry.remove 'id': req.params.id, (err, data) ->
+      Entry.remove 'id': req.params.id, (err, data) ->
         if data > 0 and not err
           res.json result: 'OK'
         else
@@ -113,23 +116,23 @@ module.exports =
     #    ----------------------------
     #
     app.get '/blog/tag/:name/posts.json', (req, res) ->
-      entry.find {'tags.name': req.params.name}, (err, data) ->
+      Entry.find {'tags.name': req.params.name}, (err, data) ->
         if err
           res.json result: 'error'
-        else 
+        else
           res.json
             result: 'OK'
             entries: data
 
     #
-    #     `Get posts by category`
+    #     `Get posts by Category`
     #    ----------------------------
     #
-    app.get '/blog/category/:name/posts.json', (req, res) ->
-      entry.find {'category': req.params.name}, (err, data) ->
+    app.get '/blog/Category/:name/posts.json', (req, res) ->
+      Entry.find {'Category': req.params.name}, (err, data) ->
         if err
           res.json result: 'error'
-        else 
+        else
           res.json
             result: 'OK'
             entries: data
@@ -148,29 +151,38 @@ module.exports =
           config: config
           request: req
 
+    app.get '/pages.json', (req, res) ->
+      Page.find {}, (err, data) ->
+        if err
+          res.json result: 'error'
+        else
+          res.json
+            result: 'OK'
+            entries: data
+
   login: (app) ->
 
     app.get '/signup', (req, res) ->
       res.render 'signup',
         title: 'Disko'
-    
+
     app.post '/signup', (req, res) ->
-      account.register new account(username: req.body.username), req.body.password, (err, account) ->
+      Account.register new Account(username: req.body.username), req.body.password, (err, Account) ->
         if err
           res.render 'signup',
             info: 'Sorry. That username already exists. Try again.'
-    
+
         passport.authenticate 'local', (req, res) ->
           res.redirect '/'
-    
+
     app.get '/login', (req, res) ->
       res.render 'login',
         title: 'Disko'
         user: req.user
-    
+
     app.post '/login', passport.authenticate 'local', (req, res) ->
       res.redirect '/'
-    
+
     app.get '/logout', (req, res) ->
       req.logout()
       res.redirect '/'
@@ -183,3 +195,6 @@ module.exports =
     #
     app.get '/error/:error', (req, res) ->
       res.render 'error'
+
+    app.get '/admin', (req, res) ->
+      res.render 'admin'
