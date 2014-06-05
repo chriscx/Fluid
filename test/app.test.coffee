@@ -206,7 +206,7 @@ describe 'app', ->
             data.should.not.be.empty
             data[0].title.should.be.eql 'put test 2'
             next()
-        )      
+        )
     )
 
   it 'should get error page', (next) ->

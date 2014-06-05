@@ -129,7 +129,7 @@ module.exports =
     #    ----------------------------
     #
     app.get '/blog/Category/:name/posts.json', (req, res) ->
-      Entry.find {'Category': req.params.name}, (err, data) ->
+      Entry.find {'category': req.params.name}, (err, data) ->
         if err
           res.json result: 'error'
         else
