@@ -17,46 +17,14 @@ block append content
         document.getElementById('input_add_post').value = '';
       }
 
-      this.createPost = function() {
-
-        var title, data;
-
-        title = document.getElementById('input_post_title').value;
-
-        data = {
-          title: title,
-          id: getSlug(title),
-          body: '',
-          tags: [],
-          category: '',
-          comments: [],
-          creationDate: (new Date()).getTime(),
-          updateDate: null,
-          published: true
-        };
-
-        $.post('/blog/post/' + getSlug(title), data, function() {
+      this.createPost = function(data) {
+        $.post('/blog/post/' + getSlug(data.title), data, function() {
           console.log('POST success');
         });
       }
 
-      this.savePost = function() {
-
-        var title, data;
-
-        title = document.getElementById('input_post_title').value;
-
-        data = {
-          title: '',
-          id: getSlug(''),
-          body: '',
-          tags: [],
-          category: '',
-          updateDate: (new Date()).getTime(),
-          published: true
-        };
-
-        $.put('/blog/post/' + getSlug(title), function() {
+      this.savePost = function(data) {
+        $.put('/blog/post/' + getSlug(data.title), function() {
           console.log('PUT success');
         });
       }
@@ -74,57 +42,36 @@ block append content
       this.addNewPage = function() {
         var node, title;
         node = document.createElement('option');
-        title = document.getElementById('input_add_page').value
+        title = $('#input_add_page').val();
         node.setAttribute('value', getSlug(title));
+        node.setAttribute('new', 'true');
         node.innerHTML = title;
-        document.getElementById('select_page').appendChild(node);
-        document.getElementById('input_add_page').value = '';
+        $('#select_page').append(node);
+         $('#input_add_page').val('');
       }
 
-      this.createPage = function() {
-        var route, data, title;
-        route = document.getElementById('input_page_route').value;
-        title = document.getElementById('input_page_title').value;
+      this.createPage = function(data) {
 
-        data = {
-          title: title,
-          route: route,
-          body: '',
-          creationDate: (new Date()).getTime(),
-          updateDate: null,
-          published: true
-        }
-        $.post(route, function() {
+        $.post('/' + route, data, function() {
           console.log('POST success');
         });
       }
 
-      this.savePage = function() {
-        var route, data, title;
-        route = document.getElementById('input_page_route').value;
-        title = document.getElementById('input_page_title').value;
-
-        data = {
-          title: title,
-          route: route,
-          body: '',
-          updateDate: (new Date()).getTime(),
-          published: true
-        }
-        $.put(route, function() {
+      this.savePage = function(data) {
+        $.put('/' + route, data, function() {
           console.log('PUT success');
         });
       }
 
       function deletePage() {
-      var route = document.getElementById('input_page_route').value;
-        $.del(route,  function() {
+        var route = document.getElementById('input_page_route').value;
+        $.del('/' + route,  function() {
           console.log('PUT success');
         });
       }
     });
 
-    FluidApp.controller('AdminController',function($scope, PostService, PageService) {
+    FluidApp.controller('AdminController', function($scope, PostService, PageService) {
 
       $.get('/blog/posts/0/100/posts.json', function(data) {
         $scope.$apply(function(){
@@ -133,15 +80,31 @@ block append content
       });
 
       $scope.addNewPost = function() {
-        PostService.addNewPost();
-      }
-
-      $scope.createPost = function() {
-        PostService.createPost();
+        if($('#input_add_post').val() !== '')
+          PostService.addNewPost();
       }
 
       $scope.savePost = function() {
-        PostService.savePost();
+        var title, data, body, tags;
+
+        title = $('#input_post_title').val();
+        body = $('#textarea_body_post').innerHTML;
+        tags = $('#input_post_tags').val();
+        
+        data = {
+          title: '',
+          id: getSlug(''),
+          body: body,
+          tags: [],
+          category: '',
+          updateDate: (new Date()).getTime(),
+          published: true
+        };
+
+        if($('#select_post :selected').new)
+          PostService.createPost();
+        else 
+          PostService.savePost();
       }
 
       $scope.deletePost = function() {
@@ -149,15 +112,27 @@ block append content
       }
 
       $scope.addNewPage = function() {
-        PageService.addNewPage();
-      }
-
-      $scope.createPage = function() {
-        PageService.createPage();
+        if($('#input_add_page').val() !== '')
+          PageService.addNewPage();
       }
 
       $scope.savePage = function() {
-        PageService.savePage();
+        var route, data, title, body;
+        route = $('#input_page_route').val();
+        title = $('#input_page_title').val();
+        body = $('#textarea_body_page').innerHTML;
+        data = {
+          title: title,
+          route: route,
+          body: body,
+          updateDate: (new Date()).getTime(),
+          published: true
+        }
+
+        if($('#select_page :selected').new)
+          PageService.createPage(data);
+        else 
+          PageService.savePage(data);
       }
 
       $scope.deletePage = function() {
@@ -183,9 +158,9 @@ block append content
             select.form-control(id='select_category')
               option(ng-repeat='category in categories | orderBy:sortingOrder:reverse' value='{{category.name}}') {{category.name}}
           .col-md-12
-            textarea.form-control(rows='15' placeholder="Write your content here...")
-            button.btn.btn-default(type='button') Save
-            button.btn.btn-default(type='button') Delete
+            textarea.form-control(rows='15' placeholder="Write your content here..." id='textarea_body_post')
+            button.btn.btn-default(type='button' ng-click='savePost()') Save
+            button.btn.btn-default(type='button' ng-click='deletePost()') Delete
             button.btn.btn-default(type='button') Publish
           .col-md-12
             select.form-control(id='select_page')
@@ -198,7 +173,7 @@ block append content
             input.form-control(type='title' placeholder='Title' id='input_page_title')
             input.form-control(type='route' placeholder='Route' id='input_page_route')
 
-            textarea.form-control(rows='15' placeholder="Write your post here...")
-            button.btn.btn-default(type='button') Save
-            button.btn.btn-default(type='button') Delete
+            textarea.form-control(rows='15' placeholder="Write your post here..." id='textarea_body_page')
+            button.btn.btn-default(type='button' ng-click='savePage()') Save
+            button.btn.btn-default(type='button' ng-click='deletePage()') Delete
             button.btn.btn-default(type='button') Publish
