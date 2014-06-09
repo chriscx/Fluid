@@ -39,14 +39,13 @@ block append content
                 select.form-control(ng-model='selectedPostCategory' ng-options='category.name for category in categories track by category.name' id='select_post_category')
               .form-group
                 label Edit Post
-                textarea.form-control(rows='15' placeholder="Write your content here..." id='textarea_body_post')
+                textarea.form-control(rows='15' placeholder="Write your content here..." id='textarea_body_post') {{selectedPost.body}}
                 button.btn.btn-default(type='button' ng-click='savePost()') Save
                 button.btn.btn-default(type='button' ng-click='deletePost()') Delete
                 button.btn.btn-default(type='button') Publish
               .form-group
                 label Select Page
-                select.form-control(id='select_page')
-                  option(value='{{id}}') {{title}} title
+                select.form-control(ng-model='selectedPage' ng-options='page.title for page in pages track by page.route' id='select_page')
               .form-group
                 .input-group
                   //- label Add New Page
@@ -54,11 +53,11 @@ block append content
                   span.input-group-btn
                     button.btn.btn-default(type='button' ng-click='addNewPage()') Add
                 label Edit Title
-                input.form-control(type='title' placeholder='Title' id='input_page_title')
+                input.form-control(type='title' placeholder='Title' id='input_page_title' value='{{selectedPage.title}}')
                 label Edit Route
-                input.form-control(type='route' placeholder='Route' id='input_page_route')
+                input.form-control(type='route' placeholder='Route' id='input_page_route' value='{{selectedPage.route}}')
                 label Edit Page
-                textarea.form-control(rows='15' placeholder="Write your post here..." id='textarea_body_page')
+                textarea.form-control(rows='15' placeholder="Write your post here..." id='textarea_body_page') {{selectedPage.body}}
                 button.btn.btn-default(type='button' ng-click='savePage()') Save
                 button.btn.btn-default(type='button' ng-click='deletePage()') Delete
                 button.btn.btn-default(type='button') Publish
