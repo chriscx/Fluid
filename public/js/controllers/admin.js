@@ -76,6 +76,16 @@ FluidApp.controller('AdminController', function($scope, PostService, PageService
       $scope.posts = data.entries;
     });
   });
+  $.get('/blog/categories.json', function(data) {
+    $scope.$apply(function(){
+      $scope.categories = data.categories;
+    });
+  });
+  $.get('/pages.json', function(data) {
+    $scope.$apply(function(){
+      $scope.pages = data.pages;
+    });
+  });
 
   $scope.addNewPost = function() {
     var title = $('#input_add_post').val();

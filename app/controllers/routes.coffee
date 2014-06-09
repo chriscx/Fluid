@@ -147,7 +147,7 @@ module.exports =
         else
           res.json
             result: 'OK'
-            entries: data
+            categories: data
 
     #
     #     `Get Categories`
@@ -160,7 +160,7 @@ module.exports =
         else
           res.json
             result: 'OK'
-            entries: data
+            category: data
 
     #
     #     `Post Categories`
@@ -221,7 +221,7 @@ module.exports =
         else
           res.json
             result: 'OK'
-            entries: data
+            pages: data
 
   login: (app) ->
 
