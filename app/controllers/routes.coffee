@@ -128,7 +128,7 @@ module.exports =
     #     `Get posts by Category`
     #    ----------------------------
     #
-    app.get '/blog/Category/:name/posts.json', (req, res) ->
+    app.get '/blog/category/:name/posts.json', (req, res) ->
       Entry.find {'category': req.params.name}, (err, data) ->
         if err
           res.json result: 'error'
@@ -136,7 +136,70 @@ module.exports =
           res.json
             result: 'OK'
             entries: data
+    #
+    #     `Get Categories`
+    #    ----------------------------
+    #
+    app.get '/blog/categories.json', (req, res) ->
+      Category.find {}, (err, data) ->
+        if err
+          res.json result: 'error'
+        else
+          res.json
+            result: 'OK'
+            entries: data
 
+    #
+    #     `Get Categories`
+    #    ----------------------------
+    #
+    app.get '/blog/category/:name.json', (req, res) ->
+      Category.find {name: req.params.name}, (err, data) ->
+        if err
+          res.json result: 'error'
+        else
+          res.json
+            result: 'OK'
+            entries: data
+
+    #
+    #     `Post Categories`
+    #    ----------------------------
+    #
+    app.post '/blog/category/:name.json', (req, res) ->
+      newCategory = new Category(
+        name: req.body.name,
+        description: req.body.description
+      )
+
+      newCategory.save (err) ->
+        unless err
+          res.json result: 'OK'
+        else
+          res.json
+            result: 'error'
+            err: err
+
+    app.put '/blog/category/:name.json', (req, res) ->
+      Category.findOneAndUpdate 'name': req.params.name,
+        req.body,
+        new: true,
+          (err, data) ->
+            unless err
+              res.json result: 'OK'
+            else
+              res.json
+                result: 'error'
+                err: err
+
+    app.del '/blog/category/:name.json', (req, res) ->
+      Category.remove 'name': req.params.name, (err, data) ->
+        if data > 0 and not err
+          res.json result: 'OK'
+        else
+          res.json
+            result: 'error'
+            err: err
 
   site: (app) ->
 
