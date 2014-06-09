@@ -9,54 +9,80 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/speakingurl/0.9.0/speakingurl.min.js"></script>
     <script src="/js/markdown.min.js"></script>
+    <script src="/js/jquery_extend.js"></script>
   </head>
   <body data-spy="scroll" data-target="#nav-scrollspy"></body>
-  <script type="text/javascript">
-    var FluidApp = angular.module('FluidApp', []);
-    
-    FluidApp.controller('adminController',function($scope) {
-    
-      $.get('/blog/posts/0/100/posts.json', function(data) {
-        $scope.$apply(function(){
-          $scope.posts = data.entries;
-        });
-      });
-    });
-    
-  </script>
+  <script type="text/javascript" src="/js/controllers/admin.js"></script>
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-8 col-md-offset-2">
-        <div ng-controller="adminController" class="row">
+        <div ng-controller="AdminController" class="row">
           <div class="col-md-12">
-            <select class="form-control">
-              <option ng-repeat="post in posts | orderBy:sortingOrder:reverse" value="{{post.id}}">{{post.title}}</option>
-            </select>
-            <div class="input-group">
-              <input type="text" class="form-control"><span class="input-group-btn">
-                <button type="button" class="btn btn-default">Add</button></span>
-            </div>
-          </div>
-          <div class="col-md-12">
-            <textarea rows="15" placeholder="Write your content here..." class="form-control"></textarea>
-            <button type="button" class="btn btn-default">Save</button>
-            <button type="button" class="btn btn-default">Delete</button>
-            <button type="button" class="btn btn-default">Publish</button>
-          </div>
-          <div class="col-md-12">
-            <select class="form-control">
-              <option value="{{id}}">{{title}} title</option>
-            </select>
-          </div>
-          <div class="col-md-12">
-            <input type="title" placeholder="Title" class="form-control">
-            <input type="route" placeholder="Route" class="form-control">
-            <input type="tags" placeholder="Tags" class="form-control">
-            <textarea rows="15" placeholder="Write your post here..." class="form-control"></textarea>
-            <button type="button" class="btn btn-default">Save</button>
-            <button type="button" class="btn btn-default">Delete</button>
-            <button type="button" class="btn btn-default">Publish</button>
+            <form class="form">
+              <div class="form-group">
+                <div class="input-group">
+                  <input type="text" id="input_add_category" placeholder="Add new category..." class="form-control"><span class="input-group-btn">
+                    <button type="button" ng-click="addNewCategory()" class="btn btn-default">Add</button></span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Select Category</label>
+                <select ng-model="selectedCategory" ng-options="category.name for category in categories track by category.name" id="select_category" class="form-control"></select>
+                <label>Edit Category</label>
+                <input type="text" placeholder="Category" id="input_category_name" value="{{selectedCategory.name}}" class="form-control">
+                <button type="button" ng-click="saveCategory()" class="btn btn-default">Save</button>
+                <button type="button" ng-click="deleteCategory()" class="btn btn-default">Delete</button>
+              </div>
+              <div class="form-group">
+                <div class="input-group">
+                  <input type="text" id="input_add_post" placeholder="Add new post..." class="form-control"><span class="input-group-btn">
+                    <button type="button" ng-click="addNewPost()" class="btn btn-default">Add</button></span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Select Post</label>
+                <select ng-model="selectedPost" ng-options="post.title for post in posts track by post.id" id="select_post" class="form-control"></select>
+              </div>
+              <div class="form-group">
+                <input id="oldId" value="{{selectedPost.id}}" class="hide">
+                <label>Edit Title</label>
+                <input type="text" placeholder="Title" id="input_post_title" value="{{selectedPost.title}}" class="form-control">
+                <label>Edit Tags</label>
+                <input type="tags" placeholder="Tags" id="input_post_tags" value="{{selectedPost.tags[0].name}}" class="form-control">
+                <label>Select Category</label>
+                <select ng-model="selectedPostCategory" ng-options="category.name for category in categories track by category.name" id="select_post_category" class="form-control"></select>
+              </div>
+              <div class="form-group">
+                <label>Edit Post</label>
+                <textarea rows="15" placeholder="Write your content here..." id="textarea_body_post" class="form-control"></textarea>
+                <button type="button" ng-click="savePost()" class="btn btn-default">Save</button>
+                <button type="button" ng-click="deletePost()" class="btn btn-default">Delete</button>
+                <button type="button" class="btn btn-default">Publish</button>
+              </div>
+              <div class="form-group">
+                <label>Select Page</label>
+                <select id="select_page" class="form-control">
+                  <option value="{{id}}">{{title}} title</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <div class="input-group">
+                  <input type="text" id="input_add_page" placeholder="Add new page..." class="form-control"><span class="input-group-btn">
+                    <button type="button" ng-click="addNewPage()" class="btn btn-default">Add</button></span>
+                </div>
+                <label>Edit Title</label>
+                <input type="title" placeholder="Title" id="input_page_title" class="form-control">
+                <label>Edit Route</label>
+                <input type="route" placeholder="Route" id="input_page_route" class="form-control">
+                <label>Edit Page</label>
+                <textarea rows="15" placeholder="Write your post here..." id="textarea_body_page" class="form-control"></textarea>
+                <button type="button" ng-click="savePage()" class="btn btn-default">Save</button>
+                <button type="button" ng-click="deletePage()" class="btn btn-default">Delete</button>
+                <button type="button" class="btn btn-default">Publish</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
