@@ -72,16 +72,19 @@ FluidApp.service('PageService', function() {
 FluidApp.controller('AdminController', function($scope, PostService, PageService) {
 
   $.get('/blog/posts/0/100/posts.json', function(data) {
+    data.oldId = data.id;
     $scope.$apply(function(){
       $scope.posts = data.entries;
     });
   });
   $.get('/blog/categories.json', function(data) {
+    data.oldName = data.name;
     $scope.$apply(function(){
       $scope.categories = data.categories;
     });
   });
   $.get('/pages.json', function(data) {
+    data.oldRoute = data.route;
     $scope.$apply(function(){
       $scope.pages = data.pages;
     });
@@ -102,29 +105,11 @@ FluidApp.controller('AdminController', function($scope, PostService, PageService
       $('#input_add_post').val('');
   }
 
-  $scope.savePost = function() {
-    var title, data, body, tags, oldId;
-
-    title = $('#input_post_title').val();
-    body = $('#textarea_body_post').innerHTML;
-    tags = $('#input_post_tags').val();
-    oldId = $('#oldId').val();
-
-    data = {
-      title: title,
-      id: getSlug(title),
-      oldId: oldId,
-      body: body,
-      tags: [],
-      category: '',
-      updateDate: (new Date()).getTime(),
-      published: true
-    };
-
+  $scope.savePost = function(selectedPost) {
     if($('#select_post :selected').new)
-      PostService.createPost(data);
+      PostService.createPost(selectedPost);
     else
-      PostService.savePost(data);
+      PostService.savePost(selectedPost);
   }
 
   $scope.deletePost = function() {
