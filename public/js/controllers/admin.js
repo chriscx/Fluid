@@ -1,47 +1,23 @@
 
 var FluidApp = angular.module('FluidApp', []);
 
-FluidApp.service('PageService', function() {
-
-  this.createPage = function(data) {
-
-    $.post('/' + data.route, data, function() {
-      console.log('POST success');
-    });
-  }
-
-  this.savePage = function(data) {
-    $.put('/' + data.route, data, function() {
-      console.log('PUT success');
-    });
-  }
-
-  function deletePage() {
-    var route = document.getElementById('input_page_route').value;
-    $.del('/' + route,  function() {
-      console.log('PUT success');
-    });
-  }
-});
-
 FluidApp.service('CategoryService', function() {
 
   this.createCategory = function(data) {
 
-    $.post('/' + route, data, function() {
+    $.post('/blog/category/' + data.name + '.json', data, function() {
       console.log('POST success');
     });
   }
 
   this.saveCategory = function(data) {
-    $.put('/' + route, data, function() {
+    $.put('/blog/category/' + data.name + '.json', data, function() {
       console.log('PUT success');
     });
   }
 
-  function deleteCategory() {
-    var name = document.getElementById('input_').value;
-    $.del('/' + route,  function() {
+  function deleteCategory(data) {
+    $.del('/blog/category/' + data.name + '.json',  function() {
       console.log('PUT success');
     });
   }
@@ -66,6 +42,29 @@ FluidApp.service('PostService', function() {
   this.deletePost = function(data) {
     $.del('/blog/post/' + getSlug(data.title) + '.json',  function() {
       console.log('DEL success');
+    });
+  }
+});
+
+FluidApp.service('PageService', function() {
+
+  this.createPage = function(data) {
+
+    $.post('/' + data.route, data, function() {
+      console.log('POST success');
+    });
+  }
+
+  this.savePage = function(data) {
+    $.put('/' + data.route, data, function() {
+      console.log('PUT success');
+    });
+  }
+
+  function deletePage() {
+
+    $.del('/' + route,  function() {
+      console.log('PUT success');
     });
   }
 });
@@ -156,6 +155,7 @@ FluidApp.controller('AdminController', function($scope, PostService, PageService
   }
 
   $scope.deletePage = function() {
-    PageService.deletePage();
+    var data = {name: document.getElementById('input_page_route').value};g
+    PageService.deletePage(data);
   }
 });
