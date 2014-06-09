@@ -50,7 +50,7 @@ FluidApp.service('CategoryService', function() {
 FluidApp.service('PostService', function() {
 
   this.createPost = function(data) {
-    $.post('/blog/post/' + getSlug(data.title) '.json', data, function() {
+    $.post('/blog/post/' + getSlug(data.title) + '.json', data, function() {
       console.log('POST success');
     });
   }
@@ -102,8 +102,8 @@ FluidApp.controller('AdminController', function($scope, PostService, PageService
     oldId = $('#oldId').val();
 
     data = {
-      title: '',
-      id: getSlug(''),
+      title: title,
+      id: getSlug(title),
       oldId: oldId,
       body: body,
       tags: [],
