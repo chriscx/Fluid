@@ -1,5 +1,5 @@
 
-var FluidApp = angular.module('FluidApp', []);
+var FluidApp = angular.module('FluidApp', ['ui.bootstrap']);
 
 FluidApp.service('CategoryService', function() {
 
