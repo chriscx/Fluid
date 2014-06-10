@@ -201,28 +201,6 @@ module.exports =
             result: 'error'
             err: err
 
-  site: (app) ->
-
-    #
-    #    `Get index page`
-    #    ----------------------------
-    #
-    for i of config.routes
-      app.get config.routes[i].path, (req, res) ->
-        res.render config.routes[i].view,
-          title: config.title
-          config: config
-          request: req
-
-    app.get '/pages.json', (req, res) ->
-      Page.find {}, (err, data) ->
-        if err
-          res.json result: 'error'
-        else
-          res.json
-            result: 'OK'
-            pages: data
-
   login: (app) ->
 
     app.get '/signup', (req, res) ->
@@ -259,5 +237,37 @@ module.exports =
     app.get '/error/:error', (req, res) ->
       res.render 'error'
 
+  site: (app) ->
+
+    app.get '/', (req, res) ->
+      res.render 'index'
+
     app.get '/admin', (req, res) ->
       res.render 'admin'
+
+    app.get '/page/:route.json', (req, res) ->
+      Page.find {route: req.params.route}, (err, data) ->
+        if err
+          res.json result: 'error'
+        else
+          res.json
+            result: 'OK'
+            page: data
+
+    app.get '/pages.json', (req, res) ->
+      Page.find {}, (err, data) ->
+        if err
+          res.json result: 'error'
+        else
+          res.json
+            result: 'OK'
+            pages: data
+
+    app.get '/:route', (req, res) ->
+      Page.find {route: req.params.route}, (err, data) ->
+        if err
+          res.redirect '/error/501'
+        else if data.length = 0
+          res.redirect '/error/404'
+        else
+          res.render 'page'

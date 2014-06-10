@@ -43,14 +43,14 @@ block append content
                 button.btn.btn-default(type='button' ng-click='deletePost(selectedPost)') Delete
                 button.btn.btn-default(type='button') Publish
               .form-group
-                label Select Page
-                select.form-control(ng-model='selectedPage' ng-options='page.title for page in pages track by page.route' id='select_page')
-              .form-group
                 .input-group
                   //- label Add New Page
-                  input.form-control(type='text' id='input_add_page' placeholder='Add new page...')
+                  input.form-control(ng-model='newPageTitle' type='text' id='input_add_page' placeholder='Add new page...')
                   span.input-group-btn
-                    button.btn.btn-default(type='button' ng-click='addNewPage()') Add
+                    button.btn.btn-default(type='button' ng-click='addNewPage(newPageTitle)') Add
+              .form-group
+                label Select Page
+                select.form-control(ng-model='selectedPage' ng-options='page.title for page in pages track by page.route' id='select_page')
                 label Edit Title
                 input.form-control(type='title' placeholder='Title' id='input_page_title' value='{{selectedPage.title}}')
                 label Edit Route

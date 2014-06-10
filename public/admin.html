@@ -61,14 +61,14 @@
                 <button type="button" class="btn btn-default">Publish</button>
               </div>
               <div class="form-group">
-                <label>Select Page</label>
-                <select ng-model="selectedPage" ng-options="page.title for page in pages track by page.route" id="select_page" class="form-control"></select>
+                <div class="input-group">
+                  <input ng-model="newPageTitle" type="text" id="input_add_page" placeholder="Add new page..." class="form-control"><span class="input-group-btn">
+                    <button type="button" ng-click="addNewPage(newPageTitle)" class="btn btn-default">Add</button></span>
+                </div>
               </div>
               <div class="form-group">
-                <div class="input-group">
-                  <input type="text" id="input_add_page" placeholder="Add new page..." class="form-control"><span class="input-group-btn">
-                    <button type="button" ng-click="addNewPage()" class="btn btn-default">Add</button></span>
-                </div>
+                <label>Select Page</label>
+                <select ng-model="selectedPage" ng-options="page.title for page in pages track by page.route" id="select_page" class="form-control"></select>
                 <label>Edit Title</label>
                 <input type="title" placeholder="Title" id="input_page_title" value="{{selectedPage.title}}" class="form-control">
                 <label>Edit Route</label>

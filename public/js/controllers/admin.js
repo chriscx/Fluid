@@ -50,20 +50,20 @@ FluidApp.service('PageService', function() {
 
   this.createPage = function(data) {
 
-    $.post('/' + data.route, data, function() {
+    $.post('/page/' + data.route + '.json', data, function() {
       console.log('POST success');
     });
   }
 
   this.savePage = function(data) {
-    $.put('/' + data.route, data, function() {
+    $.put('/page/' + data.route, data, function() {
       console.log('PUT success');
     });
   }
 
   function deletePage() {
 
-    $.del('/' + route,  function() {
+    $.del('/page/' + route + '.json',  function() {
       console.log('PUT success');
     });
   }
@@ -100,13 +100,14 @@ FluidApp.controller('AdminController', function($scope, PostService, PageService
         tags: [],
         category: '',
         updateDate: (new Date()).getTime(),
-        published: true
+        published: true,
+        new: true
       });
       $('#input_add_post').val('');
   }
 
   $scope.savePost = function(selectedPost) {
-    if($('#select_post :selected').new)
+    if(selectedPost.new)
       PostService.createPost(selectedPost);
     else
       PostService.savePost(selectedPost);
@@ -117,33 +118,22 @@ FluidApp.controller('AdminController', function($scope, PostService, PageService
     PostService.deletePost(data);
   }
 
-  $scope.addNewPage = function() {
-    var title = $('#input_add_page').val();
+  $scope.addNewPage = function(title) {
+    console.log(title);
     if(title !== '')
-      scope.pages.push({
+      $scope.pages.push({
         title: title,
         route: '',
         body: '',
         updateDate: (new Date()).getTime(),
-        published: true
+        published: true,
+        new: true
       })
       $('#input_add_page').val('');
   }
 
-  $scope.savePage = function() {
-    var route, data, title, body;
-    route = $('#input_page_route').val();
-    title = $('#input_page_title').val();
-    body = $('#textarea_body_page').innerHTML;
-    data = {
-      title: title,
-      route: route,
-      body: body,
-      updateDate: (new Date()).getTime(),
-      published: true
-    }
-
-    if($('#select_page :selected').new)
+  $scope.savePage = function(selectedPage) {
+    if(selectedPage.new)
       PageService.createPage(data);
     else
       PageService.savePage(data);
