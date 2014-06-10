@@ -34,6 +34,7 @@ FluidApp.service('PostService', function() {
   this.savePost = function(data) {
     var oldId = data.oldId;
     delete data.oldId;
+    delete data.new
     $.put('/blog/post/' + oldId + '.json', data, function() {
       console.log('PUT success');
     });
@@ -56,6 +57,9 @@ FluidApp.service('PageService', function() {
   }
 
   this.savePage = function(data) {
+    var oldRoute = data.oldRoute;
+    delete data.oldRoute;
+    delete data.new;
     $.put('/page/' + data.route, data, function() {
       console.log('PUT success');
     });
@@ -90,8 +94,28 @@ FluidApp.controller('AdminController', function($scope, PostService, PageService
     });
   });
 
-  $scope.addNewPost = function() {
-    var title = $('#input_add_post').val();
+  $scope.addNewCategory = function(name) {
+    if(name !== '')
+      $scope.posts.push({
+        name: name,
+        description: '',
+        new: true
+      });
+      $('#input_add_category').val('');
+  }
+
+  $scope.saveCategory = function(selectedCategory) {
+    if(selectedCategory.new)
+      CategoryService.createCategory(selectedCategory);
+    else
+      CategoryService.saveCategory(selectedCategory);
+  }
+
+  $scope.deleteCategory = function(selectedCategory) {
+    CategoryService.deleteCategory(selectedCategory);
+  }
+
+  $scope.addNewPost = function(title) {
     if(title !== '')
       $scope.posts.push({
         title: title,
@@ -113,17 +137,15 @@ FluidApp.controller('AdminController', function($scope, PostService, PageService
       PostService.savePost(selectedPost);
   }
 
-  $scope.deletePost = function() {
-    var data = {title: document.getElementById('input_post_title').value};
-    PostService.deletePost(data);
+  $scope.deletePost = function(selectedPost) {
+    PostService.deletePost(selectedPost);
   }
 
   $scope.addNewPage = function(title) {
-    console.log(title);
     if(title !== '')
       $scope.pages.push({
         title: title,
-        route: '',
+        route: getSlug(title),
         body: '',
         updateDate: (new Date()).getTime(),
         published: true,
@@ -134,13 +156,12 @@ FluidApp.controller('AdminController', function($scope, PostService, PageService
 
   $scope.savePage = function(selectedPage) {
     if(selectedPage.new)
-      PageService.createPage(data);
+      PageService.createPage(selectedPage);
     else
-      PageService.savePage(data);
+      PageService.savePage(selectedPage);
   }
 
-  $scope.deletePage = function() {
-    var data = {name: document.getElementById('input_page_route').value};g
-    PageService.deletePage(data);
+  $scope.deletePage = function(selectedPage) {
+    PageService.deletePage(selectedPage);
   }
 });

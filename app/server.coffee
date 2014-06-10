@@ -48,9 +48,9 @@ passport.deserializeUser Account.deserializeUser()
 
 app.locals.moment = require('moment')
 routes.blog app  if config.blog.enabled
-routes.site app
 routes.login app
 routes.error app
+routes.site app
 if config.ssl.enabled
   options =
     key: fs.readFileSync(config.ssl.key)
