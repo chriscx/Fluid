@@ -60,7 +60,7 @@ FluidApp.service('PageService', function() {
     var oldRoute = data.oldRoute;
     delete data.oldRoute;
     delete data.new;
-    $.put('/page/' + data.route, data, function() {
+    $.put('/page/' + data.route + '.json', data, function() {
       console.log('PUT success');
     });
   }
