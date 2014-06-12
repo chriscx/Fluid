@@ -45,7 +45,7 @@
               </div>
               <div class="form-group">
                 <label>Select Post</label>
-                <select ng-model="selectedPost" ng-options="post.title for post in posts track by post.id" id="select_post" class="form-control"></select>
+                <select ng-model="selectedPost" ng-options="post.title for post in posts track by post.slug" id="select_post" class="form-control"></select>
               </div>
               <div class="form-group">
                 <label>Edit Title</label>

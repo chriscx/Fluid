@@ -31,7 +31,7 @@ describe 'app', ->
           newPost = new entry(
             title: 'title ' + i
             author: 'author'
-            id: utils.slugify('title ' + i)
+            slug: utils.slugify('title ' + i)
             body: 'This is a test post'
             tags: [{name: 'tag1'}]
             category: 'test'
@@ -91,7 +91,7 @@ describe 'app', ->
       res.statusCode.should.be.eql 200
       data = JSON.parse body
       data.result.should.be.eql 'OK'
-      data.entries[0].id.should.be.eql 'title-1'
+      data.entries[0].slug.should.be.eql 'title-1'
       next()
 
   it 'should get blog entries by pagination in json', (next) ->
@@ -100,8 +100,8 @@ describe 'app', ->
       data = JSON.parse body
       data.result.should.be.eql 'OK'
       data.entries.length.should.be.eql 2
-      data.entries[0].id.should.be.eql 'title-10'
-      data.entries[1].id.should.be.eql 'title-9'
+      data.entries[0].slug.should.be.eql 'title-10'
+      data.entries[1].slug.should.be.eql 'title-9'
       next()
 
   it 'should get blog entries by tag in json', (next) ->
@@ -130,7 +130,7 @@ describe 'app', ->
       body: JSON.stringify
         title: 'post test'
         author: 'author'
-        id: utils.slugify('post test')
+        slug: utils.slugify('post test')
         body: 'This is a test post'
         tags: [{name: 'tag1'}]
         category: 'test'
@@ -140,7 +140,7 @@ describe 'app', ->
         published: true
     , (err, res, body) ->
       res.statusCode.should.be.eql 200
-      entry.find {"id": "post-test"}, (err, data) ->
+      entry.find {"slug": "post-test"}, (err, data) ->
         data.should.not.be.empty
         data[0].title.should.be.eql 'post test'
         next()
@@ -163,12 +163,12 @@ describe 'app', ->
         published: true
     , (err, res, body) ->
       res.statusCode.should.be.eql 200
-      entry.find {"id": "del-test"}, (err, data) ->
+      entry.find {"slug": "del-test"}, (err, data) ->
         data.should.not.be.empty
         data[0].title.should.be.eql 'del test'
         request.del 'http://localhost:3333/blog/post/del-test.json'
         , (err, res, body) ->
-          entry.find {"id": "del-test"}, (err, data) ->
+          entry.find {"slug": "del-test"}, (err, data) ->
             data.should.be.empty
             next()
     )
@@ -190,7 +190,7 @@ describe 'app', ->
         published: true
     , (err, res, body) ->
       res.statusCode.should.be.eql 200
-      entry.find {"id": "put-test"}, (err, data) ->
+      entry.find {"slug": "put-test"}, (err, data) ->
         data.should.not.be.empty
         data[0].title.should.be.eql 'put test 1'
 
@@ -202,7 +202,7 @@ describe 'app', ->
             title: 'put test 2'
 
         , (err, res, body) ->
-          entry.find {"id": "put-test"}, (err, data) ->
+          entry.find {"slug": "put-test"}, (err, data) ->
             data.should.not.be.empty
             data[0].title.should.be.eql 'put test 2'
             next()

@@ -16,7 +16,7 @@ describe 'Blog', ->
     entry = new Entry
       title: 'entry creation'
       author: 'author'
-      id: utils.slugify('entry-creation')
+      slug: utils.slugify('entry-creation')
       body: 'This is a test post'
       tags: [{name: 'tag1'}]
       category: 'test'
@@ -34,11 +34,11 @@ describe 'Blog', ->
 
   it "find an entry by id", (next) ->
     Entry.findOne
-      id: "entry-creation"
+      slug: "entry-creation"
     , (err, entry) ->
       entry.title.should.be.eql "entry creation"
       next()
 
   afterEach (done) ->
-    Entry.remove {id: "entry-creation"}, ->
+    Entry.remove {slug: "entry-creation"}, ->
       done()
