@@ -1,5 +1,4 @@
 http = require 'http'
-http.globalAgent.maxSockets = 64
 https = require 'https'
 fs = require 'fs'
 stylus = require 'stylus'

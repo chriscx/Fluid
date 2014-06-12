@@ -1,6 +1,12 @@
-
+/**
+*
+*/
 var FluidApp = angular.module('FluidApp', ['ui.bootstrap']);
 
+/**
+* Service for managing categories
+* only to be used in admin view
+*/
 FluidApp.service('CategoryService', function() {
 
   this.createCategory = function(data) {
@@ -23,6 +29,10 @@ FluidApp.service('CategoryService', function() {
   }
 });
 
+/**
+* Service for managing posts
+* only to be used in admin view
+*/
 FluidApp.service('PostService', function() {
 
   this.createPost = function(data) {
@@ -32,10 +42,10 @@ FluidApp.service('PostService', function() {
   }
 
   this.savePost = function(data) {
-    var oldId = data.oldId;
-    delete data.oldId;
+    var oldSlug = data.oldSlug;
+    delete data.oldSlug;
     delete data.new
-    $.put('/blog/post/' + oldId + '.json', data, function() {
+    $.put('/blog/post/' + oldSlug + '.json', data, function() {
       console.log('PUT success');
     });
   }
@@ -47,6 +57,10 @@ FluidApp.service('PostService', function() {
   }
 });
 
+/**
+* Service for managing page
+* only to be used in admin view
+*/
 FluidApp.service('PageService', function() {
 
   this.createPage = function(data) {
@@ -72,6 +86,10 @@ FluidApp.service('PageService', function() {
     });
   }
 });
+
+/**
+* Admin Controller
+*/
 
 FluidApp.controller('AdminController', function($scope, PostService, PageService) {
 
@@ -119,7 +137,7 @@ FluidApp.controller('AdminController', function($scope, PostService, PageService
     if(title !== '')
       $scope.posts.push({
         title: title,
-        id: getSlug(title),
+        slug: getSlug(title),
         body: '',
         tags: [],
         category: '',

@@ -4,16 +4,9 @@ eventEmitter = require('events').EventEmitter
 passport = require 'passport'
 
 Entry = require('../models/blog').Entry
-EntrySchema = require('../models/blog').Schema
-
 Category = require('../models/category').Category
-CategorySchema = require('../models/category').Schema
-
 Account = require('../models/account').Account
-AccountSchema = require('../models/account').Schema
-
 Page = require('../models/page').Page
-PageSchema = require('../models/page').Schema
 
 module.exports =
   blog: (app) ->
@@ -46,8 +39,8 @@ module.exports =
     #     `get specific blog post`
     #    ----------------------------
     #
-    app.get '/blog/post/:id.json', (req, res) ->
-      Entry.find {"id": req.params.id}, (err, data) ->
+    app.get '/blog/post/:slug.json', (req, res) ->
+      Entry.find {"slug": req.params.slug}, (err, data) ->
         if err
           res.json
             result: 'error'
@@ -61,11 +54,11 @@ module.exports =
     #     `Post create blog post`
     #    ----------------------------
     #
-    app.post '/blog/post/:id.json', (req, res) ->
+    app.post '/blog/post/:slug.json', (req, res) ->
       newPost = new Entry(
         title: req.body.title
         author: req.body.author
-        id: req.params.id
+        slug: req.params.slug
         body: req.body.body
         tags: req.body.tags
         Category: 'test'
@@ -86,8 +79,8 @@ module.exports =
     #     `Update blog post`
     #    ----------------------------
     #
-    app.put '/blog/post/:id.json', (req, res) ->
-      Entry.findOneAndUpdate 'id': req.params.id,
+    app.put '/blog/post/:slug.json', (req, res) ->
+      Entry.findOneAndUpdate 'slug': req.params.slug,
         req.body,
         new: true,
           (err, data) ->
@@ -102,8 +95,8 @@ module.exports =
     #     `Delete blog post`
     #    ----------------------------
     #
-    app.del '/blog/post/:id.json', (req, res) ->
-      Entry.remove 'id': req.params.id, (err, data) ->
+    app.del '/blog/post/:slug.json', (req, res) ->
+      Entry.remove 'slug': req.params.slug, (err, data) ->
         if data > 0 and not err
           res.json result: 'OK'
         else
@@ -136,6 +129,7 @@ module.exports =
           res.json
             result: 'OK'
             entries: data
+
     #
     #     `Get Categories`
     #    ----------------------------
@@ -150,7 +144,7 @@ module.exports =
             categories: data
 
     #
-    #     `Get Categories`
+    #     `Get Category`
     #    ----------------------------
     #
     app.get '/blog/category/:name.json', (req, res) ->
@@ -163,7 +157,7 @@ module.exports =
             category: data
 
     #
-    #     `Post Categories`
+    #     `Post Category`
     #    ----------------------------
     #
     app.post '/blog/category/:name.json', (req, res) ->
@@ -180,6 +174,10 @@ module.exports =
             result: 'error'
             err: err
 
+    #
+    #     `Put category`
+    #    ----------------------------
+    #
     app.put '/blog/category/:name.json', (req, res) ->
       Category.findOneAndUpdate 'name': req.params.name,
         req.body,
@@ -192,6 +190,10 @@ module.exports =
                 result: 'error'
                 err: err
 
+    #
+    #     `Del category`
+    #    ----------------------------
+    #
     app.del '/blog/category/:name.json', (req, res) ->
       Category.remove 'name': req.params.name, (err, data) ->
         if data > 0 and not err
@@ -203,10 +205,18 @@ module.exports =
 
   login: (app) ->
 
+    #
+    #     `Get signup page`
+    #    ----------------------------
+    #
     app.get '/signup', (req, res) ->
       res.render 'signup',
-        title: 'Disko'
+        title: 'Fluid'
 
+    #
+    #     `Post signup page`
+    #    ----------------------------
+    #
     app.post '/signup', (req, res) ->
       Account.register new Account(username: req.body.username), req.body.password, (err, Account) ->
         if err
@@ -216,14 +226,26 @@ module.exports =
         passport.authenticate 'local', (req, res) ->
           res.redirect '/'
 
+    #
+    #     `Get login page`
+    #    ----------------------------
+    #
     app.get '/login', (req, res) ->
       res.render 'login',
         title: 'Disko'
         user: req.user
 
+    #
+    #     `Get login page`
+    #    ----------------------------
+    #
     app.post '/login', passport.authenticate 'local', (req, res) ->
       res.redirect '/'
 
+    #
+    #     `Get logout page`
+    #    ----------------------------
+    #
     app.get '/logout', (req, res) ->
       req.logout()
       res.redirect '/'
@@ -232,6 +254,7 @@ module.exports =
 
     #
     #     `error redirection page`
+   	#	  specify error number as parameter
     #    ----------------------------
     #
     app.get '/error/:error', (req, res) ->
@@ -239,12 +262,24 @@ module.exports =
 
   site: (app) ->
 
+    #
+    #     `Get index page`
+    #    ----------------------------
+    #
     app.get '/', (req, res) ->
       res.render 'index'
 
+    #
+    #     `Get admin page`
+    #    ----------------------------
+    #
     app.get '/admin', (req, res) ->
       res.render 'admin'
 
+    #
+    #     `Get page (json)`
+    #    ----------------------------
+    #
     app.get '/page/:route.json', (req, res) ->
       Page.find {route: req.params.route}, (err, data) ->
         if err
@@ -254,6 +289,10 @@ module.exports =
             result: 'OK'
             page: data
 
+    #
+    #     `Get all pages (json)`
+    #    ----------------------------
+    #
     app.get '/pages.json', (req, res) ->
       Page.find {}, (err, data) ->
         if err
@@ -263,6 +302,12 @@ module.exports =
             result: 'OK'
             pages: data
 
+    #
+    #     `Get page by route defined by user`
+    #	  Note: need to be called last because it
+   	#	        would overwrite all other routes
+    #    ----------------------------
+    #
     app.get '/:route', (req, res) ->
       Page.find {route: req.params.route}, (err, data) ->
         if err

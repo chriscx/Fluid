@@ -28,7 +28,7 @@ block append content
                     button.btn.btn-default(type='button' ng-click='addNewPost()') Add
               .form-group
                 label Select Post
-                select.form-control(ng-model='selectedPost' ng-options='post.title for post in posts track by post.id' id='select_post')
+                select.form-control(ng-model='selectedPost' ng-options='post.title for post in posts track by post.slug' id='select_post')
               .form-group
                 label Edit Title
                 input.form-control(type='text' placeholder='Title' id='input_post_title' value='{{selectedPost.title}}')

@@ -3,12 +3,12 @@ mongoose = require 'mongoose'
 Schema = mongoose.Schema
 
 EntrySchema = new Schema
-  title:
+  title: 
     type: String
     index:
       unique: true
   author: String
-  id: String
+  slug: String
   body: String
   tags: [name: String]
   category: String
