@@ -74,7 +74,7 @@ FluidApp.service('PageService', function() {
     var oldRoute = data.oldRoute;
     delete data.oldRoute;
     delete data.new;
-    $.put('/page/' + data.route + '.json', data, function() {
+    $.put('/page/' + oldRoute + '.json', data, function() {
       console.log('PUT success');
     });
   }
@@ -114,12 +114,12 @@ FluidApp.controller('AdminController', function($scope, PostService, PageService
 
   $scope.addNewCategory = function(name) {
     if(name !== '')
-      $scope.posts.push({
+      $scope.categories.push({
         name: name,
         description: '',
         new: true
       });
-      $('#input_add_category').val('');
+      $scope.newCategoryName = '';
   }
 
   $scope.saveCategory = function(selectedCategory) {
@@ -145,7 +145,7 @@ FluidApp.controller('AdminController', function($scope, PostService, PageService
         published: true,
         new: true
       });
-      $('#input_add_post').val('');
+      $scope.newPostTitle = '';
   }
 
   $scope.savePost = function(selectedPost) {
@@ -169,7 +169,7 @@ FluidApp.controller('AdminController', function($scope, PostService, PageService
         published: true,
         new: true
       })
-      $('#input_add_page').val('');
+      $scope.newPageTitle = '';
   }
 
   $scope.savePage = function(selectedPage) {

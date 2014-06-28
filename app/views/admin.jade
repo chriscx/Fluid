@@ -10,9 +10,9 @@ block append content
               .form-group
                 .input-group
                   //- label Add Category
-                  input.form-control(type='text' id='input_add_category' placeholder='Add new category...')
+                  input.form-control(ng-model='newCategoryName' type='text' id='input_add_category' placeholder='Add new category...')
                   span.input-group-btn
-                    button.btn.btn-default(type='button' ng-click='addNewCategory()') Add
+                    button.btn.btn-default(type='button' ng-click='addNewCategory(newCategoryName)') Add
               .form-group
                 label Select Category
                 select.form-control(ng-model='selectedCategory' ng-options='category.name for category in categories track by category.name' id='select_category')
@@ -23,9 +23,9 @@ block append content
               .form-group
                 .input-group
                   //- label Add New Post
-                  input.form-control(type='text' id='input_add_post' placeholder='Add new post...')
+                  input.form-control(ng-model='newPostTitle' type='text' id='input_add_post' placeholder='Add new post...')
                   span.input-group-btn
-                    button.btn.btn-default(type='button' ng-click='addNewPost()') Add
+                    button.btn.btn-default(type='button' ng-click='addNewPost(newPostTitle)') Add
               .form-group
                 label Select Post
                 select.form-control(ng-model='selectedPost' ng-options='post.title for post in posts track by post.slug' id='select_post')

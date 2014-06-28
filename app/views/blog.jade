@@ -1,19 +1,6 @@
 extends layout
 block append content
-
-  script(type='text/javascript').
-    var FluidApp = angular.module('FluidApp', []);
-
-    FluidApp.controller('blogController',function($scope) {
-
-      $.get('/blog/posts/0/5/posts.json', function(data) {
-        console.log(data);
-        $scope.$apply(function(){
-          $scope.posts = data.entries;
-        });
-      });
-    });
-
+  script(type='text/javascript' src='/js/controllers/blog.js')
   .container-fluid
     .row
       .col-md-6.col-md-offset-2
