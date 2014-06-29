@@ -80,6 +80,8 @@ module.exports =
     #    ----------------------------
     #
     app.put '/blog/post/:slug.json', (req, res) ->
+      console.log 'update -> '
+      console.log req.body
       Entry.findOneAndUpdate 'slug': req.params.slug,
         req.body,
         new: true,
@@ -288,6 +290,59 @@ module.exports =
           res.json
             result: 'OK'
             page: data
+
+    #
+    #     `Post page (json)`
+    #    ----------------------------
+    #
+    app.post '/page/:route.json', (req, res) ->
+      newPage = new Page(
+        title: req.body.title
+        author: req.body.author
+        route: req.params.route
+        body: req.body.body
+        creationDate: new Date()
+        updateDate: null
+        published: req.body.published
+      )
+      newPage.save (err) ->
+        unless err
+          res.json result: 'OK'
+        else
+          res.json
+            result: 'error'
+            err: err
+
+    #
+    #     `Put page (json)`
+    #    ----------------------------
+    #
+    app.put '/page/:route.json', (req, res) ->
+      console.log 'update -> '
+      console.log req.body
+      Page.findOneAndUpdate route: req.params.route,
+      req.body,
+      new: true,
+        (err, data) ->
+          if err
+            res.json result: 'error'
+          else
+            res.json
+              result: 'OK'
+              page: data
+
+    #
+    #     `Del page (json)`
+    #    ----------------------------
+    #
+    app.del '/page/:route.json', (req, res) ->
+      Page.remove {route: req.params.route}, (err, data) ->
+        if data > 0 and not err
+          res.json result: 'OK'
+        else
+          res.json
+            result: 'error'
+            err: err
 
     #
     #     `Get all pages (json)`

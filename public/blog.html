@@ -16,20 +16,7 @@
     <script src="/js/jquery_extend.js"></script>
   </head>
   <body data-spy="scroll" data-target="#nav-scrollspy"></body>
-  <script type="text/javascript">
-    var FluidApp = angular.module('FluidApp', []);
-    
-    FluidApp.controller('blogController',function($scope) {
-    
-      $.get('/blog/posts/0/5/posts.json', function(data) {
-        console.log(data);
-        $scope.$apply(function(){
-          $scope.posts = data.entries;
-        });
-      });
-    });
-    
-  </script>
+  <script type="text/javascript" src="/js/controllers/blog.js"></script>
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-6 col-md-offset-2">

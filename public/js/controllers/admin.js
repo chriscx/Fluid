@@ -44,7 +44,13 @@ FluidApp.service('PostService', function() {
   this.savePost = function(data) {
     var oldSlug = data.oldSlug;
     delete data.oldSlug;
-    delete data.new
+    delete data.new;
+    delete data._id;
+    delete data.__v;
+    delete data.__proto__;
+    data.slug = getSlug(data.title);
+    console.log(data);
+    console.log('/blog/post/' + oldSlug + '.json');
     $.put('/blog/post/' + oldSlug + '.json', data, function() {
       console.log('PUT success');
     });
@@ -74,6 +80,9 @@ FluidApp.service('PageService', function() {
     var oldRoute = data.oldRoute;
     delete data.oldRoute;
     delete data.new;
+    delete data._id;
+    delete data.__v;
+    delete data.__proto__;
     $.put('/page/' + oldRoute + '.json', data, function() {
       console.log('PUT success');
     });
@@ -91,23 +100,30 @@ FluidApp.service('PageService', function() {
 * Admin Controller
 */
 
-FluidApp.controller('AdminController', function($scope, PostService, PageService) {
+FluidApp.controller('AdminController', function($scope, PostService, PageService, CategoryService) {
 
   $.get('/blog/posts/0/100/posts.json', function(data) {
-    data.oldId = data.id;
     $scope.$apply(function(){
+      for(var i in data.entries) {
+        data.entries[i].oldSlug = data.entries[i].slug
+      }
       $scope.posts = data.entries;
     });
   });
   $.get('/blog/categories.json', function(data) {
-    data.oldName = data.name;
+    console.log(data)
     $scope.$apply(function(){
+      for(var i in data.categories) {
+        data.categories[i].oldName = data.categories[i].name
+      }
       $scope.categories = data.categories;
     });
   });
   $.get('/pages.json', function(data) {
-    data.oldRoute = data.route;
     $scope.$apply(function(){
+      for(var i in data.pages) {
+        data.pages[i].oldRoute = data.pages[i].route
+      }
       $scope.pages = data.pages;
     });
   });
