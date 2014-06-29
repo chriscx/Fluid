@@ -21,6 +21,7 @@ if config.env is 'development'
   db_url = 'mongodb://' + config.mongo.development.host + '/' + config.mongo.development.db
 else
   db_url = 'mongodb://' + config.mongo.production.host + '/' + config.mongo.production.db
+  
 mongoose.connect db_url
 app = express()
 app.set 'views', __dirname + '/views'
@@ -50,6 +51,7 @@ routes.blog app  if config.blog.enabled
 routes.login app
 routes.error app
 routes.site app
+
 if config.ssl.enabled
   options =
     key: fs.readFileSync(config.ssl.key)
