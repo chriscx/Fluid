@@ -1,0 +1,24 @@
+.container
+  .row
+    h1 Signup Page
+    p.lead Say something worthwhile here.
+    br
+    form(role='form', method="post", style='max-width: 300px;')
+      .form-group
+          input.form-control(type='text', name="username", placeholder='Enter Username', ng-model='signup.username')
+      .form-group
+          input.form-control(type='email', name="email", placeholder='Enter Email', ng-model='signup.email')
+      .form-group
+        input.form-control(type='password', name="password", placeholder='Password', ng-model='signup.password')
+      .form-group
+        input.form-control(type='password', name="passwordCheck", placeholder='Password', ng-model='signup.passwordcheck')
+      .form-group
+        input.form-control(type='text', name="firstname", placeholder='Firstname', ng-model='signup.firstname')
+      .form-group
+        input.form-control(type='text', name="lastname", placeholder='Lastname', ng-model='signup.lastname')
+      .form-group
+        input.form-control(type='text', name="country", placeholder='Country' ng-model='signup.country')
+      button.btn.btn-default(type='submit', ng-click='signUp(signup.username, signup.password, signup.firstname, signup.lastname, signup.country)') Submit
+      &nbsp;
+      a(href='/')
+        button.btn.btn-primary(type="button") Cancel

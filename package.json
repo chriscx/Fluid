@@ -1,31 +1,44 @@
 {
   "name": "Fluid",
-  "version": "0.0.0",
+  "version": "0.0.1",
+  "engines": {
+    "node": "0.10.x"
+  },
   "dependencies": {
-    "express": "3.4.8",
-    "jade": "1.1.5",
-    "stylus": "0.42.1",
-    "supervisor": "0.5.6",
-    "underscore": "1.5.2",
-    "markdown": "0.5.0",
-    "mongoose": "3.8.4",
-    "session-mongoose": "0.4.1",
-    "forever": "0.10.11",
-    "sha1": "1.1.0",
-    "less": "~1.6.2",
-    "moment": "~2.5.1",
-    "passport": "^0.2.0",
-    "passport-local-mongoose": "^0.3.0",
-    "speakingurl": "~0.9.1",
-    "passport-local": "~1.0.0"
+    "bcrypt-nodejs": "0.0.*",
+    "body-parser": "1.4.*",
+    "bower": "1.3.*",
+    "coffee-script": "1.8.*",
+    "cookie-parser": "1.3.*",
+    "express": "4.9.*",
+    "express-jwt": "0.4.*",
+    "express-session": "1.8.*",
+    "forever": "0.10.*",
+    "jade": "1.7.*",
+    "jsonwebtoken": "1.1.*",
+    "method-override": "2.3.*",
+    "moment": "2.8.*",
+    "mongoose": "3.8.*",
+    "passport": "0.2.*",
+    "passport-local": "1.0.*",
+    "request": "2.45.*",
+    "underscore": "1.7.*",
+    "speakingurl": "*"
   },
   "devDependencies": {
-    "coffee-script": "1.7.1",
-    "request": "2.33.0",
-    "mocha": "1.17.1",
-    "should": "3.1.0",
-    "coveralls": "2.6.1",
-    "mocha-lcov-reporter": "0.0.1",
-    "istanbul": "0.2.4"
+    "coffee-script": "1.8.*",
+    "stylus": "0.49.*",
+    "jasmine": "2.0.*",
+    "mocha": "1.21.*",
+    "request": "2.45.*",
+    "should": "4.0.*"
+  },
+  "scripts": {
+    "clean": "rm -rf server/lib/ client/public/*.js client/public/controllers/ client/public/services/ client/public/views client/public/*.html",
+    "test": "./node_modules/.bin/mocha --compilers coffee:coffee-script/register server/test/*",
+    "build": "./node_modules/.bin/coffee -b -o server/lib/ --no-header -c server/app/ && ./node_modules/.bin/coffee -b -o client/public/ --no-header -c client/app/ && ./node_modules/.bin/jade client/app/*.jade -o client/public/ && ./node_modules/.bin/jade client/app/views/*.jade -o client/public/views/ && ./node_modules/.bin/bower install",
+    "run": "node server/lib/server.js",
+    "start": "./node_modules/.bin/forever start server/lib/server.js",
+    "stop": "./node_modules/.bin/forever stopall"
   }
 }
