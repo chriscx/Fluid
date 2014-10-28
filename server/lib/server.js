@@ -115,6 +115,27 @@ passport.use('signup', new LocalStrategy({
   return process.nextTick(findOrCreateUser);
 }));
 
+passport.use('reset', new LocalStrategy({
+  passReqToCallback: true
+}, function(req, username, password, done) {
+  var updatedPassword;
+  updatedPassword = {
+    password: bcrypt.hashSync(password)
+  };
+  return User.findOneAndUpdate({
+    username: username
+  }, updatedPassword, function(err, user) {
+    if (err) {
+      return done(err);
+    }
+    if (!user) {
+      console.log("User Not Found with username " + username);
+      return done(null, false);
+    }
+    return done(null, user);
+  });
+}));
+
 app.use(bodyParser.urlencoded({
   extended: true
 }));

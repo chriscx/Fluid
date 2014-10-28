@@ -6,6 +6,7 @@ MenuSchema = new Schema
   name: String
   route: String
   description: String
+, strict: true 
 
 Menu = mongoose.model "Menu", MenuSchema
 

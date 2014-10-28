@@ -16,59 +16,34 @@ angular.module('User').factory('UserService', function($http) {
         country: country
       });
     },
-    getUserData: function(username, onSuccess) {
-      return $http.get('/data/user/' + username + '.json').success(function(data) {
-        return onSuccess(data);
-      }).error(function(data, status, headers, config) {
-        console.log(status);
-        console.log(headers);
-        return console.log(config);
+    forgotPassword: function(email) {
+      return $http.post('/forgot', {
+        email: email
       });
     },
-    updateUserData: function(username, data, onSuccess) {
-      return $http.put('/data/user/' + username + '.json', data).success(function(data) {
-        return onSuccess(data);
-      }).error(function(data, status, headers, config) {
-        console.log(status);
-        console.log(headers);
-        return console.log(config);
+    resetPassword: function(hash, password) {
+      return $http.post('/reset', {
+        hash: hash,
+        password: password
       });
     },
-    getPlaylistList: function(username, onSuccess) {
-      return $http.get('/data/user/' + username + '/playlists.json').success(function(data) {
-        return onSuccess(data);
-      }).error(function(data, status, headers, config) {
-        console.log(status);
-        console.log(headers);
-        return console.log(config);
-      });
+    getUserData: function(username) {
+      return $http.get('/data/user/' + username + '.json');
     },
-    getPlaylist: function(username, id, onSuccess) {
-      return $http.get('/data/user/' + username + '/p/' + id + '.json').success(function(data) {
-        return onSuccess(data);
-      }).error(function(data, status, headers, config) {
-        console.log(status);
-        console.log(headers);
-        return console.log(config);
-      });
+    updateUserData: function(username, data) {
+      return $http.put('/data/user/' + username + '.json', data);
     },
-    updatePlaylist: function(username, id, data, onSuccess) {
-      return $http.put('/data/user/' + username + '/p/' + id + '.json', data).success(function(data) {
-        return onSuccess(data);
-      }).error(function(data, status, headers, config) {
-        console.log(status);
-        console.log(headers);
-        return console.log(config);
-      });
+    getPlaylistList: function(username) {
+      return $http.get('/data/user/' + username + '/playlists.json');
     },
-    deletePlaylist: function(username, id, onSuccess) {
-      return $http["delete"]('/data/user/' + username + '/p/' + id + '.json').success(function(data) {
-        return onSuccess(data);
-      }).error(function(data, status, headers, config) {
-        console.log(status);
-        console.log(headers);
-        return console.log(config);
-      });
+    getPlaylist: function(username, id) {
+      return $http.get('/data/user/' + username + '/p/' + id + '.json');
+    },
+    updatePlaylist: function(username, id, data) {
+      return $http.put('/data/user/' + username + '/p/' + id + '.json', data);
+    },
+    deletePlaylist: function(username, id) {
+      return $http["delete"]('/data/user/' + username + '/p/' + id + '.json');
     }
   };
 });

@@ -1,18 +1,15 @@
-angular.module('Page').factory 'PageService', ->
-  remove = ->
-    $.del '/page/' + route + '.json', ->
-      console.log 'PUT success'
+angular.module('Page').factory 'PageService', ($http) ->
+  getList: ->
+    $http.get '/data/pages.json'
 
-  create = (data) ->
-    $.post '/page/' + data.route + '.json', data, ->
-      console.log 'POST success'
+  get: (route) ->
+    $http.get '/data/page/' + route + '.json'
 
-  save = (data) ->
-    oldRoute = data.oldRoute
-    delete data.oldRoute
-    delete data.new
-    delete data._id
-    delete data.__v
-    delete data.__proto__
-    $.put '/page/' + oldRoute + '.json', data, ->
-      console.log 'PUT success'
+  remove: (route) ->
+    $http.delete '/data/page/' + route + '.json'
+
+  create: (route, data) ->
+    $http.post '/data/page/', data
+
+  save: (route, data) ->
+    $http.put '/data/page/' + route + '.json', data

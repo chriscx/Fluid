@@ -1,3 +1,4 @@
 angular.module('Index').controller('IndexController', function($scope, $routeParams, $location, $window, UserService, AuthenticationService) {
-  return $scope.pageName = 'Index Page';
+  $scope.pageName = 'Index Page';
+  return console.log($location.path().slice(1));
 });

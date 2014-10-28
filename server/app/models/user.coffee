@@ -1,7 +1,7 @@
 mongoose = require 'mongoose'
 Schema = mongoose.Schema
 
-UserSchema = new Schema(
+UserSchema = new Schema
   username:
     type: String
     unique: true
@@ -17,7 +17,7 @@ UserSchema = new Schema(
   lastname: String
   birthdate: Date
   country: String
-)
+, strict: true
 
 User = mongoose.model 'User', UserSchema
 

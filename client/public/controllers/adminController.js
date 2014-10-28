@@ -1,32 +1,4 @@
 angular.module('Admin').controller('AdminController', function($scope, PostService, PageService, CategoryService) {
-  $.get('/blog/posts/0/100/posts.json', function(data) {
-    return $scope.$apply(function() {
-      var i;
-      for (i in data.entries) {
-        data.entries[i].oldSlug = data.entries[i].slug;
-      }
-      return $scope.posts = data.entries;
-    });
-  });
-  $.get('/blog/categories.json', function(data) {
-    console.log(data);
-    return $scope.$apply(function() {
-      var i;
-      for (i in data.categories) {
-        data.categories[i].oldName = data.categories[i].name;
-      }
-      return $scope.categories = data.categories;
-    });
-  });
-  $.get('/pages.json', function(data) {
-    return $scope.$apply(function() {
-      var i;
-      for (i in data.pages) {
-        data.pages[i].oldRoute = data.pages[i].route;
-      }
-      return $scope.pages = data.pages;
-    });
-  });
   $scope.addNewCategory = function(name) {
     if (name !== '') {
       $scope.categories.push({

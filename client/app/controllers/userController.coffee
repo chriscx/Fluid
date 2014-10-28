@@ -7,7 +7,7 @@ angular.module('User').controller 'UserController', ($scope, $http, $routeParams
         AuthenticationService.isLogged = true
         $window.sessionStorage.token = data.token
         $window.sessionStorage.user = data.profile
-        $location.path '/u/' + username
+        $location.path '/admin/' + username
         console.log 'connexion success'
       ).error (status, data) ->
         console.log status
@@ -19,6 +19,34 @@ angular.module('User').controller 'UserController', ($scope, $http, $routeParams
       UserService.signUp(username, password, email, firstname, lastname, country).success((data) ->
         $location.path '/login'
         console.log 'registration success'
+      ).error (status, data) ->
+        console.log status
+        console.log data
+
+  $scope.update = (username, email, firstname, lastname, country) ->
+    if username isnt `undefined` and
+      email isnt `undefined` and
+      firstname isnt `undefined` and
+      lastname isnt `undefined` and
+      country isnt `undefined`
+        UserService.updateUserData(username, {email: email, firstname: firstname, lastname: lastname, country: country}).success((data) ->
+          console.log 'success'
+        ).error (status, data) ->
+          console.log status
+          console.log data
+
+  $scope.forgotPassword = (email) ->
+    if email isnt `undefined`
+      UserService.forgotPassword(email).success((data) ->
+        console.log 'success'
+      ).error (status, data) ->
+        console.log status
+        console.log data
+
+  $scope.resetPassword = (password) ->
+    if password isnt `undefined`
+      UserService.resetPassword(password).success((data) ->
+        console.log 'success'
       ).error (status, data) ->
         console.log status
         console.log data

@@ -1,22 +1,18 @@
-angular.module('Blog').factory 'PostService', ->
+angular.module('Blog').factory 'PostService', ($http) ->
+  getList: ->
+    $http.get '/data/blog/posts.json'
 
-  create = (data) ->
-    $.post '/blog/post/' + getSlug(data.title) + '.json', data, ->
-      console.log 'POST success'
+  getP: (s, l) ->
+    $http.get '/data/blog/post/' + s + '/' + l + '/posts.json'
 
-  save = (data) ->
-    oldSlug = data.oldSlug
-    data.slug = getSlug(data.title)
-    delete data.oldSlug
-    delete data.new
-    delete data._id
-    delete data.__v
-    delete data.__proto__
-    console.log data
-    console.log '/blog/post/' + oldSlug + '.json'
-    $.put '/blog/post/' + oldSlug + '.json', data, ->
-      console.log 'PUT success'
+  get: (id) ->
+    $http.get '/data/blog/post/' + id + '.json'
 
-  remove = (data) ->
-    $.del '/blog/post/' + getSlug(data.title) + '.json', ->
-      console.log 'DEL success'
+  create: (data) ->
+    $http.post '/data/blog/post/', data
+
+  save: (id, data) ->
+    $http.put '/data/blog/post/' + id + '.json', data
+
+  remove: (id) ->
+    $http.delete '/data/blog/post/' + id + '.json'

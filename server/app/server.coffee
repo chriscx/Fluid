@@ -101,6 +101,29 @@ passport.use 'signup', new LocalStrategy(
     process.nextTick findOrCreateUser
 )
 
+passport.use 'reset', new LocalStrategy(
+  passReqToCallback: true
+, (req, username, password, done) ->
+
+  updatedPassword = {password: bcrypt.hashSync password}
+
+  # check in mongo if a user with username exists or not
+  User.findOneAndUpdate
+    username: username,
+    updatedPassword
+  , (err, user) ->
+
+    # In case of any error, return using the done method
+    return done err if err
+
+    # Username does not exist, log error & redirect back
+    unless user
+      console.log "User Not Found with username " + username
+      return done null, false
+
+    done null, user
+)
+
 app.use bodyParser.urlencoded(extended: true)
 app.use bodyParser.json()
 

@@ -1,23 +1,23 @@
 angular.module('Admin').controller 'AdminController', ($scope, PostService, PageService, CategoryService) ->
 
-  $.get '/blog/posts/0/100/posts.json', (data) ->
-    $scope.$apply ->
-      for i of data.entries
-        data.entries[i].oldSlug = data.entries[i].slug
-      $scope.posts = data.entries
-
-  $.get '/blog/categories.json', (data) ->
-    console.log data
-    $scope.$apply ->
-      for i of data.categories
-        data.categories[i].oldName = data.categories[i].name
-      $scope.categories = data.categories
-
-  $.get '/pages.json', (data) ->
-    $scope.$apply ->
-      for i of data.pages
-        data.pages[i].oldRoute = data.pages[i].route
-      $scope.pages = data.pages
+  # $.get '/blog/posts/0/100/posts.json', (data) ->
+  #   $scope.$apply ->
+  #     for i of data.entries
+  #       data.entries[i].oldSlug = data.entries[i].slug
+  #     $scope.posts = data.entries
+  #
+  # $.get '/blog/categories.json', (data) ->
+  #   console.log data
+  #   $scope.$apply ->
+  #     for i of data.categories
+  #       data.categories[i].oldName = data.categories[i].name
+  #     $scope.categories = data.categories
+  #
+  # $.get '/pages.json', (data) ->
+  #   $scope.$apply ->
+  #     for i of data.pages
+  #       data.pages[i].oldRoute = data.pages[i].route
+  #     $scope.pages = data.pages
 
   $scope.addNewCategory = (name) ->
     if name isnt ''
@@ -55,6 +55,9 @@ angular.module('Admin').controller 'AdminController', ($scope, PostService, Page
     if selectedPost.new
       PostService.createPost selectedPost
     else
+      # oldSlug = data.oldSlug
+      # data.slug = getSlug(data.title)
+      # delete data.oldSlug
       PostService.savePost selectedPost
 
   $scope.deletePost = (selectedPost) ->
@@ -76,6 +79,8 @@ angular.module('Admin').controller 'AdminController', ($scope, PostService, Page
     if selectedPage.new
       PageService.createPage selectedPage
     else
+      # oldRoute = data.oldRoute
+      # delete data.oldRoute
       PageService.savePage selectedPage
 
   $scope.deletePage = (selectedPage) ->

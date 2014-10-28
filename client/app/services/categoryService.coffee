@@ -1,12 +1,15 @@
 angular.module('Blog').factory 'CategoryService', ->
-  remove = (data) ->
-    $.del '/blog/category/' + data.name + '.json', ->
-      console.log 'PUT success'
+  getList: ->
+    $http.get '/data/blog/categories.json'
 
-  create = (data) ->
-    $.post '/blog/category/' + data.name + '.json', data, ->
-      console.log 'POST success'
+  get: (name) ->
+    $http.get '/data/blog/category/' + name + '.json'
 
-  save = (data) ->
-    $.put '/blog/category/' + data.name + '.json', data, ->
-      console.log 'PUT success'
+  remove: (name) ->
+    $http.delete '/data/blog/category/' + name + '.json'
+
+  create: (data) ->
+    $http.post '/data/blog/category/', data
+
+  save: (name, data) ->
+    $http.put '/data/blog/category/' + name + '.json', data

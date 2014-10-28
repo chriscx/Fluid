@@ -1,22 +1,26 @@
 should = require 'should'
 mongoose = require 'mongoose'
-Entry = require('../app/models/blog').Entry
-utils = require '../app/controllers/utils'
+Post = require('../app/models/blog').Post
+utils = require '../app/utils'
 
 describe 'Blog', ->
+
+  port = 5000
+  port = process.env.PORT if process.env.port isnt `undefined`
+
   before (done) ->
     unless mongoose.connection.readyState
-      mongoose.connect 'mongodb://localhost/fluiddb_dev', null, ->
+      mongoose.connect process.env.FLUID_DB, null, ->
         done()
 
   after (done) ->
     mongoose.disconnect done
 
   beforeEach (done) ->
-    entry = new Entry
-      title: 'entry creation'
+    post = new Post
+      title: 'post creation'
       author: 'author'
-      slug: utils.slugify('entry-creation')
+      id: utils.slugify('post-creation')
       body: 'This is a test post'
       tags: [{name: 'tag1'}]
       category: 'test'
@@ -25,20 +29,20 @@ describe 'Blog', ->
       updateDate: null
       published: true
 
-    entry.save (error) ->
+    post.save (error) ->
       if error
-        console.log "error" + error.message
+        console.log 'error' + error.message
       else
-        console.log "no error"
+        console.log 'no error'
       done()
 
-  it "find an entry by id", (next) ->
-    Entry.findOne
-      slug: "entry-creation"
-    , (err, entry) ->
-      entry.title.should.be.eql "entry creation"
-      next()
+  it 'find an post by id', (done) ->
+    Post.findOne
+      id: 'post-creation'
+    , (err, post) ->
+      post.title.should.be.eql 'post creation'
+      done()
 
   afterEach (done) ->
-    Entry.remove {slug: "entry-creation"}, ->
+    Post.remove {id: 'post-creation'}, ->
       done()

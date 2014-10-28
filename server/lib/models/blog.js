@@ -12,7 +12,7 @@ PostSchema = new Schema({
     }
   },
   author: String,
-  slug: String,
+  id: String,
   body: String,
   tags: [
     {
@@ -35,6 +35,8 @@ PostSchema = new Schema({
     "default": Date.now
   },
   published: Boolean
+}, {
+  strict: true
 });
 
 Post = mongoose.model('Post', PostSchema);

@@ -23,6 +23,8 @@ PageSchema = new Schema({
     "default": Date.now
   },
   published: Boolean
+}, {
+  strict: true
 });
 
 Page = mongoose.model('Page', PageSchema);

@@ -6,7 +6,7 @@ angular.module('User').controller('UserController', function($scope, $http, $rou
         AuthenticationService.isLogged = true;
         $window.sessionStorage.token = data.token;
         $window.sessionStorage.user = data.profile;
-        $location.path('/u/' + username);
+        $location.path('/admin/' + username);
         return console.log('connexion success');
       }).error(function(status, data) {
         console.log(status);
@@ -14,12 +14,47 @@ angular.module('User').controller('UserController', function($scope, $http, $rou
       });
     }
   };
-  return $scope.signUp = function(username, password, email, firstname, lastname, country) {
+  $scope.signUp = function(username, password, email, firstname, lastname, country) {
     console.log('click signup');
     if (username !== undefined && password !== undefined && email !== undefined) {
       return UserService.signUp(username, password, email, firstname, lastname, country).success(function(data) {
         $location.path('/login');
         return console.log('registration success');
+      }).error(function(status, data) {
+        console.log(status);
+        return console.log(data);
+      });
+    }
+  };
+  $scope.update = function(username, email, firstname, lastname, country) {
+    if (username !== undefined && email !== undefined && firstname !== undefined && lastname !== undefined && country !== undefined) {
+      return UserService.updateUserData(username, {
+        email: email,
+        firstname: firstname,
+        lastname: lastname,
+        country: country
+      }).success(function(data) {
+        return console.log('success');
+      }).error(function(status, data) {
+        console.log(status);
+        return console.log(data);
+      });
+    }
+  };
+  $scope.forgotPassword = function(email) {
+    if (email !== undefined) {
+      return UserService.forgotPassword(email).success(function(data) {
+        return console.log('success');
+      }).error(function(status, data) {
+        console.log(status);
+        return console.log(data);
+      });
+    }
+  };
+  return $scope.resetPassword = function(password) {
+    if (password !== undefined) {
+      return UserService.resetPassword(password).success(function(data) {
+        return console.log('success');
       }).error(function(status, data) {
         console.log(status);
         return console.log(data);

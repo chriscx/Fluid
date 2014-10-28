@@ -8,7 +8,7 @@ PostSchema = new Schema
     index:
       unique: true
   author: String
-  slug: String
+  id: String
   body: String
   tags: [name: String]
   category: String
@@ -23,6 +23,7 @@ PostSchema = new Schema
     type: Date
     default: Date.now
   published: Boolean
+, strict: true 
 
 Post = mongoose.model 'Post', PostSchema
 

@@ -1,9 +1,9 @@
 should = require 'should'
 mongoose = require 'mongoose'
-Category = require('../app/models/category').Category
+Menu = require('../app/models/menu').Menu
 utils = require '../app/utils'
 
-describe 'Category', ->
+describe 'Menu', ->
 
   port = 5000
   port = process.env.PORT if process.env.port isnt `undefined`
@@ -17,24 +17,25 @@ describe 'Category', ->
     mongoose.disconnect done
 
   beforeEach (done) ->
-    category = new Category
-      name: 'category1'
+    menu = new Menu
+      name: 'menu1'
+      route: 'route1'
       description: 'description...'
 
-    category.save (error) ->
+    menu.save (error) ->
       if error
         console.log 'error' + error.message
       else
         console.log 'no error'
       done()
 
-  it 'find an category by name', (next) ->
-    Category.findOne
-      name: 'category1'
-    , (err, category) ->
-      category.description.should.be.eql 'description...'
+  it 'find an menu by name', (next) ->
+    Menu.findOne
+      name: 'menu1'
+    , (err, menu) ->
+      menu.description.should.be.eql 'description...'
       next()
 
   afterEach (done) ->
-    Category.remove {name: 'category1'}, ->
+    Menu.remove {name: 'menu1'}, ->
       done()

@@ -1,25 +1,19 @@
-angular.module('Page').factory('PageService', function() {
-  var create, remove, save;
-  remove = function() {
-    return $.del('/page/' + route + '.json', function() {
-      return console.log('PUT success');
-    });
-  };
-  create = function(data) {
-    return $.post('/page/' + data.route + '.json', data, function() {
-      return console.log('POST success');
-    });
-  };
-  return save = function(data) {
-    var oldRoute;
-    oldRoute = data.oldRoute;
-    delete data.oldRoute;
-    delete data["new"];
-    delete data._id;
-    delete data.__v;
-    delete data.__proto__;
-    return $.put('/page/' + oldRoute + '.json', data, function() {
-      return console.log('PUT success');
-    });
+angular.module('Page').factory('PageService', function($http) {
+  return {
+    getList: function() {
+      return $http.get('/data/pages.json');
+    },
+    get: function(route) {
+      return $http.get('/data/page/' + route + '.json');
+    },
+    remove: function(route) {
+      return $http["delete"]('/data/page/' + route + '.json');
+    },
+    create: function(route, data) {
+      return $http.post('/data/page/', data);
+    },
+    save: function(route, data) {
+      return $http.put('/data/page/' + route + '.json', data);
+    }
   };
 });

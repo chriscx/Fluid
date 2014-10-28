@@ -27,27 +27,52 @@ FluidApp.config ['$locationProvider', '$routeProvider', ($locationProvider, $rou
     controller: 'UserController'
     access:
       requiredLogin: false
-  ).when('/u/:user/edit',
+  ).when('/admin/:user',
+    templateUrl: 'views/admin/site.html'
+    controller: 'UserController'
+    access:
+      requiredLogin: true
+  ).when('/admin/:user/blog',
+    templateUrl: 'views/admin/blog.html'
+    controller: 'UserController'
+    access:
+      requiredLogin: true
+  ).when('/admin/:user/posts',
+    templateUrl: 'views/admin/post.html'
+    controller: 'UserController'
+    access:
+      requiredLogin: true
+  ).when('/admin/:user/pages',
+    templateUrl: 'views/admin/page.html'
+    controller: 'UserController'
+    access:
+      requiredLogin: true
+  ).when('/admin/:user/edit',
     templateUrl: 'views/user.html'
     controller: 'UserController'
     access:
       requiredLogin: true
+  ).when('/blog/',
+    templateUrl: 'views/post.html'
+    controller: 'PostController'
+    access:
+      requiredLogin: false
+  ).when('/blog/:id',
+    templateUrl: 'views/blog.html'
+    controller: 'BlogController'
+    access:
+      requiredLogin: false
+  ).when('/:route',
+    templateUrl: 'views/page.html'
+    controller: 'PageController'
+    access:
+      requiredLogin: false
   ).otherwise redirectTo: '/'
   return
 ]
 
 FluidApp.config ($httpProvider) ->
   $httpProvider.interceptors.push "authInterceptor"
-
-  signUp: (username, password, email, firstname, lastname, country) ->
-    $http.post '/signup',
-      username: username
-      password: password
-      email: email
-      firstname: firstname
-      lastname: lastname
-      country: country
-
 
 FluidApp.run ($rootScope, $location, $window, AuthenticationService) ->
   $rootScope.$on '$routeChangeStart', (event, nextRoute, currentRoute) ->

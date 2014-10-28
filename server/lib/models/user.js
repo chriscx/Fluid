@@ -23,6 +23,8 @@ UserSchema = new Schema({
   lastname: String,
   birthdate: Date,
   country: String
+}, {
+  strict: true
 });
 
 User = mongoose.model('User', UserSchema);

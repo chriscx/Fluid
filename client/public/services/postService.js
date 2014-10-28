@@ -1,28 +1,22 @@
-angular.module('Blog').factory('PostService', function() {
-  var create, remove, save;
-  create = function(data) {
-    return $.post('/blog/post/' + getSlug(data.title) + '.json', data, function() {
-      return console.log('POST success');
-    });
-  };
-  save = function(data) {
-    var oldSlug;
-    oldSlug = data.oldSlug;
-    data.slug = getSlug(data.title);
-    delete data.oldSlug;
-    delete data["new"];
-    delete data._id;
-    delete data.__v;
-    delete data.__proto__;
-    console.log(data);
-    console.log('/blog/post/' + oldSlug + '.json');
-    return $.put('/blog/post/' + oldSlug + '.json', data, function() {
-      return console.log('PUT success');
-    });
-  };
-  return remove = function(data) {
-    return $.del('/blog/post/' + getSlug(data.title) + '.json', function() {
-      return console.log('DEL success');
-    });
+angular.module('Blog').factory('PostService', function($http) {
+  return {
+    getList: function() {
+      return $http.get('/data/blog/posts.json');
+    },
+    getP: function(s, l) {
+      return $http.get('/data/blog/post/' + s + '/' + l + '/posts.json');
+    },
+    get: function(id) {
+      return $http.get('/data/blog/post/' + id + '.json');
+    },
+    create: function(data) {
+      return $http.post('/data/blog/post/', data);
+    },
+    save: function(id, data) {
+      return $http.put('/data/blog/post/' + id + '.json', data);
+    },
+    remove: function(id) {
+      return $http["delete"]('/data/blog/post/' + id + '.json');
+    }
   };
 });

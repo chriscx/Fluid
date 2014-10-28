@@ -1,18 +1,19 @@
 angular.module('Blog').factory('CategoryService', function() {
-  var create, remove, save;
-  remove = function(data) {
-    return $.del('/blog/category/' + data.name + '.json', function() {
-      return console.log('PUT success');
-    });
-  };
-  create = function(data) {
-    return $.post('/blog/category/' + data.name + '.json', data, function() {
-      return console.log('POST success');
-    });
-  };
-  return save = function(data) {
-    return $.put('/blog/category/' + data.name + '.json', data, function() {
-      return console.log('PUT success');
-    });
+  return {
+    getList: function() {
+      return $http.get('/data/blog/categories.json');
+    },
+    get: function(name) {
+      return $http.get('/data/blog/category/' + name + '.json');
+    },
+    remove: function(name) {
+      return $http["delete"]('/data/blog/category/' + name + '.json');
+    },
+    create: function(data) {
+      return $http.post('/data/blog/category/', data);
+    },
+    save: function(name, data) {
+      return $http.put('/data/blog/category/' + name + '.json', data);
+    }
   };
 });

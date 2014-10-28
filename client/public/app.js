@@ -37,17 +37,53 @@ FluidApp.config([
       access: {
         requiredLogin: false
       }
-    }).when('/u/:user', {
-      templateUrl: 'views/player.html',
-      controller: 'PlayerController',
+    }).when('/admin/:user', {
+      templateUrl: 'views/admin/site.html',
+      controller: 'UserController',
       access: {
         requiredLogin: true
       }
-    }).when('/u/:user/edit', {
+    }).when('/admin/:user/blog', {
+      templateUrl: 'views/admin/blog.html',
+      controller: 'UserController',
+      access: {
+        requiredLogin: true
+      }
+    }).when('/admin/:user/posts', {
+      templateUrl: 'views/admin/post.html',
+      controller: 'UserController',
+      access: {
+        requiredLogin: true
+      }
+    }).when('/admin/:user/pages', {
+      templateUrl: 'views/admin/page.html',
+      controller: 'UserController',
+      access: {
+        requiredLogin: true
+      }
+    }).when('/admin/:user/edit', {
       templateUrl: 'views/user.html',
       controller: 'UserController',
       access: {
         requiredLogin: true
+      }
+    }).when('/blog/', {
+      templateUrl: 'views/post.html',
+      controller: 'PostController',
+      access: {
+        requiredLogin: false
+      }
+    }).when('/blog/:id', {
+      templateUrl: 'views/blog.html',
+      controller: 'BlogController',
+      access: {
+        requiredLogin: false
+      }
+    }).when('/:route', {
+      templateUrl: 'views/page.html',
+      controller: 'PageController',
+      access: {
+        requiredLogin: false
       }
     }).otherwise({
       redirectTo: '/'
@@ -56,19 +92,7 @@ FluidApp.config([
 ]);
 
 FluidApp.config(function($httpProvider) {
-  $httpProvider.interceptors.push("authInterceptor");
-  return {
-    signUp: function(username, password, email, firstname, lastname, country) {
-      return $http.post('/signup', {
-        username: username,
-        password: password,
-        email: email,
-        firstname: firstname,
-        lastname: lastname,
-        country: country
-      });
-    }
-  };
+  return $httpProvider.interceptors.push("authInterceptor");
 });
 
 FluidApp.run(function($rootScope, $location, $window, AuthenticationService) {
