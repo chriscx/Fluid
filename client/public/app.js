@@ -37,32 +37,62 @@ FluidApp.config([
       access: {
         requiredLogin: false
       }
-    }).when('/admin/:user', {
-      templateUrl: 'views/admin/site.html',
-      controller: 'UserController',
+    }).when('/admin', {
+      templateUrl: 'views/admin/settings.html',
+      controller: 'AdminController',
       access: {
         requiredLogin: true
       }
-    }).when('/admin/:user/blog', {
+    }).when('/admin/blog', {
       templateUrl: 'views/admin/blog.html',
-      controller: 'UserController',
+      controller: 'AdminController',
       access: {
         requiredLogin: true
       }
-    }).when('/admin/:user/posts', {
-      templateUrl: 'views/admin/post.html',
-      controller: 'UserController',
+    }).when('/admin/blog/posts', {
+      templateUrl: 'views/admin/blog/posts.html',
+      controller: 'AdminController',
       access: {
         requiredLogin: true
       }
-    }).when('/admin/:user/pages', {
-      templateUrl: 'views/admin/page.html',
+    }).when('/admin/blog/posts/create', {
+      templateUrl: 'views/admin/blog/createPost.html',
+      controller: 'AdminController',
+      access: {
+        requiredLogin: true
+      }
+    }).when('/admin/blog/posts/edit/:id', {
+      templateUrl: 'views/admin/blog/editPost.html',
+      controller: 'AdminController',
+      access: {
+        requiredLogin: true
+      }
+    }).when('/admin/pages', {
+      templateUrl: 'views/admin/pages/pages.html',
+      controller: 'AdminController',
+      access: {
+        requiredLogin: true
+      }
+    }).when('/admin/pages/create', {
+      templateUrl: 'views/admin/pages/createPage.html',
+      controller: 'AdminController',
+      access: {
+        requiredLogin: true
+      }
+    }).when('/admin/pages/edit/:route', {
+      templateUrl: 'views/admin/pages/editPage.html',
+      controller: 'AdminController',
+      access: {
+        requiredLogin: true
+      }
+    }).when('/admin/:user', {
+      templateUrl: 'views/admin/user/user.html',
       controller: 'UserController',
       access: {
         requiredLogin: true
       }
     }).when('/admin/:user/edit', {
-      templateUrl: 'views/user.html',
+      templateUrl: 'views/admin/user/userEdit.html',
       controller: 'UserController',
       access: {
         requiredLogin: true

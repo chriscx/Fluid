@@ -3,7 +3,7 @@ angular.module('Blog').factory('PostService', function($http) {
     getList: function() {
       return $http.get('/data/blog/posts.json');
     },
-    getP: function(s, l) {
+    getBySlice: function(s, l) {
       return $http.get('/data/blog/post/' + s + '/' + l + '/posts.json');
     },
     get: function(id) {

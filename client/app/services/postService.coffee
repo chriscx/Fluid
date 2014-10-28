@@ -1,8 +1,9 @@
 angular.module('Blog').factory 'PostService', ($http) ->
+
   getList: ->
     $http.get '/data/blog/posts.json'
 
-  getP: (s, l) ->
+  getBySlice: (s, l) ->
     $http.get '/data/blog/post/' + s + '/' + l + '/posts.json'
 
   get: (id) ->

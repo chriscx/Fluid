@@ -1,70 +1,92 @@
 angular.module('Admin').controller('AdminController', function($scope, PostService, PageService, CategoryService) {
-  $scope.addNewCategory = function(name) {
-    if (name !== '') {
-      $scope.categories.push({
-        name: name,
-        description: '',
-        "new": true
-      });
-    }
-    return $scope.newCategoryName = '';
+  PostService.getList().success(function(data) {
+    return $scope.PostList = data;
+  }).error(function(status, data) {
+    console.log(status);
+    return console.log(data);
+  });
+  CategoryService.getList().success(function(data) {
+    return $scope.CategoryList = data;
+  }).error(function(status, data) {
+    console.log(status);
+    return console.log(data);
+  });
+  PageService.getList().success(function(data) {
+    return $scope.PageList = data;
+  }).error(function(status, data) {
+    console.log(status);
+    return console.log(data);
+  });
+  $scope.createCategory = function(data) {
+    return CategoryService.create(data).success(function(data) {
+      return console.log('success');
+    }).error(function(status, data) {
+      console.log(status);
+      return console.log(data);
+    });
   };
-  $scope.saveCategory = function(selectedCategory) {
-    if (selectedCategory["new"]) {
-      return CategoryService.createCategory(selectedCategory);
-    } else {
-      return CategoryService.saveCategory(selectedCategory);
-    }
+  $scope.saveCategory = function(name, data) {
+    return CategoryService.save(name, data).success(function(data) {
+      return console.log('success');
+    }).error(function(status, data) {
+      console.log(status);
+      return console.log(data);
+    });
   };
-  $scope.deleteCategory = function(selectedCategory) {
-    return CategoryService.deleteCategory(selectedCategory);
+  $scope.deleteCategory = function(name) {
+    return CategoryService.remove(name).success(function(data) {
+      return console.log('success');
+    }).error(function(status, data) {
+      console.log(status);
+      return console.log(data);
+    });
   };
-  $scope.addNewPost = function(title) {
-    if (title !== '') {
-      $scope.posts.push({
-        title: title,
-        slug: getSlug(title),
-        body: '',
-        tags: [],
-        category: '',
-        updateDate: (new Date()).getTime(),
-        published: true,
-        "new": true
-      });
-    }
-    return $scope.newPostTitle = '';
+  $scope.createPost = function(data) {
+    return PostService.create(data).success(function(data) {
+      return console.log('success');
+    }).error(function(status, data) {
+      console.log(status);
+      return console.log(data);
+    });
   };
-  $scope.savePost = function(selectedPost) {
-    if (selectedPost["new"]) {
-      return PostService.createPost(selectedPost);
-    } else {
-      return PostService.savePost(selectedPost);
-    }
+  $scope.savePost = function(id, data) {
+    return PostService.save(id, data).success(function(data) {
+      return console.log('success');
+    }).error(function(status, data) {
+      console.log(status);
+      return console.log(data);
+    });
   };
-  $scope.deletePost = function(selectedPost) {
-    return PostService.deletePost(selectedPost);
+  $scope.deletePost = function(id) {
+    return PostService.remove(id).success(function(data) {
+      return $console.log('success');
+    }).error(function(status, data) {
+      console.log(status);
+      return console.log(data);
+    });
   };
-  $scope.addNewPage = function(title) {
-    if (title !== '') {
-      $scope.pages.push({
-        title: title,
-        route: getSlug(title),
-        body: '',
-        updateDate: (new Date()).getTime(),
-        published: true,
-        "new": true
-      });
-    }
-    return $scope.newPageTitle = '';
+  $scope.createPage = function(data) {
+    return PageService.create(data).success(function(data) {
+      return console.log('success');
+    }).error(function(status, data) {
+      console.log(status);
+      return console.log(data);
+    });
   };
-  $scope.savePage = function(selectedPage) {
-    if (selectedPage["new"]) {
-      return PageService.createPage(selectedPage);
-    } else {
-      return PageService.savePage(selectedPage);
-    }
+  $scope.savePage = function(route, data) {
+    return PageService.save(route, data).success(function(data) {
+      return console.log('success');
+    }).error(function(status, data) {
+      console.log(status);
+      return console.log(data);
+    });
   };
-  return $scope.deletePage = function(selectedPage) {
-    return PageService.deletePage(selectedPage);
+  return $scope.deletePage = function(route) {
+    return PageService.remove(route).success(function(data) {
+      return console.log('success');
+    }).error(function(status, data) {
+      console.log(status);
+      return console.log(data);
+    });
   };
 });

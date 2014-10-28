@@ -1,6 +1,11 @@
-angular.module('Blog').controller 'BlogController', ($scope, $http, $routeParams, $location, $window) ->
+angular.module('Blog').controller 'BlogController', ($scope, $http, $routeParams, $location, $window, PostService) ->
 
-  $.get "/blog/posts/0/5/posts.json", (data) ->
+  $scope.skip = 0
+  $$scope.limit = 7
+
+  PostService.getBySlice($scope.skip, $scope.limit).success((data) ->
+    $scope.posts = data
+  ).error((status, data) ->
+    console.log status
     console.log data
-    $scope.$apply ->
-      $scope.posts = data.entries
+  )
