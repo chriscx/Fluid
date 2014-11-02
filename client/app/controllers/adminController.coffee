@@ -1,4 +1,4 @@
-angular.module('Admin').controller 'AdminController', ($scope, PostService, PageService, CategoryService) ->
+angular.module('Admin').controller 'AdminController', ($scope, $http, PostService, PageService, CategoryService) ->
 
   # $.get '/blog/posts/0/100/posts.json', (data) ->
   #   $scope.$apply ->
@@ -19,23 +19,23 @@ angular.module('Admin').controller 'AdminController', ($scope, PostService, Page
   #       data.pages[i].oldRoute = data.pages[i].route
   #     $scope.pages = data.pages
 
-  PostService.getList().success((data) ->
-    $scope.PostList = data
-  ).error (status, data) ->
-    console.log status
-    console.log data
-
-  CategoryService.getList().success((data) ->
-    $scope.CategoryList = data
-  ).error (status, data) ->
-    console.log status
-    console.log data
-
-  PageService.getList().success((data) ->
-    $scope.PageList = data
-  ).error (status, data) ->
-    console.log status
-    console.log data
+  # PostService.getList().success((data) ->
+  #   $scope.PostList = data
+  # ).error (status, data) ->
+  #   console.log status
+  #   console.log data
+  #
+  # CategoryService.getList().success((data) ->
+  #   $scope.CategoryList = data
+  # ).error (status, data) ->
+  #   console.log status
+  #   console.log data
+  #
+  # PageService.getList().success((data) ->
+  #   $scope.PageList = data
+  # ).error (status, data) ->
+  #   console.log status
+  #   console.log data
 
   $scope.createCategory = (data) ->
     CategoryService.create(data).success((data) ->

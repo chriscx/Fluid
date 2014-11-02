@@ -2,16 +2,18 @@
   .row
     .col-md-6.col-md-offset-2
       .row
+        legend Blog
+        br
         .col-md-12.post(ng-repeat='post in posts | orderBy:sortingOrder:reverse')
           .page-header
             h3 {{post.title}}
             h6 by {{post.author}} - {{post.creationDate}}
           p {{post.body}}
-      .row
-        button.btn.btn-default Next
-    .col-md-2
-      .bio
-        p
-          img.img-circle(src='/img/avatar.png')
-        p Description on the blog
+      //- .row
+      //-   button.btn.btn-default Next
+    //- .col-md-2
+    //-   .bio
+    //-     p
+    //-       img.img-circle(src='/img/avatar.png')
+    //-     p Description on the blog
     

@@ -3,3 +3,17 @@
     .col-md-8.col-md-offset-2
       .row
         .col-md-12
+          form.form
+            .form-group
+              label Edit Title
+              input.form-control(type='text' placeholder='Title' id='input_post_title' ng-model='selectedPost.title')
+            .form-group
+              label Edit Tags
+              input.form-control(type='tags' placeholder='Tags' id='input_post_tags' ng-model='SelectedPost.tags[0].name')
+            .form-group
+              label Select Category
+              select.form-control(ng-model='selectedPostCategory' ng-options='category.name for category in categories track by category.name' id='select_post_category')
+            .form-group
+              label Edit Post
+              textarea.form-control(rows='15' placeholder="Write your content here..." id='textarea_body_post' ng-model='selectedPost.body')
+              button.btn.btn-default(type='button') Publish

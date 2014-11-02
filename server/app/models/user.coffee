@@ -15,8 +15,6 @@ UserSchema = new Schema
     required: true
   firstname: String
   lastname: String
-  birthdate: Date
-  country: String
 , strict: true
 
 User = mongoose.model 'User', UserSchema

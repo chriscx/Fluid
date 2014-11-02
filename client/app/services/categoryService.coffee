@@ -1,4 +1,4 @@
-angular.module('Blog').factory 'CategoryService', ->
+angular.module('Blog').factory 'CategoryService', ($http) ->
   getList: ->
     $http.get '/data/blog/categories.json'
 

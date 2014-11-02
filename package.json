@@ -33,12 +33,19 @@
     "jasmine": "2.0.*",
     "mocha": "1.21.*",
     "request": "2.45.*",
-    "should": "4.0.*"
+    "should": "4.0.*",
+    "grunt": "^0.4.5",
+    "grunt-jade": "^0.5.1",
+    "grunt-shell": "^1.1.1",
+    "load-grunt-tasks": "^1.0.0",
+    "grunt-mocha-test": "^0.12.2",
+    "grunt-contrib-coffee": "^0.12.0",
+    "grunt-contrib-jade": "^0.13.0"
   },
   "scripts": {
     "clean": "rm -rf server/lib/ client/public/*.js client/public/controllers/ client/public/services/ client/public/views client/public/*.html",
     "test": "./node_modules/.bin/mocha --compilers coffee:coffee-script/register server/test/*",
-    "build": "./node_modules/.bin/coffee -b -o server/lib/ --no-header -c server/app/ && ./node_modules/.bin/coffee -b -o client/public/ --no-header -c client/app/ && ./node_modules/.bin/jade client/app/*.jade -o client/public/ && ./node_modules/.bin/jade client/app/views/*.jade -o client/public/views/ && ./node_modules/.bin/bower install",
+    "build": "./node_modules/.bin/coffee -b -o server/lib/ --no-header -c server/app/ && ./node_modules/.bin/coffee -b -o client/public/ --no-header -c client/app/ && ./node_modules/.bin/jade client/app/*.jade -o client/public/ && ./node_modules/.bin/jade client/app/views/ -o client/public/views/ && ./node_modules/.bin/bower install",
     "run": "node server/lib/server.js",
     "start": "./node_modules/.bin/forever start server/lib/server.js",
     "stop": "./node_modules/.bin/forever stopall"

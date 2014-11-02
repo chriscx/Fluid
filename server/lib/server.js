@@ -100,7 +100,6 @@ passport.use('signup', new LocalStrategy({
         newUser.firstname = req.param('firstname');
         newUser.lastname = req.param('lastname');
         newUser.email = req.param('email');
-        newUser.country = req.param('country');
         return newUser.save(function(err) {
           if (err) {
             console.log('Error in Saving user: ' + err);
@@ -144,7 +143,7 @@ app.use(bodyParser.json());
 
 app.use(express["static"]("" + __dirname + "/../../client/public"));
 
-app.use('/data', expressJwt({
+app.use('/data/user', expressJwt({
   secret: 'this is my secret for jwt'
 }));
 

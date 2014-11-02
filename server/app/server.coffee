@@ -86,7 +86,6 @@ passport.use 'signup', new LocalStrategy(
           newUser.firstname = req.param 'firstname'
           newUser.lastname = req.param 'lastname'
           newUser.email = req.param 'email'
-          newUser.country = req.param 'country'
 
           # save the user
           newUser.save (err) ->
@@ -129,7 +128,7 @@ app.use bodyParser.json()
 
 app.use express.static "#{__dirname}/../../client/public"
 
-app.use '/data', expressJwt secret: 'this is my secret for jwt'
+app.use '/data/user', expressJwt secret: 'this is my secret for jwt'
 app.use (err, req, res, next) ->
   res.send 401, "invalid token..."  if err.name is "UnauthorizedError"
 

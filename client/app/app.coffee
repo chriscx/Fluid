@@ -1,9 +1,10 @@
-FluidApp = angular.module('FluidApp', ['ngRoute', 'ngAnimate', 'Index', 'User'])
+FluidApp = angular.module('FluidApp', ['ngRoute', 'ngAnimate', 'Index', 'User', 'Blog', 'Page', 'Admin'])
 
 angular.module('Index', [])
 angular.module('User', [])
 angular.module('Blog', [])
 angular.module('Page', [])
+angular.module('Admin', [])
 
 FluidApp.config ['$locationProvider', '$routeProvider', ($locationProvider, $routeProvider) ->
   $locationProvider.html5Mode true
@@ -33,7 +34,7 @@ FluidApp.config ['$locationProvider', '$routeProvider', ($locationProvider, $rou
     access:
       requiredLogin: true
   ).when('/admin/blog',
-    templateUrl: 'views/admin/blog.html'
+    templateUrl: 'views/admin/blog/blog.html'
     controller: 'AdminController'
     access:
       requiredLogin: true
@@ -68,23 +69,23 @@ FluidApp.config ['$locationProvider', '$routeProvider', ($locationProvider, $rou
     access:
       requiredLogin: true
   ).when('/admin/:user',
-    templateUrl: 'views/admin/user/user.html'
+    templateUrl: 'views/admin/users/user.html'
     controller: 'UserController'
     access:
       requiredLogin: true
   ).when('/admin/:user/edit',
-    templateUrl: 'views/admin/user/userEdit.html'
+    templateUrl: 'views/admin/users/userEdit.html'
     controller: 'UserController'
     access:
       requiredLogin: true
   ).when('/blog/',
-    templateUrl: 'views/post.html'
-    controller: 'PostController'
+    templateUrl: 'views/blog.html'
+    controller: 'BlogController'
     access:
       requiredLogin: false
   ).when('/blog/:id',
-    templateUrl: 'views/blog.html'
-    controller: 'BlogController'
+    templateUrl: 'views/post.html'
+    controller: 'PostController'
     access:
       requiredLogin: false
   ).when('/:route',

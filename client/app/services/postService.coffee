@@ -1,5 +1,4 @@
 angular.module('Blog').factory 'PostService', ($http) ->
-
   getList: ->
     $http.get '/data/blog/posts.json'
 

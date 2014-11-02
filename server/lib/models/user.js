@@ -20,9 +20,7 @@ UserSchema = new Schema({
     required: true
   },
   firstname: String,
-  lastname: String,
-  birthdate: Date,
-  country: String
+  lastname: String
 }, {
   strict: true
 });

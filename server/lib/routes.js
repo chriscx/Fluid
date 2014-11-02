@@ -31,7 +31,7 @@ module.exports = function(app, passport) {
       delete data.password;
       if (err) {
         return res.send(500).end();
-      } else if (data.length < 1) {
+      } else if (data === undefined) {
         return res.send(404).end();
       } else {
         return res.json(data);
@@ -47,7 +47,7 @@ module.exports = function(app, passport) {
     }, function(err, data) {
       if (err) {
         return res.send(500).end();
-      } else if (data.length < 1) {
+      } else if (data === undefined) {
         return res.send(404).end();
       } else {
         return res.send(200).end();
@@ -89,8 +89,6 @@ module.exports = function(app, passport) {
     }).exec(function(err, data) {
       if (err) {
         return res.send(500).end();
-      } else if (data.length < 1) {
-        return res.send(404).end();
       } else {
         return res.json(data);
       }
@@ -102,8 +100,6 @@ module.exports = function(app, passport) {
     }, '-_id -__v', function(err, data) {
       if (err) {
         return res.send(500).end();
-      } else if (data.length < 1) {
-        return res.send(404).end();
       } else {
         return res.json(data);
       }
@@ -143,7 +139,7 @@ module.exports = function(app, passport) {
     }, function(err, data) {
       if (err) {
         return res.send(500).end();
-      } else if (data.length < 1) {
+      } else if (data === undefined) {
         return res.send(404).end();
       } else {
         return res.end(200).end();
@@ -169,8 +165,6 @@ module.exports = function(app, passport) {
     }, '-_id -__v', function(err, data) {
       if (err) {
         return res.send(500).end();
-      } else if (data.length < 1) {
-        return res.send(404).end();
       } else {
         return res.json(data);
       }
@@ -182,8 +176,6 @@ module.exports = function(app, passport) {
     }, '-_id -__v', function(err, data) {
       if (err) {
         return res.send(500).end();
-      } else if (data.length < 1) {
-        return res.send(404).end();
       } else {
         return res.json(data);
       }
@@ -193,8 +185,6 @@ module.exports = function(app, passport) {
     return Category.find({}, '-_id -__v', function(err, data) {
       if (err) {
         return res.send(500).end();
-      } else if (data.length < 1) {
-        return res.send(404).end();
       } else {
         return res.json(data);
       }
@@ -206,7 +196,7 @@ module.exports = function(app, passport) {
     }, '-_id -__v', function(err, data) {
       if (err) {
         return res.send(500).end();
-      } else if (data.length < 1) {
+      } else if (data === undefined) {
         return res.send(404).end();
       } else {
         return res.json(data);
@@ -237,7 +227,7 @@ module.exports = function(app, passport) {
     }, function(err, data) {
       if (err) {
         return res.send(500).end();
-      } else if (data.length < 1) {
+      } else if (data === undefined) {
         return res.send(404).end();
       } else {
         return res.send(200).end();
@@ -261,8 +251,6 @@ module.exports = function(app, passport) {
     return Menu.find({}, function(err, data) {
       if (err) {
         return res.send(500).end();
-      } else if (data.length < 1) {
-        return res.send(404).end();
       } else {
         return res.json(data);
       }
@@ -272,8 +260,6 @@ module.exports = function(app, passport) {
     return Page.find({}, 'route title', function(err, data) {
       if (err) {
         return res.send(500).end();
-      } else if (data.length < 1) {
-        return res.send(404).end();
       } else {
         return res.json(data);
       }
@@ -285,8 +271,6 @@ module.exports = function(app, passport) {
     }, function(err, data) {
       if (err) {
         return res.send(500).end();
-      } else if (data.length < 1) {
-        return res.send(404).end();
       } else {
         return res.json(data);
       }
@@ -398,7 +382,7 @@ module.exports = function(app, passport) {
       var mailOptions, smtpTransport, token;
       if (err) {
         return res.send(500).end();
-      } else if (data.length < 1) {
+      } else if (user.length < 1) {
         return res.send(404).end();
       } else {
         crypto.randomBytes(20, function(err, buf) {});

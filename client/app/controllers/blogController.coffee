@@ -1,7 +1,7 @@
 angular.module('Blog').controller 'BlogController', ($scope, $http, $routeParams, $location, $window, PostService) ->
 
   $scope.skip = 0
-  $$scope.limit = 7
+  $scope.limit = 7
 
   PostService.getBySlice($scope.skip, $scope.limit).success((data) ->
     $scope.posts = data
@@ -9,3 +9,4 @@ angular.module('Blog').controller 'BlogController', ($scope, $http, $routeParams
     console.log status
     console.log data
   )
+  return

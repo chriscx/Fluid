@@ -18,7 +18,7 @@ module.exports = (app, passport) ->
       delete data.password
       if err
        res.send(500).end()
-      else if data.length < 1
+      else if data is `undefined`
        res.send(404).end()
       else
         res.json data
@@ -31,7 +31,7 @@ module.exports = (app, passport) ->
         (err, data) ->
           if err
            res.send(500).end()
-          else if data.length < 1
+          else if data is `undefined`
            res.send(404).end()
           else
             res.send(200).end()
@@ -61,8 +61,6 @@ module.exports = (app, passport) ->
       .exec (err, data) ->
         if err
          res.send(500).end()
-        else if data.length < 1
-         res.send(404).end()
         else
           res.json data
 
@@ -70,8 +68,6 @@ module.exports = (app, passport) ->
     Post.findOne {'id': req.params.id}, '-_id -__v', (err, data) ->
       if err
        res.send(500).end()
-      else if data.length < 1
-       res.send(404).end()
       else
         res.json data
 
@@ -105,7 +101,7 @@ module.exports = (app, passport) ->
         (err, data) ->
           if err
            res.send(500).end()
-          else if data.length < 1
+          else if data is `undefined`
            res.send(404).end()
           else
             res.end(200).end()
@@ -123,8 +119,6 @@ module.exports = (app, passport) ->
     Post.find {'tags.name': req.params.name}, '-_id -__v', (err, data) ->
       if err
        res.send(500).end()
-      else if data.length < 1
-       res.send(404).end()
       else
         res.json data
 
@@ -132,8 +126,6 @@ module.exports = (app, passport) ->
     Post.find {'category': req.params.name}, '-_id -__v', (err, data) ->
       if err
        res.send(500).end()
-      else if data.length < 1
-       res.send(404).end()
       else
         res.json data
 
@@ -141,8 +133,6 @@ module.exports = (app, passport) ->
     Category.find {}, '-_id -__v', (err, data) ->
       if err
        res.send(500).end()
-      else if data.length < 1
-       res.send(404).end()
       else
         res.json data
 
@@ -150,7 +140,7 @@ module.exports = (app, passport) ->
     Category.findOne {name: req.params.name}, '-_id -__v', (err, data) ->
       if err
        res.send(500).end()
-      else if data.length < 1
+      else if data is `undefined`
        res.send(404).end()
       else
         res.json data
@@ -176,7 +166,7 @@ module.exports = (app, passport) ->
         (err, data) ->
           if err
            res.send(500).end()
-          else if data.length < 1
+          else if data is `undefined`
            res.send(404).end()
           else
             res.send(200).end()
@@ -194,8 +184,6 @@ module.exports = (app, passport) ->
     Menu.find {}, (err, data) ->
       if err
        res.send(500).end()
-      else if data.length < 1
-       res.send(404).end()
       else
         res.json data
 
@@ -203,8 +191,6 @@ module.exports = (app, passport) ->
     Page.find {}, 'route title',(err, data) ->
       if err
        res.send(500).end()
-      else if data.length < 1
-       res.send(404).end()
       else
         res.json data
 
@@ -212,8 +198,6 @@ module.exports = (app, passport) ->
     Page.find {route: req.params.route}, (err, data) ->
       if err
        res.send(500).end()
-      else if data.length < 1
-       res.send(404).end()
       else
         res.json data
 
@@ -285,7 +269,7 @@ module.exports = (app, passport) ->
     User.findOne username: req.user.username, (err, user) ->
       if err
        res.send(500).end()
-      else if data.length < 1
+      else if user.length < 1
        res.send(404).end()
       else
         crypto.randomBytes 20, (err, buf) ->

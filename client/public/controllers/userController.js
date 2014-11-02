@@ -6,7 +6,7 @@ angular.module('User').controller('UserController', function($scope, $http, $rou
         AuthenticationService.isLogged = true;
         $window.sessionStorage.token = data.token;
         $window.sessionStorage.user = data.profile;
-        $location.path('/admin/' + username);
+        $location.path('/admin');
         return console.log('connexion success');
       }).error(function(status, data) {
         console.log(status);
