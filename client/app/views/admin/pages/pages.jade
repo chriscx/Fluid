@@ -1,23 +1,10 @@
 .container
   .row
     .col-md-8.col-md-offset-2
+      legend Pages
       .row
         .col-md-12
-          form.form
-            .form-group
-              .input-group
-                input.form-control(ng-model='newPageTitle' type='text' id='input_add_page' placeholder='Add new page...')
-                span.input-group-btn
-                  button.btn.btn-default(type='button' ng-click='addNewPage(newPageTitle)') Add
-            .form-group
-              label Select Page
-              select.form-control(ng-model='selectedPage' ng-options='page.title for page in pages track by page.route' id='select_page')
-              label Edit Title
-              input.form-control(type='title' placeholder='Title' id='input_page_title' ng-model='selectedPage.title')
-              label Edit Route
-              input.form-control(type='route' placeholder='Route' id='input_page_route' ng-model='selectedPage.route')
-              label Edit Page
-              textarea.form-control(rows='15' placeholder="Write your post here..." id='textarea_body_page' ng-model='selectedPage.body')
-              button.btn.btn-default(type='button' ng-click='savePage(selectedPage)') Save
-              button.btn.btn-default(type='button' ng-click='deletePage(selectedPage)') Delete
-              button.btn.btn-default(type='button') Publish
+          a(href="/admin/pages/create") New Page
+          ul
+            li(ng-repeat='page in pageList') 
+              a(href="/admin/pages/edit/{{page.route}}") {{page.title}}

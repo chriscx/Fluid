@@ -1,20 +1,10 @@
 .container
   .row
     .col-md-8.col-md-offset-2
-      .row
-        .col-md-12
-          form.form
-            .form-group
-              .input-group
-                input.form-control(ng-model='newCategoryName' type='text' id='input_add_category' placeholder='Add new category...')
-                span.input-group-btn
-                  button.btn.btn-default(type='button' ng-click='addNewCategory(newCategoryName)') Add
-            .form-group
-              label Select Category
-              select.form-control(ng-model='selectedCategory' ng-options='category.name for category in categories track by category.name' id='select_category')
-              label Edit Category Name
-              input.form-control(type='text' placeholder='Category' id='input_category_name' ng-model='selectedCategory.name')
-              label Edit Category Description
-              input.form-control(type='text' placeholder='Description' ng-model='selectedCategory.description')
-              button.btn.btn-default(type='button' ng-click='saveCategory(selectedCategory)') Save
-              button.btn.btn-default(type='button' ng-click='deleteCategory(selectedCategory)') Delete
+      legend Category
+        p
+          a(href='#/admin/blog/posts') Posts
+        p
+          a(href='#/admin/pages') Pages
+        p
+          a(href='#/admin') Admin

@@ -5,6 +5,7 @@ angular.module('Blog').controller 'BlogController', ($scope, $http, $routeParams
 
   PostService.getBySlice($scope.skip, $scope.limit).success((data) ->
     $scope.posts = data
+    
   ).error((status, data) ->
     console.log status
     console.log data

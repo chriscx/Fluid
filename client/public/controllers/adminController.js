@@ -1,4 +1,22 @@
 angular.module('Admin').controller('AdminController', function($scope, $http, PostService, PageService, CategoryService) {
+  PostService.getList().success(function(data) {
+    return $scope.postList = data;
+  }).error(function(status, data) {
+    console.log(status);
+    return console.log(data);
+  });
+  CategoryService.getList().success(function(data) {
+    return $scope.categoryList = data;
+  }).error(function(status, data) {
+    console.log(status);
+    return console.log(data);
+  });
+  PageService.getList().success(function(data) {
+    return $scope.pageList = data;
+  }).error(function(status, data) {
+    console.log(status);
+    return console.log(data);
+  });
   $scope.createCategory = function(data) {
     return CategoryService.create(data).success(function(data) {
       return console.log('success');
