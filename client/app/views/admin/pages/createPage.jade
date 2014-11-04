@@ -6,11 +6,12 @@
           form.form
             .form-group
               label Edit Title
-              input.form-control(type='text' id='input_add_page' placeholder='Add new page...' ng-model='newPageTitle')
+              input.form-control(type='text' ng-model='page.title')
+            //- .form-group
+            //-   label Edit Route
+            //-   input.form-control(type='route' ng-model='page.route')
+            //- .form-group
+            //-   label Edit Page
+            //-   textarea.form-control(rows='15' ng-model='page.body')
             .form-group
-              label Edit Route
-              input.form-control(type='route' placeholder='Route' id='input_page_route' ng-model='selectedPage.route')
-            .form-group
-              label Edit Page
-              textarea.form-control(rows='15' placeholder="Write your post here..." id='textarea_body_page' ng-model='selectedPage.body')
-              button.btn.btn-default(type='button') Publish
+              button.btn.btn-default(type='button' ng-click='createPage(page)') Create

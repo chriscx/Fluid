@@ -1,18 +1,21 @@
 angular.module('Admin').controller('AdminController', function($scope, $http, PostService, PageService, CategoryService) {
   PostService.getList().success(function(data) {
-    return $scope.postList = data;
+    $scope.postList = data;
+    return $scope.postList.ident = $scope.postList.id;
   }).error(function(status, data) {
     console.log(status);
     return console.log(data);
   });
   CategoryService.getList().success(function(data) {
-    return $scope.categoryList = data;
+    $scope.categoryList = data;
+    return $scope.categoryList.ident = $scope.categoryList.name;
   }).error(function(status, data) {
     console.log(status);
     return console.log(data);
   });
   PageService.getList().success(function(data) {
-    return $scope.pageList = data;
+    $scope.pageList = data;
+    return $scope.pageList.ident = $scope.pageList.route;
   }).error(function(status, data) {
     console.log(status);
     return console.log(data);
@@ -81,9 +84,27 @@ angular.module('Admin').controller('AdminController', function($scope, $http, Po
       return console.log(data);
     });
   };
-  return $scope.deletePage = function(route) {
+  $scope.deletePage = function(route) {
     return PageService.remove(route).success(function(data) {
       return console.log('success');
+    }).error(function(status, data) {
+      console.log(status);
+      return console.log(data);
+    });
+  };
+  $scope.editPost = function(id) {
+    return PostService.get(id).success(function(data) {
+      $scope.PostToEdit = data;
+      return $location.path('/admin/blog/posts/edit/' + id);
+    }).error(function(status, data) {
+      console.log(status);
+      return console.log(data);
+    });
+  };
+  return $scope.editPage = function(route) {
+    return PageService.get(route).success(function(data) {
+      $scope.PageToEdit = data;
+      return $location.path('/admin/pages/edit/' + id);
     }).error(function(status, data) {
       console.log(status);
       return console.log(data);

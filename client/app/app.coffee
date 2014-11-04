@@ -30,42 +30,42 @@ FluidApp.config ['$locationProvider', '$routeProvider', ($locationProvider, $rou
       requiredLogin: false
   ).when('/admin',
     templateUrl: 'views/admin/settings.html'
-    controller: 'AdminController'
+    controller: 'AdminSettingsController'
     access:
       requiredLogin: true
   ).when('/admin/blog',
     templateUrl: 'views/admin/blog/blog.html'
-    controller: 'AdminController'
+    controller: 'AdminBlogController'
     access:
       requiredLogin: true
   ).when('/admin/blog/posts',
     templateUrl: 'views/admin/blog/posts.html'
-    controller: 'AdminController'
+    controller: 'AdminPostsController'
     access:
       requiredLogin: true
   ).when('/admin/blog/posts/create',
     templateUrl: 'views/admin/blog/createPost.html'
-    controller: 'AdminController'
+    controller: 'AdminPostsController'
     access:
       requiredLogin: true
   ).when('/admin/blog/posts/edit/:id',
     templateUrl: 'views/admin/blog/editPost.html'
-    controller: 'AdminController'
+    controller: 'AdminPostsController'
     access:
       requiredLogin: true
   ).when('/admin/pages',
     templateUrl: 'views/admin/pages/pages.html'
-    controller: 'AdminController'
+    controller: 'AdminPagesController'
     access:
       requiredLogin: true
   ).when('/admin/pages/create',
     templateUrl: 'views/admin/pages/createPage.html'
-    controller: 'AdminController'
+    controller: 'AdminPagesController'
     access:
       requiredLogin: true
   ).when('/admin/pages/edit/:route',
     templateUrl: 'views/admin/pages/editPage.html'
-    controller: 'AdminController'
+    controller: 'AdminPagesController'
     access:
       requiredLogin: true
   ).when('/admin/:user',

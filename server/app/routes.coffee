@@ -72,6 +72,9 @@ module.exports = (app, passport) ->
         res.json data
 
   app.post '/data/blog/post/', (req, res) ->
+
+    console.log req.body
+
     newPost = new Post(
       title: req.body.title
       author: req.body.author
@@ -87,8 +90,6 @@ module.exports = (app, passport) ->
     newPost.save (err) ->
       if err
        res.send(500).end()
-      else if data.length < 1
-       res.send(404).end()
       else
         res.send(200).end()
 
@@ -154,8 +155,6 @@ module.exports = (app, passport) ->
     newCategory.save (err) ->
       if err
        res.send(500).end()
-      else if data.length < 1
-       res.send(404).end()
       else
         res.send(200).end()
 
@@ -214,8 +213,6 @@ module.exports = (app, passport) ->
     newPage.create (err, data) ->
       if err
        res.send(500).end()
-      else if data.length < 1
-       res.send(404).end()
       else
         res.send(200).end()
 

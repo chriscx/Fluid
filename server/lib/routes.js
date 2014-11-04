@@ -107,6 +107,7 @@ module.exports = function(app, passport) {
   });
   app.post('/data/blog/post/', function(req, res) {
     var newPost;
+    console.log(req.body);
     newPost = new Post({
       title: req.body.title,
       author: req.body.author,
@@ -122,8 +123,6 @@ module.exports = function(app, passport) {
     return newPost.save(function(err) {
       if (err) {
         return res.send(500).end();
-      } else if (data.length < 1) {
-        return res.send(404).end();
       } else {
         return res.send(200).end();
       }
@@ -212,8 +211,6 @@ module.exports = function(app, passport) {
     return newCategory.save(function(err) {
       if (err) {
         return res.send(500).end();
-      } else if (data.length < 1) {
-        return res.send(404).end();
       } else {
         return res.send(200).end();
       }
@@ -290,8 +287,6 @@ module.exports = function(app, passport) {
     return newPage.create(function(err, data) {
       if (err) {
         return res.send(500).end();
-      } else if (data.length < 1) {
-        return res.send(404).end();
       } else {
         return res.send(200).end();
       }
