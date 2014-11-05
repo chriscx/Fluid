@@ -6,17 +6,19 @@ angular.module('User').controller 'UserController', ($scope, $http, $routeParams
       UserService.logIn(username, password).success((data) ->
         AuthenticationService.isLogged = true
         $window.sessionStorage.token = data.token
-        $window.sessionStorage.user = data.profile
+        $window.sessionStorage.username = data.user.username
+        $window.sessionStorage.firstname = data.user.firstname
+        $window.sessionStorage.lastname = data.user.lastname
         $location.path '/admin'
         console.log 'connexion success'
       ).error (status, data) ->
         console.log status
         console.log data
 
-  $scope.signUp = (username, password, email, firstname, lastname, country) ->
+  $scope.signUp = (username, password, email, firstname, lastname) ->
     console.log 'click signup'
     if username isnt `undefined` and password isnt `undefined` and email isnt `undefined`
-      UserService.signUp(username, password, email, firstname, lastname, country).success((data) ->
+      UserService.signUp(username, password, email, firstname, lastname).success((data) ->
         $location.path '/login'
         console.log 'registration success'
       ).error (status, data) ->

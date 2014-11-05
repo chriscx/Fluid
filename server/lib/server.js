@@ -73,6 +73,8 @@ passport.use("login", new LocalStrategy({
       console.log("Invalid Password");
       return done(null, false);
     }
+    console.log('user:');
+    console.log(user);
     return done(null, user);
   });
 }));

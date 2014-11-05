@@ -1,10 +1,13 @@
 angular.module('Admin').controller 'AdminPostsController', ($scope, $http, $routeParams, $location, $window, PostService, PageService, CategoryService) ->
 
+  console.log $window.sessionStorage.token
+  console.log $window.sessionStorage.username
+
   if $location.path().lastIndexOf('/admin/blog/posts/create', 0) == 0
 
     $scope.post =
       title: ''
-      author: $window.sessionStorage.user.username
+      author: $window.sessionStorage.username
       body: ''
       tags: []
       category: ''
@@ -38,6 +41,7 @@ angular.module('Admin').controller 'AdminPostsController', ($scope, $http, $rout
 
     PostService.getList().success((data) ->
       $scope.postList = data
+      console.log $scope.postList
     ).error (status, data) ->
       console.log status
       console.log data

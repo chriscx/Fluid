@@ -1,4 +1,4 @@
-var Category, Menu, Page, Post, User, crypto, expressJwt, jwt, nodemailer, path, utils;
+var Category, Menu, Page, Post, User, crypto, expressJwt, jwt, nodemailer, path, secret, utils;
 
 path = require('path');
 
@@ -22,8 +22,12 @@ Post = require('./models/blog').Post;
 
 Category = require('./models/category').Category;
 
+secret = 'this is my secret for jwt';
+
 module.exports = function(app, passport) {
-  app.get('/data/user/:user.json', function(req, res) {
+  app.get('/data/user/:user.json', expressJwt({
+    secret: secret
+  }, function(req, res) {
     console.log('GET user \'' + req.user.username + '\' JSON object');
     return User.findOne({
       username: req.user.username
@@ -37,8 +41,10 @@ module.exports = function(app, passport) {
         return res.json(data);
       }
     });
-  });
-  app.put('/data/user/:user.json', function(req, res) {
+  }));
+  app.put('/data/user/:user.json', expressJwt({
+    secret: secret
+  }, function(req, res) {
     console.log('PUT user \'' + req.user.username + '\' JSON object');
     return User.findOneAndUpdate({
       username: req.user.username
@@ -53,8 +59,10 @@ module.exports = function(app, passport) {
         return res.send(200).end();
       }
     });
-  });
-  app["delete"]('/data/user/:user.json', function(req, res) {
+  }));
+  app["delete"]('/data/user/:user.json', expressJwt({
+    secret: secret
+  }, function(req, res) {
     console.log('DEL user \'' + req.user.username + '\' JSON object');
     return User.remove({
       'username': req.user.username
@@ -67,19 +75,22 @@ module.exports = function(app, passport) {
         return res.send(200).end();
       }
     });
-  });
-  app.get('/data/blog/posts.json', function(req, res) {
-    console.log('GET playlist list JSON object');
+  }));
+  app.get('/data/blog/posts.json', expressJwt({
+    secret: secret
+  }, function(req, res) {
+    console.log('GET playlist list of ' + req.user.username(+' JSON object'));
     return Post.find({
       author: req.user.username
-    }, 'id title category -_id -__v', function(err, data) {
+    }, 'id title category', function(err, data) {
+      console.log(data);
       if (!err) {
         return res.json(data);
       } else {
         return res.send(404).end();
       }
     });
-  });
+  }));
   app.get('/data/blog/post/:s/:l/posts.json', function(req, res) {
     return Post.find({}, '-_id -__v', {
       'skip': req.params.s,
@@ -105,7 +116,9 @@ module.exports = function(app, passport) {
       }
     });
   });
-  app.post('/data/blog/post/', function(req, res) {
+  app.post('/data/blog/post/', expressJwt({
+    secret: secret
+  }, function(req, res) {
     var newPost;
     console.log(req.body);
     newPost = new Post({
@@ -122,13 +135,16 @@ module.exports = function(app, passport) {
     });
     return newPost.save(function(err) {
       if (err) {
+        console.log(err);
         return res.send(500).end();
       } else {
         return res.send(200).end();
       }
     });
-  });
-  app.put('/data/blog/post/:id.json', function(req, res) {
+  }));
+  app.put('/data/blog/post/:id.json', expressJwt({
+    secret: secret
+  }, function(req, res) {
     console.log('update -> ');
     console.log(req.body);
     return Post.findOneAndUpdate({
@@ -144,8 +160,10 @@ module.exports = function(app, passport) {
         return res.end(200).end();
       }
     });
-  });
-  app["delete"]('/data/blog/post/:id.json', function(req, res) {
+  }));
+  app["delete"]('/data/blog/post/:id.json', expressJwt({
+    secret: secret
+  }, function(req, res) {
     return Post.remove({
       'id': req.params.id
     }, function(err, data) {
@@ -157,7 +175,7 @@ module.exports = function(app, passport) {
         return res.send(200).end();
       }
     });
-  });
+  }));
   app.get('/data/blog/tag/:name/posts.json', function(req, res) {
     return Post.find({
       'tags.name': req.params.name
@@ -202,7 +220,9 @@ module.exports = function(app, passport) {
       }
     });
   });
-  app.post('/data/blog/category/', function(req, res) {
+  app.post('/data/blog/category/', expressJwt({
+    secret: secret
+  }, function(req, res) {
     var newCategory;
     newCategory = new Category({
       name: req.body.name,
@@ -215,8 +235,10 @@ module.exports = function(app, passport) {
         return res.send(200).end();
       }
     });
-  });
-  app.put('/data/blog/category/:name.json', function(req, res) {
+  }));
+  app.put('/data/blog/category/:name.json', expressJwt({
+    secret: secret
+  }, function(req, res) {
     return Category.findOneAndUpdate({
       'name': req.params.name
     }, req.body, {
@@ -230,8 +252,10 @@ module.exports = function(app, passport) {
         return res.send(200).end();
       }
     });
-  });
-  app["delete"]('/data/blog/category/:name.json', function(req, res) {
+  }));
+  app["delete"]('/data/blog/category/:name.json', expressJwt({
+    secret: secret
+  }, function(req, res) {
     return Category.remove({
       'name': req.params.name
     }, function(err, data) {
@@ -243,7 +267,7 @@ module.exports = function(app, passport) {
         return res.send(200).end();
       }
     });
-  });
+  }));
   app.get('/menu.json', function(req, res) {
     return Menu.find({}, function(err, data) {
       if (err) {
@@ -273,7 +297,9 @@ module.exports = function(app, passport) {
       }
     });
   });
-  app.post('/data/page/', function(req, res) {
+  app.post('/data/page/', expressJwt({
+    secret: secret
+  }, function(req, res) {
     var newPage;
     newPage = new Page({
       title: req.body.title,
@@ -291,8 +317,10 @@ module.exports = function(app, passport) {
         return res.send(200).end();
       }
     });
-  });
-  app.put('/data/page/:route.json', function(req, res) {
+  }));
+  app.put('/data/page/:route.json', expressJwt({
+    secret: secret
+  }, function(req, res) {
     console.log('update -> ');
     console.log(req.body);
     return Page.findOneAndUpdate({
@@ -308,8 +336,10 @@ module.exports = function(app, passport) {
         return res.send(200).end();
       }
     });
-  });
-  app["delete"]('/data/page/:route.json', function(req, res) {
+  }));
+  app["delete"]('/data/page/:route.json', expressJwt({
+    secret: secret
+  }, function(req, res) {
     return Page.remove({
       route: req.params.route
     }, function(err, data) {
@@ -321,7 +351,7 @@ module.exports = function(app, passport) {
         return res.send(200).end();
       }
     });
-  });
+  }));
   app.post('/signup', function(req, res, next) {
     console.log('POST signup');
     return passport.authenticate('signup', function(err, user, info) {
@@ -353,16 +383,19 @@ module.exports = function(app, passport) {
         if (err) {
           return next(err);
         }
-        console.log('user' + user);
+        console.log('user:');
+        console.log(user);
         profile = {
           username: user.username,
+          email: user.email,
           firstname: user.firstname,
-          lastname: user.lastname,
-          country: user.country
+          lastname: user.lastname
         };
         token = jwt.sign(profile, 'this is my secret for jwt', {
           expiresInMinutes: 60 * 5
         });
+        console.log('profile:');
+        console.log(profile);
         return res.json({
           token: token,
           user: profile
@@ -416,10 +449,12 @@ module.exports = function(app, passport) {
         console.log('user' + user);
         profile = {
           username: user.username,
+          email: user.email,
           firstname: user.firstname,
-          lastname: user.lastname,
-          country: user.country
+          lastname: user.lastname
         };
+        console.log('profile:');
+        console.log(profile);
         token = jwt.sign(profile, 'this is my secret for jwt', {
           expiresInMinutes: 60 * 5
         });

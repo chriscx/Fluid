@@ -1,8 +1,10 @@
 angular.module('Admin').controller('AdminPostsController', function($scope, $http, $routeParams, $location, $window, PostService, PageService, CategoryService) {
+  console.log($window.sessionStorage.token);
+  console.log($window.sessionStorage.username);
   if ($location.path().lastIndexOf('/admin/blog/posts/create', 0) === 0) {
     $scope.post = {
       title: '',
-      author: $window.sessionStorage.user.username,
+      author: $window.sessionStorage.username,
       body: '',
       tags: [],
       category: '',
@@ -35,7 +37,8 @@ angular.module('Admin').controller('AdminPostsController', function($scope, $htt
     };
   } else if ($location.path().lastIndexOf('/admin/blog/posts', 0) === 0) {
     PostService.getList().success(function(data) {
-      return $scope.postList = data;
+      $scope.postList = data;
+      return console.log($scope.postList);
     }).error(function(status, data) {
       console.log(status);
       return console.log(data);

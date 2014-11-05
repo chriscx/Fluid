@@ -7,7 +7,9 @@ PostSchema = new Schema
     type: String
     index:
       unique: true
-  author: String
+  author:
+    type: String
+    required: true
   id: String
   body: String
   tags: [name: String]
@@ -23,7 +25,7 @@ PostSchema = new Schema
     type: Date
     default: Date.now
   published: Boolean
-, strict: true 
+, strict: true
 
 Post = mongoose.model 'Post', PostSchema
 

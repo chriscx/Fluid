@@ -133,7 +133,7 @@ FluidApp.run(function($rootScope, $location, $window, AuthenticationService) {
       $location.path('/login');
     }
     if ((nextRoute === '/login' || nextRoute === '/signup') && AuthenticationService.isLogged) {
-      return $location.path('/u/' + $window.session.user.username);
+      return $location.path('/u/' + $window.sessionStorage.user.username);
     }
   });
 });

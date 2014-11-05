@@ -11,7 +11,10 @@ PostSchema = new Schema({
       unique: true
     }
   },
-  author: String,
+  author: {
+    type: String,
+    required: true
+  },
   id: String,
   body: String,
   tags: [

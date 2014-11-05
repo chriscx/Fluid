@@ -5,7 +5,9 @@ angular.module('User').controller('UserController', function($scope, $http, $rou
       return UserService.logIn(username, password).success(function(data) {
         AuthenticationService.isLogged = true;
         $window.sessionStorage.token = data.token;
-        $window.sessionStorage.user = data.profile;
+        $window.sessionStorage.username = data.user.username;
+        $window.sessionStorage.firstname = data.user.firstname;
+        $window.sessionStorage.lastname = data.user.lastname;
         $location.path('/admin');
         return console.log('connexion success');
       }).error(function(status, data) {
@@ -14,10 +16,10 @@ angular.module('User').controller('UserController', function($scope, $http, $rou
       });
     }
   };
-  $scope.signUp = function(username, password, email, firstname, lastname, country) {
+  $scope.signUp = function(username, password, email, firstname, lastname) {
     console.log('click signup');
     if (username !== undefined && password !== undefined && email !== undefined) {
-      return UserService.signUp(username, password, email, firstname, lastname, country).success(function(data) {
+      return UserService.signUp(username, password, email, firstname, lastname).success(function(data) {
         $location.path('/login');
         return console.log('registration success');
       }).error(function(status, data) {

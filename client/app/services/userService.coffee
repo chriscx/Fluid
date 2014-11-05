@@ -4,7 +4,15 @@ angular.module('User').factory 'UserService', ($http) ->
       username: username
       password: password
 
-  signUp: (username, password, email, firstname, lastname, country) ->
+  signUp: (username, password, email, firstname, lastname) ->
+    console.log
+      username: username
+      password: password
+      email: email
+      firstname: firstname
+      lastname: lastname
+      country: country
+
     $http.post '/signup',
       username: username
       password: password
