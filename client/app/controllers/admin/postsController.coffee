@@ -3,6 +3,8 @@ angular.module('Admin').controller 'AdminPostsController', ($scope, $http, $rout
   console.log $window.sessionStorage.token
   console.log $window.sessionStorage.username
 
+  $scope.postList = []
+
   if $location.path().lastIndexOf('/admin/blog/posts/create', 0) == 0
 
     $scope.post =
@@ -23,9 +25,16 @@ angular.module('Admin').controller 'AdminPostsController', ($scope, $http, $rout
 
   else if $location.path().lastIndexOf('/admin/blog/posts/edit', 0) == 0
 
-    PostService.get($location.path().slice(22)).success((data) ->
+    PostService.get($location.path().slice(23)).success((data) ->
       $scope.post = data
       $scope.post.ident = $scope.post.id
+    ).error (status, data) ->
+      console.log status
+      console.log data
+
+    CategoryService.getList().success((data) ->
+      console.log data
+      $scope.categories = data
     ).error (status, data) ->
       console.log status
       console.log data

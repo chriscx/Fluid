@@ -4,10 +4,9 @@
       legend Posts
       .row
         .col-md-12
-          legend 
-          a(href="#/admin/blog/posts/create") New Post
-      .row
-        .col-md-12
           ul
             li(ng-repeat='post in postList') 
-              a(href="#/admin/blog/posts/edit/{{post.id}}") {{Post.title}}
+              a(href="#/admin/blog/posts/edit/{{post.id}}") {{post.title}}
+      .row
+        .col-md-12
+          a(href="#/admin/blog/posts/create") New Post

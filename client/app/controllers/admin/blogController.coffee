@@ -1,5 +1,7 @@
 angular.module('Admin').controller 'AdminBlogController', ($scope, $http, $routeParams, $location, $window, PostService, PageService, CategoryService) ->
 
+  $scope.categoryList = []
+
   CategoryService.getList().success((data) ->
     $scope.categoryList = data
     $scope.categoryList.ident = $scope.categoryList.name
@@ -9,6 +11,9 @@ angular.module('Admin').controller 'AdminBlogController', ($scope, $http, $route
 
   $scope.createCategory = (data) ->
     CategoryService.create(data).success((data) ->
+      $scope.categoryList.concat data
+      console.log $scope.categoryList
+      $scope.newCategory.name = ''
       console.log 'success'
     ).error (status, data) ->
       console.log status

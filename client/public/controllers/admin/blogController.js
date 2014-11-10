@@ -1,4 +1,5 @@
 angular.module('Admin').controller('AdminBlogController', function($scope, $http, $routeParams, $location, $window, PostService, PageService, CategoryService) {
+  $scope.categoryList = [];
   CategoryService.getList().success(function(data) {
     $scope.categoryList = data;
     return $scope.categoryList.ident = $scope.categoryList.name;
@@ -8,6 +9,9 @@ angular.module('Admin').controller('AdminBlogController', function($scope, $http
   });
   $scope.createCategory = function(data) {
     return CategoryService.create(data).success(function(data) {
+      $scope.categoryList.concat(data);
+      console.log($scope.categoryList);
+      $scope.newCategory.name = '';
       return console.log('success');
     }).error(function(status, data) {
       console.log(status);

@@ -14,7 +14,7 @@ secret = 'this is my secret for jwt'
 
 module.exports = (app, passport) ->
 
-  app.get '/data/user/:user.json', expressJwt secret: secret, (req, res) ->
+  app.get '/data/user/:user.json', expressJwt({secret: secret}), (req, res) ->
     console.log('GET user \'' + req.user.username + '\' JSON object')
     User.findOne {username: req.user.username}, '-_id -__v', (err, data) ->
       delete data.password
@@ -25,7 +25,7 @@ module.exports = (app, passport) ->
       else
         res.json data
 
-  app.put '/data/user/:user.json', expressJwt secret: secret, (req, res) ->
+  app.put '/data/user/:user.json', expressJwt({secret: secret}), (req, res) ->
     console.log('PUT user \'' + req.user.username + '\' JSON object')
     User.findOneAndUpdate username: req.user.username,
       req.body,
@@ -38,7 +38,7 @@ module.exports = (app, passport) ->
           else
             res.send(200).end()
 
-  app.delete '/data/user/:user.json', expressJwt secret: secret, (req, res) ->
+  app.delete '/data/user/:user.json', expressJwt({secret: secret}), (req, res) ->
     console.log('DEL user \'' + req.user.username + '\' JSON object')
     User.remove {'username': req.user.username}, (err, data) ->
       if err
@@ -48,9 +48,8 @@ module.exports = (app, passport) ->
       else
         res.send(200).end()
 
-  app.get '/data/blog/posts.json', expressJwt secret: secret, (req, res) ->
-
-    console.log('GET playlist list of '+ req.user.username +' JSON object')
+  app.get '/data/blog/posts.json', expressJwt({secret: secret}), (req, res) ->
+    console.log('GET playlist list of \'' + req.user.username + '\' JSON object')
     Post.find {author: req.user.username}, 'id title category', (err, data) ->
       console.log data
       unless err
@@ -58,7 +57,7 @@ module.exports = (app, passport) ->
       else
        res.send(404).end()
 
-  app.get '/data/blog/post/:s/:l/posts.json', (req, res) ->
+  app.get '/data/blog/post/:s/:l/posts.json', expressJwt secret: secret, (req, res) ->
     Post.find {}, '-_id -__v', {'skip': req.params.s, 'limit': req.params.l}
       .sort
         creationDate: 'desc'
@@ -75,7 +74,7 @@ module.exports = (app, passport) ->
       else
         res.json data
 
-  app.post '/data/blog/post/', expressJwt secret: secret, (req, res) ->
+  app.post '/data/blog/post/', expressJwt({secret: secret}), (req, res) ->
 
     console.log req.body
 
@@ -98,7 +97,7 @@ module.exports = (app, passport) ->
       else
         res.send(200).end()
 
-  app.put '/data/blog/post/:id.json', expressJwt secret: secret, (req, res) ->
+  app.put '/data/blog/post/:id.json', expressJwt({secret: secret}), (req, res) ->
     console.log 'update -> '
     console.log req.body
     Post.findOneAndUpdate 'id': req.params.id,
@@ -112,7 +111,7 @@ module.exports = (app, passport) ->
           else
             res.end(200).end()
 
-  app.delete '/data/blog/post/:id.json', expressJwt secret: secret, (req, res) ->
+  app.delete '/data/blog/post/:id.json', expressJwt({secret: secret}), (req, res) ->
     Post.remove 'id': req.params.id, (err, data) ->
       if err
        res.send(500).end()
@@ -151,7 +150,7 @@ module.exports = (app, passport) ->
       else
         res.json data
 
-  app.post '/data/blog/category/', expressJwt secret: secret, (req, res) ->
+  app.post '/data/blog/category/', expressJwt({secret: secret}), (req, res) ->
     newCategory = new Category(
       name: req.body.name,
       description: req.body.description
@@ -163,7 +162,7 @@ module.exports = (app, passport) ->
       else
         res.send(200).end()
 
-  app.put '/data/blog/category/:name.json', expressJwt secret: secret, (req, res) ->
+  app.put '/data/blog/category/:name.json', expressJwt({secret: secret}), (req, res) ->
     Category.findOneAndUpdate 'name': req.params.name,
       req.body,
       new: true,
@@ -175,7 +174,7 @@ module.exports = (app, passport) ->
           else
             res.send(200).end()
 
-  app.delete '/data/blog/category/:name.json', expressJwt secret: secret, (req, res) ->
+  app.delete '/data/blog/category/:name.json', expressJwt({secret: secret}), (req, res) ->
     Category.remove 'name': req.params.name, (err, data) ->
       if err
        res.send(500).end()
@@ -205,7 +204,7 @@ module.exports = (app, passport) ->
       else
         res.json data
 
-  app.post '/data/page/', expressJwt secret: secret, (req, res) ->
+  app.post '/data/page/', expressJwt({secret: secret}), (req, res) ->
     newPage = new Page(
       title: req.body.title
       author: req.body.author
@@ -221,7 +220,7 @@ module.exports = (app, passport) ->
       else
         res.send(200).end()
 
-  app.put '/data/page/:route.json', expressJwt secret: secret, (req, res) ->
+  app.put '/data/page/:route.json', expressJwt({secret: secret}), (req, res) ->
     console.log 'update -> '
     console.log req.body
     Page.findOneAndUpdate route: req.params.route,
@@ -235,7 +234,7 @@ module.exports = (app, passport) ->
         else
           res.send(200).end()
 
-  app.delete '/data/page/:route.json', expressJwt secret: secret, (req, res) ->
+  app.delete '/data/page/:route.json', expressJwt({secret: secret}), (req, res) ->
     Page.remove {route: req.params.route}, (err, data) ->
       if err
        res.send(500).end()
@@ -261,12 +260,8 @@ module.exports = (app, passport) ->
       return res.send(401).end() unless user
       req.logIn user, (err) ->
         return next(err) if err
-        console.log 'user:'
-        console.log user
         profile = username: user.username, email: user.email, firstname: user.firstname, lastname: user.lastname
         token = jwt.sign(profile, 'this is my secret for jwt', { expiresInMinutes: 60*5 })
-        console.log 'profile:'
-        console.log profile
         res.json token: token, user: profile
     ) req, res, next
 

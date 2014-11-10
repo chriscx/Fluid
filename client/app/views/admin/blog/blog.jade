@@ -2,11 +2,29 @@
   .row
     .col-md-8.col-md-offset-2
       legend Category
-        p
-          a(href='#/admin/blog/posts') Posts
-        p
-          a(href='#/admin/blog/posts/create') Posts
-        p
-          a(href='#/admin/pages') Pages
-        p
-          a(href='#/admin') Admin
+      .row
+        .col-md-12
+          p
+            a(href='#/admin/blog/posts') Posts
+          p
+            a(href='#/admin/blog/posts/create') Posts
+          p
+            a(href='#/admin/pages') Pages
+          p
+            a(href='#/admin') Admin
+      .row
+        .col-md-12
+          form.form
+            .form-group
+              label New category
+              input.form-control(ng-model='newCategory.name' type='text')
+            .form-group
+              button.btn.btn-default(type='button' ng-click='createCategory(newCategory)') Create
+            .form-group
+              label Select Category
+              select.form-control(ng-model='category.name' ng-options='category.name for category in categoryList track by category.name')
+            .form-group
+              label Edit category
+              input.form-control(ng-model='category.newName' type='text')
+            .form-group
+              button.btn.btn-default(type='button' ng-click='saveCategory(category)') Save

@@ -130,7 +130,6 @@ app.use bodyParser.urlencoded(extended: true)
 
 app.use express.static "#{__dirname}/../../client/public"
 
-app.use '/data/user', expressJwt secret: 'this is my secret for jwt'
 app.use (err, req, res, next) ->
   res.send 401, "invalid token..."  if err.name is "UnauthorizedError"
 

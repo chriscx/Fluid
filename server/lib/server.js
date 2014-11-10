@@ -145,10 +145,6 @@ app.use(bodyParser.urlencoded({
 
 app.use(express["static"]("" + __dirname + "/../../client/public"));
 
-app.use('/data/user', expressJwt({
-  secret: 'this is my secret for jwt'
-}));
-
 app.use(function(err, req, res, next) {
   if (err.name === "UnauthorizedError") {
     return res.send(401, "invalid token...");

@@ -5,7 +5,16 @@ mongoose = require('mongoose');
 Schema = mongoose.Schema;
 
 CategorySchema = new Schema({
-  name: String,
+  id: {
+    type: String,
+    index: {
+      unique: true
+    }
+  },
+  name: String({
+    type: String,
+    required: true
+  }),
   description: String
 }, {
   strict: true
