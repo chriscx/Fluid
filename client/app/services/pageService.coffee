@@ -8,7 +8,7 @@ angular.module('Page').factory 'PageService', ($http) ->
   remove: (route) ->
     $http.delete '/data/page/' + route + '.json'
 
-  create: (route, data) ->
+  create: (data) ->
     $http.post '/data/page/', data
 
   save: (route, data) ->

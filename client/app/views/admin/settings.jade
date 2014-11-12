@@ -9,3 +9,23 @@
             a(href='#/admin/pages') Pages
           p
             a(href='#/admin') Admin
+      .row
+        .col-md-12
+          form.form
+            .form-group
+              label New menu item
+              input.form-control(ng-model='newItem.name' type='text')
+            .form-group
+              button.btn.btn-default(type='button' ng-click='createMenuItem(newItem)') Create
+            .form-group
+              label Select menu item
+              select.form-control(ng-model='selectedItem' ng-options='item.name for item in menuList track by item.id')
+            .form-group
+              label Edit name
+              input.form-control(ng-model='selectedItem.name' type='text')
+            .form-group
+              label Edit route
+              input.form-control(ng-model='selectedItem.route' type='text')
+            .form-group
+              button.btn.btn-default(type='button' ng-click='saveMenuItem(selectedItem)') Save
+              button.btn.btn-default(type='button' ng-click='deleteMenuItem(selectedItem)') Save

@@ -9,7 +9,7 @@ angular.module('Page').factory('PageService', function($http) {
     remove: function(route) {
       return $http["delete"]('/data/page/' + route + '.json');
     },
-    create: function(route, data) {
+    create: function(data) {
       return $http.post('/data/page/', data);
     },
     save: function(route, data) {

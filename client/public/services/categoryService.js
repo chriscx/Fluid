@@ -3,17 +3,17 @@ angular.module('Blog').factory('CategoryService', function($http) {
     getList: function() {
       return $http.get('/data/blog/categories.json');
     },
-    get: function(name) {
-      return $http.get('/data/blog/category/' + name + '.json');
+    get: function(id) {
+      return $http.get('/data/blog/category/' + id + '.json');
     },
-    remove: function(name) {
-      return $http["delete"]('/data/blog/category/' + name + '.json');
+    remove: function(id) {
+      return $http["delete"]('/data/blog/category/' + id + '.json');
     },
-    create: function(data) {
-      return $http.post('/data/blog/category/', data);
+    create: function(id) {
+      return $http.post('/data/blog/category/', id);
     },
-    save: function(name, data) {
-      return $http.put('/data/blog/category/' + name + '.json', data);
+    save: function(id, data) {
+      return $http.put('/data/blog/category/' + id + '.json', data);
     }
   };
 });

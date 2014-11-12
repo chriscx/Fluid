@@ -18,6 +18,7 @@ describe 'Menu', ->
 
   beforeEach (done) ->
     menu = new Menu
+      id: 'menu1'
       name: 'menu1'
       route: 'route1'
       description: 'description...'

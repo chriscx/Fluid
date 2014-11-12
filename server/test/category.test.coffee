@@ -18,6 +18,7 @@ describe 'Category', ->
 
   beforeEach (done) ->
     category = new Category
+      id: 'category1'
       name: 'category1'
       description: 'description...'
 

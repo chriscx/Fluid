@@ -4,7 +4,7 @@ angular.module('Admin').controller 'AdminPagesController', ($scope, $http, $rout
 
     $scope.page =
       title: ''
-      author: $window.sessionStorage.user.username
+      author: $window.sessionStorage.username
       route: ''
       body: ''
       published: true
@@ -18,14 +18,16 @@ angular.module('Admin').controller 'AdminPagesController', ($scope, $http, $rout
 
   else if $location.path().lastIndexOf('/admin/pages/edit', 0) == 0
 
-    PageService.get($location.path().slice(17)).success((data) ->
+    PageService.get($location.path().slice(18)).success((data) ->
       $scope.page = data
       $scope.page.ident = $scope.page.route
+      console.log $scope.page
     ).error (status, data) ->
       console.log status
       console.log data
 
     $scope.savePage = (route, data) ->
+      delete data.ident
       PageService.save(route, data).success((data) ->
         console.log 'success'
       ).error (status, data) ->
@@ -36,7 +38,6 @@ angular.module('Admin').controller 'AdminPagesController', ($scope, $http, $rout
 
     PageService.getList().success((data) ->
       $scope.pageList = data
-      $scope.pageList.ident = $scope.pageList.route
     ).error (status, data) ->
       console.log status
       console.log data

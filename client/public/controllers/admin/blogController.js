@@ -1,17 +1,23 @@
 angular.module('Admin').controller('AdminBlogController', function($scope, $http, $routeParams, $location, $window, PostService, PageService, CategoryService) {
   $scope.categoryList = [];
+  $scope.newCategory = {
+    id: '',
+    name: ''
+  };
   CategoryService.getList().success(function(data) {
-    $scope.categoryList = data;
-    return $scope.categoryList.ident = $scope.categoryList.name;
+    return $scope.categoryList = data;
   }).error(function(status, data) {
     console.log(status);
     return console.log(data);
   });
   $scope.createCategory = function(data) {
-    return CategoryService.create(data).success(function(data) {
-      $scope.categoryList.concat(data);
-      console.log($scope.categoryList);
-      $scope.newCategory.name = '';
+    return CategoryService.create(data).success(function(res) {
+      CategoryService.getList().success(function(data) {
+        return $scope.categoryList = data;
+      }).error(function(status, data) {
+        console.log(status);
+        return console.log(data);
+      });
       return console.log('success');
     }).error(function(status, data) {
       console.log(status);

@@ -141,8 +141,8 @@ module.exports = (app, passport) ->
       else
         res.json data
 
-  app.get '/data/blog/category/:name.json', (req, res) ->
-    Category.findOne {name: req.params.name}, '-_id -__v', (err, data) ->
+  app.get '/data/blog/category/:id.json', (req, res) ->
+    Category.findOne {id: req.params.id}, '-_id -__v', (err, data) ->
       if err
        res.send(500).end()
       else if data is `undefined`
@@ -152,6 +152,7 @@ module.exports = (app, passport) ->
 
   app.post '/data/blog/category/', expressJwt({secret: secret}), (req, res) ->
     newCategory = new Category(
+      id: utils.slugify req.body.name
       name: req.body.name,
       description: req.body.description
     )
@@ -162,8 +163,8 @@ module.exports = (app, passport) ->
       else
         res.send(200).end()
 
-  app.put '/data/blog/category/:name.json', expressJwt({secret: secret}), (req, res) ->
-    Category.findOneAndUpdate 'name': req.params.name,
+  app.put '/data/blog/category/:id.json', expressJwt({secret: secret}), (req, res) ->
+    Category.findOneAndUpdate {id: req.params.id},
       req.body,
       new: true,
         (err, data) ->
@@ -174,8 +175,8 @@ module.exports = (app, passport) ->
           else
             res.send(200).end()
 
-  app.delete '/data/blog/category/:name.json', expressJwt({secret: secret}), (req, res) ->
-    Category.remove 'name': req.params.name, (err, data) ->
+  app.delete '/data/blog/category/:id.json', expressJwt({secret: secret}), (req, res) ->
+    Category.remove {id: req.params.id}, (err, data) ->
       if err
        res.send(500).end()
       else if data.length < 1
@@ -183,22 +184,63 @@ module.exports = (app, passport) ->
       else
         res.send(200).end()
 
-  app.get '/menu.json', (req, res) ->
+  app.get '/data/menu.json', (req, res) ->
     Menu.find {}, (err, data) ->
       if err
        res.send(500).end()
       else
         res.json data
 
+  app.get '/data/menu/:id.json', (req, res) ->
+    Menu.findOne {id: req.params.id}, (err, data) ->
+      if err
+       res.send(500).end()
+      else
+        res.json data
+
+  app.post '/data/menu/', (req, res) ->
+    # if route is updated, the menu link will be void
+    newMenu = new Menu(
+      id: utils.slugify req.body.name
+      name: req.body.name
+      route: req.body.name
+      description: req.body.description
+    )
+
+    Menu.save (err) ->
+      if err
+       res.send(500).end()
+      else
+        res.send(200).end()
+
+  app.put '/data/menu/:id.json', (req, res) ->
+    Menu.findOneAndUpdate {id: req.params.id},
+    req.body,
+    new: true,
+      (err, data) ->
+        if err
+         res.send(500).end()
+        else
+          res.send(200).end()
+
+  app.delete '/data/menu/:id.json', (req, res) ->
+    Menu.remove {id: req.params.id}, (err, data) ->
+      if err
+       res.send(500).end()
+      else if data.length < 1
+       res.send(404).end()
+      else
+        res.send(200).end()
+
   app.get '/data/pages.json', (req, res) ->
-    Page.find {}, 'route title',(err, data) ->
+    Page.find {}, 'route title', (err, data) ->
       if err
        res.send(500).end()
       else
         res.json data
 
   app.get '/data/page/:route.json', (req, res) ->
-    Page.find {route: req.params.route}, (err, data) ->
+    Page.findOne {route: req.params.route}, '-_id -__v', (err, data) ->
       if err
        res.send(500).end()
       else
@@ -214,7 +256,7 @@ module.exports = (app, passport) ->
       updateDate: null
       published: req.body.published
     )
-    newPage.create (err, data) ->
+    newPage.save (err, data) ->
       if err
        res.send(500).end()
       else
@@ -229,7 +271,7 @@ module.exports = (app, passport) ->
       (err, data) ->
         if err
          res.send(500).end()
-        else if data.length < 1
+        else if data is `undefined`
          res.send(404).end()
         else
           res.send(200).end()

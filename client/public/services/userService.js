@@ -7,21 +7,12 @@ angular.module('User').factory('UserService', function($http) {
       });
     },
     signUp: function(username, password, email, firstname, lastname) {
-      console.log({
-        username: username,
-        password: password,
-        email: email,
-        firstname: firstname,
-        lastname: lastname,
-        country: country
-      });
       return $http.post('/signup', {
         username: username,
         password: password,
         email: email,
         firstname: firstname,
-        lastname: lastname,
-        country: country
+        lastname: lastname
       });
     },
     forgotPassword: function(email) {

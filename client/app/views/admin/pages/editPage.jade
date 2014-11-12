@@ -14,4 +14,5 @@
               label Edit Page
               textarea.form-control(rows='15' ng-model='page.body')
             .form-group
-              button.btn.btn-default(type='button' ng-click='savePage(page)') Publish
+              button.btn.btn-default(type='button' ng-click='savePage(page.ident, page)') Publish
+              button.btn.btn-default(type='button' ng-click='deletePage(page)') Delete

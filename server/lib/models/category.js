@@ -11,10 +11,10 @@ CategorySchema = new Schema({
       unique: true
     }
   },
-  name: String({
+  name: {
     type: String,
     required: true
-  }),
+  },
   description: String
 }, {
   strict: true

@@ -4,7 +4,9 @@
       legend Pages
       .row
         .col-md-12
-          a(href="/admin/pages/create") New Page
           ul
             li(ng-repeat='page in pageList') 
               a(href="/admin/pages/edit/{{page.route}}") {{page.title}}
+      .row
+        .col-md-12
+          a(href="/admin/pages/create") New Page

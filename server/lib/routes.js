@@ -209,9 +209,9 @@ module.exports = function(app, passport) {
       }
     });
   });
-  app.get('/data/blog/category/:name.json', function(req, res) {
+  app.get('/data/blog/category/:id.json', function(req, res) {
     return Category.findOne({
-      name: req.params.name
+      id: req.params.id
     }, '-_id -__v', function(err, data) {
       if (err) {
         return res.send(500).end();
@@ -227,6 +227,7 @@ module.exports = function(app, passport) {
   }), function(req, res) {
     var newCategory;
     newCategory = new Category({
+      id: utils.slugify(req.body.name),
       name: req.body.name,
       description: req.body.description
     });
@@ -238,11 +239,11 @@ module.exports = function(app, passport) {
       }
     });
   });
-  app.put('/data/blog/category/:name.json', expressJwt({
+  app.put('/data/blog/category/:id.json', expressJwt({
     secret: secret
   }), function(req, res) {
     return Category.findOneAndUpdate({
-      'name': req.params.name
+      id: req.params.id
     }, req.body, {
       "new": true
     }, function(err, data) {
@@ -255,11 +256,11 @@ module.exports = function(app, passport) {
       }
     });
   });
-  app["delete"]('/data/blog/category/:name.json', expressJwt({
+  app["delete"]('/data/blog/category/:id.json', expressJwt({
     secret: secret
   }), function(req, res) {
     return Category.remove({
-      'name': req.params.name
+      id: req.params.id
     }, function(err, data) {
       if (err) {
         return res.send(500).end();
@@ -270,12 +271,65 @@ module.exports = function(app, passport) {
       }
     });
   });
-  app.get('/menu.json', function(req, res) {
+  app.get('/data/menu.json', function(req, res) {
     return Menu.find({}, function(err, data) {
       if (err) {
         return res.send(500).end();
       } else {
         return res.json(data);
+      }
+    });
+  });
+  app.get('/data/menu/:id.json', function(req, res) {
+    return Menu.findOne({
+      id: req.params.id
+    }, function(err, data) {
+      if (err) {
+        return res.send(500).end();
+      } else {
+        return res.json(data);
+      }
+    });
+  });
+  app.post('/data/menu/', function(req, res) {
+    var newMenu;
+    newMenu = new Menu({
+      id: utils.slugify(req.body.name),
+      name: req.body.name,
+      route: req.body.name,
+      description: req.body.description
+    });
+    return Menu.save(function(err) {
+      if (err) {
+        return res.send(500).end();
+      } else {
+        return res.send(200).end();
+      }
+    });
+  });
+  app.put('/data/menu/:id.json', function(req, res) {
+    return Menu.findOneAndUpdate({
+      id: req.params.id
+    }, req.body, {
+      "new": true
+    }, function(err, data) {
+      if (err) {
+        return res.send(500).end();
+      } else {
+        return res.send(200).end();
+      }
+    });
+  });
+  app["delete"]('/data/menu/:id.json', function(req, res) {
+    return Menu.remove({
+      id: req.params.id
+    }, function(err, data) {
+      if (err) {
+        return res.send(500).end();
+      } else if (data.length < 1) {
+        return res.send(404).end();
+      } else {
+        return res.send(200).end();
       }
     });
   });
@@ -289,9 +343,9 @@ module.exports = function(app, passport) {
     });
   });
   app.get('/data/page/:route.json', function(req, res) {
-    return Page.find({
+    return Page.findOne({
       route: req.params.route
-    }, function(err, data) {
+    }, '-_id -__v', function(err, data) {
       if (err) {
         return res.send(500).end();
       } else {
@@ -312,7 +366,7 @@ module.exports = function(app, passport) {
       updateDate: null,
       published: req.body.published
     });
-    return newPage.create(function(err, data) {
+    return newPage.save(function(err, data) {
       if (err) {
         return res.send(500).end();
       } else {
@@ -332,7 +386,7 @@ module.exports = function(app, passport) {
     }, function(err, data) {
       if (err) {
         return res.send(500).end();
-      } else if (data.length < 1) {
+      } else if (data === undefined) {
         return res.send(404).end();
       } else {
         return res.send(200).end();

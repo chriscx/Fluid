@@ -7,7 +7,7 @@ CategorySchema = new Schema
     type: String
     index:
       unique: true
-  name: String
+  name:
     type: String
     required: true
   description: String
