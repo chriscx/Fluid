@@ -299,7 +299,7 @@ module.exports = function(app, passport) {
       route: req.body.name,
       description: req.body.description
     });
-    return Menu.save(function(err) {
+    return newMenu.save(function(err) {
       if (err) {
         return res.send(500).end();
       } else {

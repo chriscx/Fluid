@@ -16,7 +16,10 @@ MenuSchema = new Schema({
     type: String,
     required: true
   },
-  route: String,
+  route: {
+    type: String,
+    required: true
+  },
   description: String
 }, {
   strict: true

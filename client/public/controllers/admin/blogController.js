@@ -24,8 +24,8 @@ angular.module('Admin').controller('AdminBlogController', function($scope, $http
       return console.log(data);
     });
   };
-  $scope.saveCategory = function(name, data) {
-    return CategoryService.save(name, data).success(function(data) {
+  $scope.saveCategory = function(data) {
+    return CategoryService.save(data.id, data).success(function(data) {
       return console.log('success');
     }).error(function(status, data) {
       console.log(status);

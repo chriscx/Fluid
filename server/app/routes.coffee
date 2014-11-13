@@ -207,7 +207,7 @@ module.exports = (app, passport) ->
       description: req.body.description
     )
 
-    Menu.save (err) ->
+    newMenu.save (err) ->
       if err
        res.send(500).end()
       else

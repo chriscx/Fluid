@@ -16,6 +16,9 @@
               label New menu item
               input.form-control(ng-model='newItem.name' type='text')
             .form-group
+              label
+              input.form-control(ng-model='newItem.route' type='text')
+            .form-group
               button.btn.btn-default(type='button' ng-click='createMenuItem(newItem)') Create
             .form-group
               label Select menu item

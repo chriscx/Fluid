@@ -21,8 +21,8 @@ angular.module('Admin').controller 'AdminBlogController', ($scope, $http, $route
       console.log status
       console.log data
 
-  $scope.saveCategory = (name, data) ->
-    CategoryService.save(name, data).success((data) ->
+  $scope.saveCategory = (data) ->
+    CategoryService.save(data.id, data).success((data) ->
       console.log 'success'
     ).error (status, data) ->
       console.log status
