@@ -129,11 +129,13 @@ FluidApp.config(function($httpProvider) {
 
 FluidApp.run(function($rootScope, $location, $window, AuthenticationService) {
   return $rootScope.$on('$routeChangeStart', function(event, nextRoute, currentRoute) {
+    var _ref;
     if (nextRoute.access.requiredLogin && !AuthenticationService.isLogged) {
       $location.path('/login');
     }
-    if ((nextRoute === '/login' || nextRoute === '/signup') && AuthenticationService.isLogged) {
-      return $location.path('/u/' + $window.sessionStorage.user.username);
+    console.log(nextRoute);
+    if (((_ref = nextRoute.originalPath) === '/login' || _ref === '/signup') && AuthenticationService.isLogged) {
+      return $location.path('/admin/' + $window.sessionStorage.username);
     }
   });
 });
