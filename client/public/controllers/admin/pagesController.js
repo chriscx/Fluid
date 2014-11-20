@@ -1,4 +1,8 @@
 angular.module('Admin').controller('AdminPagesController', function($scope, $http, $routeParams, $location, $window, PostService, PageService, CategoryService) {
+  $scope.isActive = function(route) {
+    $scope.path = $location.path();
+    return $location.path() === route;
+  };
   if ($location.path().lastIndexOf('/admin/pages/create', 0) === 0) {
     $scope.page = {
       title: '',
@@ -7,9 +11,10 @@ angular.module('Admin').controller('AdminPagesController', function($scope, $htt
       body: '',
       published: true
     };
-    return $scope.createPage = function(data) {
-      return PageService.create(data).success(function(data) {
-        return console.log('success');
+    return $scope.createPage = function(page) {
+      return PageService.create(page).success(function(data) {
+        console.log('success');
+        return $location.path('/admin/pages');
       }).error(function(status, data) {
         console.log(status);
         return console.log(data);
@@ -24,30 +29,31 @@ angular.module('Admin').controller('AdminPagesController', function($scope, $htt
       console.log(status);
       return console.log(data);
     });
-    return $scope.savePage = function(route, data) {
-      delete data.ident;
-      return PageService.save(route, data).success(function(data) {
-        return console.log('success');
+    $scope.savePage = function(page) {
+      return PageService.save(page.ident, page).success(function(data) {
+        console.log('success');
+        return $location.path('/admin/pages');
+      }).error(function(status, data) {
+        console.log(status);
+        return console.log(data);
+      });
+    };
+    return $scope.deletePage = function(page) {
+      return PageService.remove(page.ident).success(function(data) {
+        console.log('success');
+        return $location.path('/admin/pages');
       }).error(function(status, data) {
         console.log(status);
         return console.log(data);
       });
     };
   } else if ($location.path().lastIndexOf('/admin/pages', 0) === 0) {
-    PageService.getList().success(function(data) {
+    return PageService.getList().success(function(data) {
       return $scope.pageList = data;
     }).error(function(status, data) {
       console.log(status);
       return console.log(data);
     });
-    return $scope.deletePage = function(route) {
-      return PageService.remove(route).success(function(data) {
-        return console.log('success');
-      }).error(function(status, data) {
-        console.log(status);
-        return console.log(data);
-      });
-    };
   } else {
     return $location.path('/admin');
   }

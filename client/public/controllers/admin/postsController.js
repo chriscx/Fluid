@@ -1,6 +1,8 @@
 angular.module('Admin').controller('AdminPostsController', function($scope, $http, $routeParams, $location, $window, PostService, PageService, CategoryService) {
-  console.log($window.sessionStorage.token);
-  console.log($window.sessionStorage.username);
+  $scope.isActive = function(route) {
+    $scope.path = $location.path();
+    return $location.path() === route;
+  };
   $scope.postList = [];
   if ($location.path().lastIndexOf('/admin/blog/posts/create', 0) === 0) {
     $scope.post = {
@@ -12,9 +14,10 @@ angular.module('Admin').controller('AdminPostsController', function($scope, $htt
       comments: [],
       published: true
     };
-    return $scope.createPost = function(data) {
-      return PostService.create(data).success(function(data) {
-        return console.log('success');
+    return $scope.createPost = function(post) {
+      return PostService.create(post).success(function(data) {
+        console.log('success');
+        return $location.path('/admin/blog/posts');
       }).error(function(status, data) {
         console.log(status);
         return console.log(data);
@@ -35,30 +38,32 @@ angular.module('Admin').controller('AdminPostsController', function($scope, $htt
       console.log(status);
       return console.log(data);
     });
-    return $scope.savePost = function(id, data) {
-      return PostService.save(id, data).success(function(data) {
-        return console.log('success');
+    $scope.savePost = function(post) {
+      return PostService.save(post.ident, post).success(function(data) {
+        console.log('success');
+        return $location.path('/admin/blog/posts');
+      }).error(function(status, data) {
+        console.log(status);
+        return console.log(data);
+      });
+    };
+    return $scope.deletePost = function(post) {
+      return PostService.remove(post.ident).success(function(data) {
+        console.log('success');
+        return $location.path('/admin/blog/posts');
       }).error(function(status, data) {
         console.log(status);
         return console.log(data);
       });
     };
   } else if ($location.path().lastIndexOf('/admin/blog/posts', 0) === 0) {
-    PostService.getList().success(function(data) {
+    return PostService.getList().success(function(data) {
       $scope.postList = data;
       return console.log($scope.postList);
     }).error(function(status, data) {
       console.log(status);
       return console.log(data);
     });
-    return $scope.deletePost = function(id) {
-      return PostService.remove(id).success(function(data) {
-        return $console.log('success');
-      }).error(function(status, data) {
-        console.log(status);
-        return console.log(data);
-      });
-    };
   } else {
     return $location.path('/admin');
   }

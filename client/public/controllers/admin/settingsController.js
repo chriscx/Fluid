@@ -5,8 +5,12 @@ angular.module('Admin').controller('AdminSettingsController', function($scope, $
     name: '',
     route: ''
   };
+  $scope.isActive = function(route) {
+    $scope.path = $location.path();
+    return $location.path() === route;
+  };
   MenuService.getList().success(function(data) {
-    $scope.categoryList = data;
+    $scope.menuList = data;
     return console.log('success');
   }).error(function(status, data) {
     console.log(status);
@@ -16,7 +20,7 @@ angular.module('Admin').controller('AdminSettingsController', function($scope, $
     console.log('click');
     return MenuService.create(data).success(function(res) {
       MenuService.getList().success(function(data) {
-        return $scope.categoryList = data;
+        return $scope.menuList = data;
       }).error(function(status, data) {
         console.log(status);
         return console.log(data);
@@ -35,8 +39,8 @@ angular.module('Admin').controller('AdminSettingsController', function($scope, $
       return console.log(data);
     });
   };
-  return $scope.deleteMenuItem = function(name) {
-    return MenuService.remove(name).success(function(data) {
+  return $scope.deleteMenuItem = function(data) {
+    return MenuService.remove(data.id).success(function(data) {
       return console.log('success');
     }).error(function(status, data) {
       console.log(status);

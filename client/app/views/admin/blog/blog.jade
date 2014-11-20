@@ -1,17 +1,8 @@
+include ../menu
 .container
   .row
     .col-md-8.col-md-offset-2
       legend Category
-      .row
-        .col-md-12
-          p
-            a(href='#/admin/blog/posts') Posts
-          p
-            a(href='#/admin/blog/posts/create') Posts
-          p
-            a(href='#/admin/pages') Pages
-          p
-            a(href='#/admin') Admin
       .row
         .col-md-12
           form.form
@@ -28,4 +19,4 @@
               input.form-control(ng-model='selectedCategory.name' type='text')
             .form-group
               button.btn.btn-default(type='button' ng-click='saveCategory(selectedCategory)') Save
-              button.btn.btn-default(type='button' ng-click='deleteCategory(selectedCategory)') Save
+              button.btn.btn-default(type='button' ng-click='deleteCategory(selectedCategory)') Delete

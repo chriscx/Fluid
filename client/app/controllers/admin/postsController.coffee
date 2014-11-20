@@ -1,7 +1,8 @@
 angular.module('Admin').controller 'AdminPostsController', ($scope, $http, $routeParams, $location, $window, PostService, PageService, CategoryService) ->
 
-  console.log $window.sessionStorage.token
-  console.log $window.sessionStorage.username
+  $scope.isActive = (route) ->
+    $scope.path = $location.path()
+    $location.path() == route
 
   $scope.postList = []
 
@@ -16,9 +17,10 @@ angular.module('Admin').controller 'AdminPostsController', ($scope, $http, $rout
       comments: []
       published: true
 
-    $scope.createPost = (data) ->
-      PostService.create(data).success((data) ->
+    $scope.createPost = (post) ->
+      PostService.create(post).success((data) ->
         console.log 'success'
+        $location.path '/admin/blog/posts'
       ).error (status, data) ->
         console.log status
         console.log data
@@ -39,9 +41,18 @@ angular.module('Admin').controller 'AdminPostsController', ($scope, $http, $rout
       console.log status
       console.log data
 
-    $scope.savePost = (id, data) ->
-      PostService.save(id, data).success((data) ->
+    $scope.savePost = (post) ->
+      PostService.save(post.ident, post).success((data) ->
         console.log 'success'
+        $location.path '/admin/blog/posts'
+      ).error (status, data) ->
+        console.log status
+        console.log data
+
+    $scope.deletePost = (post) ->
+      PostService.remove(post.ident).success((data) ->
+        console.log 'success'
+        $location.path '/admin/blog/posts'
       ).error (status, data) ->
         console.log status
         console.log data
@@ -54,13 +65,6 @@ angular.module('Admin').controller 'AdminPostsController', ($scope, $http, $rout
     ).error (status, data) ->
       console.log status
       console.log data
-
-    $scope.deletePost = (id) ->
-      PostService.remove(id).success((data) ->
-        $console.log 'success'
-      ).error (status, data) ->
-        console.log status
-        console.log data
 
   else
     $location.path '/admin'

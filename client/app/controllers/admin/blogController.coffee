@@ -3,14 +3,20 @@ angular.module('Admin').controller 'AdminBlogController', ($scope, $http, $route
   $scope.categoryList = []
   $scope.newCategory = {id: '', name: ''}
 
+  $scope.isActive = (route) ->
+    console.log 'path: ' + $location.path()
+    console.log 'route: ' + route
+    $scope.path = $location.path()
+    $location.path() == route
+
   CategoryService.getList().success((data) ->
     $scope.categoryList = data
   ).error (status, data) ->
     console.log status
     console.log data
 
-  $scope.createCategory = (data) ->
-    CategoryService.create(data).success((res) ->
+  $scope.createCategory = (cat) ->
+    CategoryService.create(cat).success((res) ->
       CategoryService.getList().success((data) ->
         $scope.categoryList = data
       ).error (status, data) ->
@@ -21,16 +27,18 @@ angular.module('Admin').controller 'AdminBlogController', ($scope, $http, $route
       console.log status
       console.log data
 
-  $scope.saveCategory = (data) ->
-    CategoryService.save(data.id, data).success((data) ->
+  $scope.saveCategory = (cat) ->
+    CategoryService.save(cat.id, data).success((data) ->
       console.log 'success'
+      $location.path '/admin/blog'
     ).error (status, data) ->
       console.log status
       console.log data
 
-  $scope.deleteCategory = (name) ->
-    CategoryService.remove(name).success((data) ->
+  $scope.deleteCategory = (cat) ->
+    CategoryService.remove(cat.id).success((data) ->
       console.log 'success'
+      $location.path '/admin/blog'
     ).error (status, data) ->
       console.log status
       console.log data

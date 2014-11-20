@@ -3,6 +3,10 @@ angular.module('Admin').controller 'AdminSettingsController', ($scope, $http, $r
   $scope.categoryList = []
   $scope.newMenu = {id: '', name: '', route: ''}
 
+  $scope.isActive = (route) ->
+    $scope.path = $location.path()
+    $location.path() == route
+
   MenuService.getList().success((data) ->
     $scope.menuList = data
     console.log 'success'

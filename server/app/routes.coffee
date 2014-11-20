@@ -98,10 +98,10 @@ module.exports = (app, passport) ->
         res.send(200).end()
 
   app.put '/data/blog/post/:id.json', expressJwt({secret: secret}), (req, res) ->
-    console.log 'update -> '
-    console.log req.body
+    data = req.body
+    data.id = utils.slugify data.title
     Post.findOneAndUpdate 'id': req.params.id,
-      req.body,
+      data,
       new: true,
         (err, data) ->
           if err
@@ -164,8 +164,10 @@ module.exports = (app, passport) ->
         res.send(200).end()
 
   app.put '/data/blog/category/:id.json', expressJwt({secret: secret}), (req, res) ->
+    data = req.body
+    data.id = utils.slugify data.name
     Category.findOneAndUpdate {id: req.params.id},
-      req.body,
+      data,
       new: true,
         (err, data) ->
           if err
@@ -263,10 +265,10 @@ module.exports = (app, passport) ->
         res.send(200).end()
 
   app.put '/data/page/:route.json', expressJwt({secret: secret}), (req, res) ->
-    console.log 'update -> '
-    console.log req.body
+    data = req.body
+    data.route = utils.slugify data.title
     Page.findOneAndUpdate route: req.params.route,
-    req.body,
+    data,
     new: true,
       (err, data) ->
         if err

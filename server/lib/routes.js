@@ -147,11 +147,12 @@ module.exports = function(app, passport) {
   app.put('/data/blog/post/:id.json', expressJwt({
     secret: secret
   }), function(req, res) {
-    console.log('update -> ');
-    console.log(req.body);
+    var data;
+    data = req.body;
+    data.id = utils.slugify(data.title);
     return Post.findOneAndUpdate({
       'id': req.params.id
-    }, req.body, {
+    }, data, {
       "new": true
     }, function(err, data) {
       if (err) {
@@ -242,9 +243,12 @@ module.exports = function(app, passport) {
   app.put('/data/blog/category/:id.json', expressJwt({
     secret: secret
   }), function(req, res) {
+    var data;
+    data = req.body;
+    data.id = utils.slugify(data.name);
     return Category.findOneAndUpdate({
       id: req.params.id
-    }, req.body, {
+    }, data, {
       "new": true
     }, function(err, data) {
       if (err) {
@@ -377,11 +381,12 @@ module.exports = function(app, passport) {
   app.put('/data/page/:route.json', expressJwt({
     secret: secret
   }), function(req, res) {
-    console.log('update -> ');
-    console.log(req.body);
+    var data;
+    data = req.body;
+    data.route = utils.slugify(data.title);
     return Page.findOneAndUpdate({
       route: req.params.route
-    }, req.body, {
+    }, data, {
       "new": true
     }, function(err, data) {
       if (err) {

@@ -1,5 +1,9 @@
 angular.module('Admin').controller 'AdminPagesController', ($scope, $http, $routeParams, $location, $window, PostService, PageService, CategoryService) ->
 
+  $scope.isActive = (route) ->
+    $scope.path = $location.path()
+    $location.path() == route
+
   if $location.path().lastIndexOf('/admin/pages/create', 0) == 0
 
     $scope.page =
@@ -9,9 +13,10 @@ angular.module('Admin').controller 'AdminPagesController', ($scope, $http, $rout
       body: ''
       published: true
 
-    $scope.createPage = (data) ->
-      PageService.create(data).success((data) ->
+    $scope.createPage = (page) ->
+      PageService.create(page).success((data) ->
         console.log 'success'
+        $location.path '/admin/pages'
       ).error (status, data) ->
         console.log status
         console.log data
@@ -26,10 +31,18 @@ angular.module('Admin').controller 'AdminPagesController', ($scope, $http, $rout
       console.log status
       console.log data
 
-    $scope.savePage = (route, data) ->
-      delete data.ident
-      PageService.save(route, data).success((data) ->
+    $scope.savePage = (page) ->
+      PageService.save(page.ident, page).success((data) ->
         console.log 'success'
+        $location.path '/admin/pages'
+      ).error (status, data) ->
+        console.log status
+        console.log data
+
+    $scope.deletePage = (page) ->
+      PageService.remove(page.ident).success((data) ->
+        console.log 'success'
+        $location.path '/admin/pages'
       ).error (status, data) ->
         console.log status
         console.log data
@@ -41,13 +54,6 @@ angular.module('Admin').controller 'AdminPagesController', ($scope, $http, $rout
     ).error (status, data) ->
       console.log status
       console.log data
-
-    $scope.deletePage = (route) ->
-      PageService.remove(route).success((data) ->
-        console.log 'success'
-      ).error (status, data) ->
-        console.log status
-        console.log data
 
   else
     $location.path '/admin'
