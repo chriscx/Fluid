@@ -3,6 +3,7 @@ expressJwt = require 'express-jwt'
 jwt = require 'jsonwebtoken'
 nodemailer = require 'nodemailer'
 crypto = require 'crypto'
+markdown = require('markdown').markdown
 utils = require './utils'
 User = require('./models/user').User
 Page = require('./models/page').Page
@@ -72,6 +73,14 @@ module.exports = (app, passport) ->
       if err
        res.send(500).end()
       else
+        res.json data
+
+  app.get '/data/blog/post/render/:route.json', (req, res) ->
+    Post.findOne {'id': req.params.id}, '-_id -__v', (err, data) ->
+      if err
+       res.send(500).end()
+      else
+        data.body = markdown.toHTML data.body
         res.json data
 
   app.post '/data/blog/post/', expressJwt({secret: secret}), (req, res) ->
@@ -246,6 +255,14 @@ module.exports = (app, passport) ->
       if err
        res.send(500).end()
       else
+        res.json data
+
+  app.get '/data/page/render/:route.json', (req, res) ->
+    Page.findOne {route: req.params.route}, '-_id -__v', (err, data) ->
+      if err
+       res.send(500).end()
+      else
+        data.body = markdown.toHTML data.body
         res.json data
 
   app.post '/data/page/', expressJwt({secret: secret}), (req, res) ->

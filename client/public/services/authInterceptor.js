@@ -1,4 +1,4 @@
-angular.module('User').factory("authInterceptor", function($rootScope, $q, $window) {
+angular.module('User').factory("authInterceptor", function($rootScope, $q, $window, AuthenticationService) {
   return {
     request: function(config) {
       config.headers = config.headers || {};
@@ -8,7 +8,9 @@ angular.module('User').factory("authInterceptor", function($rootScope, $q, $wind
       return config;
     },
     response: function(response) {
-      response.status === 401;
+      if (response.status === 401 || response.status === 500) {
+        AuthenticationService.isLogged = false;
+      }
       return response || $q.when(response);
     }
   };

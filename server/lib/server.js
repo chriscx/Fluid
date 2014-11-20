@@ -34,7 +34,7 @@ User = require('./models/user').User;
 
 app = express();
 
-mongoose.connect(process.env.FLUID_DB);
+mongoose.connect(process.env.DB);
 
 app.use(expressSession({
   secret: 'This is my secret for express session',

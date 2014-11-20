@@ -103,4 +103,5 @@ FluidApp.config ($httpProvider) ->
 FluidApp.run ($rootScope, $location, $window, AuthenticationService) ->
   $rootScope.$on '$routeChangeStart', (event, nextRoute, currentRoute) ->
     $location.path '/login' if nextRoute.access.requiredLogin and not AuthenticationService.isLogged
-    $location.path '/u/' + $window.sessionStorage.user.username if nextRoute in ['/login', '/signup'] and AuthenticationService.isLogged
+    console.log nextRoute
+    $location.path '/admin/' + $window.sessionStorage.username if nextRoute.originalPath in ['/login', '/signup'] and AuthenticationService.isLogged
