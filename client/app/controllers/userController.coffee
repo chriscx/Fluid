@@ -12,6 +12,7 @@ angular.module('User').controller 'UserController', ($scope, $http, $routeParams
         $location.path '/admin'
         console.log 'connexion success'
       ).error (status, data) ->
+        $scope.errorMessage = "Couldn't login :( Please check username and password !"
         console.log status
         console.log data
 
@@ -22,6 +23,7 @@ angular.module('User').controller 'UserController', ($scope, $http, $routeParams
         $location.path '/login'
         console.log 'registration success'
       ).error (status, data) ->
+        $scope.errorMessage = "Woops something went wrong... couldn't create an account for you"
         console.log status
         console.log data
 

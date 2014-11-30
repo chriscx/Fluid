@@ -3,19 +3,17 @@ include ../menu
   .row
     legend Create an account
     br
+    button.btn.btn-default(type='text') Edit
     form(role='form', method="post", style='max-width: 300px;')
       .form-group
-          input.form-control(type='text', name="username", placeholder='Enter Username', ng-model='signup.username')
+          input.form-control(type='text', name="username", placeholder='Enter Username', ng-model='user.username' readonly)
       .form-group
-          input.form-control(type='email', name="email", placeholder='Enter Email', ng-model='signup.email')
+          input.form-control(type='email', name="email", placeholder='Enter Email', ng-model='user.email' readonly)
       .form-group
-        input.form-control(type='password', name="password", placeholder='Password', ng-model='signup.password')
+        input.form-control(type='password', name="password", placeholder='Password', ng-model='user.password' readonly)
       .form-group
-        input.form-control(type='password', name="passwordCheck", placeholder='Password', ng-model='signup.passwordcheck')
+        input.form-control(type='password', name="passwordCheck", placeholder='Password', ng-model='user.passwordcheck' readonly)
       .form-group
-        input.form-control(type='text', name="firstname", placeholder='Firstname', ng-model='signup.firstname')
+        input.form-control(type='text', name="firstname", placeholder='Firstname', ng-model='user.firstname' readonly)
       .form-group
-        input.form-control(type='text', name="lastname", placeholder='Lastname', ng-model='signup.lastname')
-      button.btn.btn-default(type='submit') Submit
-      a(href='/')
-        button.btn.btn-primary(type="button") Cancel
+        input.form-control(type='text', name="lastname", placeholder='Lastname', ng-model='user.lastname' readonly)

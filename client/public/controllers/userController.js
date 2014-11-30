@@ -11,6 +11,7 @@ angular.module('User').controller('UserController', function($scope, $http, $rou
         $location.path('/admin');
         return console.log('connexion success');
       }).error(function(status, data) {
+        $scope.errorMessage = "Couldn't login :( Please check username and password !";
         console.log(status);
         return console.log(data);
       });
@@ -23,6 +24,7 @@ angular.module('User').controller('UserController', function($scope, $http, $rou
         $location.path('/login');
         return console.log('registration success');
       }).error(function(status, data) {
+        $scope.errorMessage = "Woops something went wrong... couldn't create an account for you";
         console.log(status);
         return console.log(data);
       });

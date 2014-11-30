@@ -1,6 +1,6 @@
 angular.module('Blog').controller 'PostController', ($scope, $http, $routeParams, $location, $window, PostService) ->
-
-  PostService.get($location.path().slice(6)).success((data) ->
+  rendered = true
+  PostService.get($location.path().slice(6), rendered).success((data) ->
     if data is null
       console.log 1
       $scope.post =

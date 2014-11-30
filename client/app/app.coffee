@@ -1,4 +1,4 @@
-FluidApp = angular.module('FluidApp', ['ngRoute', 'ngAnimate', 'Index', 'User', 'Blog', 'Page', 'Admin'])
+FluidApp = angular.module('FluidApp', ['ngRoute', 'ngAnimate', 'hc.marked', 'Index', 'User', 'Blog', 'Page', 'Admin'])
 
 angular.module('Index', [])
 angular.module('User', [])
@@ -91,6 +91,11 @@ FluidApp.config ['$locationProvider', '$routeProvider', ($locationProvider, $rou
   ).when('/:route',
     templateUrl: 'views/page.html'
     controller: 'PageController'
+    access:
+      requiredLogin: false
+  ).when('/error/:code/:path',
+    templateUrl: 'views/error.html'
+    controller: 'ErrorController'
     access:
       requiredLogin: false
   ).otherwise redirectTo: '/'

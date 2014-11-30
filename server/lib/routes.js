@@ -1,4 +1,4 @@
-var Category, Menu, Page, Post, User, crypto, expressJwt, jwt, nodemailer, path, secret, utils;
+var Category, Menu, Page, Post, User, crypto, expressJwt, jwt, markdown, nodemailer, path, secret, utils;
 
 path = require('path');
 
@@ -9,6 +9,8 @@ jwt = require('jsonwebtoken');
 nodemailer = require('nodemailer');
 
 crypto = require('crypto');
+
+markdown = require('markdown').markdown;
 
 utils = require('./utils');
 
@@ -114,6 +116,18 @@ module.exports = function(app, passport) {
       if (err) {
         return res.send(500).end();
       } else {
+        return res.json(data);
+      }
+    });
+  });
+  app.get('/data/blog/post/render/:route.json', function(req, res) {
+    return Post.findOne({
+      'id': req.params.id
+    }, '-_id -__v', function(err, data) {
+      if (err) {
+        return res.send(500).end();
+      } else {
+        data.body = markdown.toHTML(data.body);
         return res.json(data);
       }
     });
@@ -353,6 +367,18 @@ module.exports = function(app, passport) {
       if (err) {
         return res.send(500).end();
       } else {
+        return res.json(data);
+      }
+    });
+  });
+  app.get('/data/page/render/:route.json', function(req, res) {
+    return Page.findOne({
+      route: req.params.route
+    }, '-_id -__v', function(err, data) {
+      if (err) {
+        return res.send(500).end();
+      } else {
+        data.body = markdown.toHTML(data.body);
         return res.json(data);
       }
     });

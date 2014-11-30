@@ -6,8 +6,12 @@ angular.module('Blog').factory('PostService', function($http) {
     getBySlice: function(s, l) {
       return $http.get('/data/blog/post/' + s + '/' + l + '/posts.json');
     },
-    get: function(id) {
-      return $http.get('/data/blog/post/' + id + '.json');
+    get: function(id, render) {
+      if (render === true) {
+        return $http.get('/data/blog/post/render/' + id + '.json');
+      } else {
+        return $http.get('/data/blog/post/' + id + '.json');
+      }
     },
     create: function(data) {
       return $http.post('/data/blog/post/', data);
