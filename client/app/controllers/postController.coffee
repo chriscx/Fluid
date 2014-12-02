@@ -1,4 +1,5 @@
-angular.module('Blog').controller 'PostController', ($scope, $http, $routeParams, $location, $window, PostService) ->
+angular.module('Blog').controller 'PostController', ($scope, $http, $routeParams, $location, $window, PostService, MenuService) ->
+
   rendered = true
   PostService.get($location.path().slice(6), rendered).success((data) ->
     if data is null
@@ -13,3 +14,15 @@ angular.module('Blog').controller 'PostController', ($scope, $http, $routeParams
   ).error (status, data) ->
     console.log status
     console.log data
+
+  MenuService.getList().success((data) ->
+    $scope.menu = data
+  ).error (status, data) ->
+    console.log status
+    console.log data
+
+  $scope.isActive = (route) ->
+    console.log 'path: ' + $location.path()
+    console.log 'route: ' + route
+    $scope.path = $location.path()
+    $location.path() == route

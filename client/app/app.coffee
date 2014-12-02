@@ -93,11 +93,6 @@ FluidApp.config ['$locationProvider', '$routeProvider', ($locationProvider, $rou
     controller: 'PageController'
     access:
       requiredLogin: false
-  ).when('/error/:code/:path',
-    templateUrl: 'views/error.html'
-    controller: 'ErrorController'
-    access:
-      requiredLogin: false
   ).otherwise redirectTo: '/'
   return
 ]

@@ -117,12 +117,6 @@ FluidApp.config([
       access: {
         requiredLogin: false
       }
-    }).when('/error/:code/:path', {
-      templateUrl: 'views/error.html',
-      controller: 'ErrorController',
-      access: {
-        requiredLogin: false
-      }
     }).otherwise({
       redirectTo: '/'
     });

@@ -196,14 +196,14 @@ module.exports = (app, passport) ->
         res.send(200).end()
 
   app.get '/data/menu.json', (req, res) ->
-    Menu.find {}, (err, data) ->
+    Menu.find {}, '-_id -__v', (err, data) ->
       if err
        res.send(500).end()
       else
         res.json data
 
   app.get '/data/menu/:id.json', (req, res) ->
-    Menu.findOne {id: req.params.id}, (err, data) ->
+    Menu.findOne {id: req.params.id}, '-_id -__v', (err, data) ->
       if err
        res.send(500).end()
       else

@@ -290,7 +290,7 @@ module.exports = function(app, passport) {
     });
   });
   app.get('/data/menu.json', function(req, res) {
-    return Menu.find({}, function(err, data) {
+    return Menu.find({}, '-_id -__v', function(err, data) {
       if (err) {
         return res.send(500).end();
       } else {
@@ -301,7 +301,7 @@ module.exports = function(app, passport) {
   app.get('/data/menu/:id.json', function(req, res) {
     return Menu.findOne({
       id: req.params.id
-    }, function(err, data) {
+    }, '-_id -__v', function(err, data) {
       if (err) {
         return res.send(500).end();
       } else {
