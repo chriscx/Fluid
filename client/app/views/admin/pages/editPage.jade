@@ -13,8 +13,9 @@ include ../menu
               input.form-control(type='route' ng-model='page.route')
             .form-group
               label Edit Page
-              textarea.form-control(rows='15' ng-model='page.body')
-              div(marked="page.body")
+              textarea.form-control(rows='15' ng-model='page.content')
+            .form-group
+              div(marked="page.content")
             .form-group
               button.btn.btn-default(type='button' ng-click='savePage(page.ident, page)') Publish
               button.btn.btn-default(type='button' ng-click='deletePage(page)') Delete

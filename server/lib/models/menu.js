@@ -20,7 +20,8 @@ MenuSchema = new Schema({
     type: String,
     required: true
   },
-  description: String
+  description: String,
+  order: Number
 }, {
   strict: true
 });

@@ -16,8 +16,9 @@ include ../menu
               select.form-control(ng-model='post.category' ng-options='category.name for category in categories track by category.name')
             .form-group
               label Create Post
-              textarea.form-control(rows='15' ng-model='post.body')
-              div(marked="page.body")
+              textarea.form-control(rows='15' ng-model='post.content')
+            .form-group
+                  div(marked="page.content")
             .form-group
               button.btn.btn-default(type='button' ng-click='savePost(post)') Publish
               button.btn.btn-default(type='button' ng-click='deletePost(post)') Delete

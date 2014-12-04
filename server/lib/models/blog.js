@@ -17,6 +17,7 @@ PostSchema = new Schema({
   },
   id: String,
   body: String,
+  content: String,
   tags: [
     {
       name: String

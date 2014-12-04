@@ -8,4 +8,4 @@ include menu
         .page-header
           h3 {{post.title}}
           h6 by {{post.author}} - {{post.creationDate}}
-        p {{post.body}}
+        div(ng-bind-html='post.body')

@@ -14,6 +14,7 @@ PageSchema = new Schema({
   author: String,
   route: String,
   body: String,
+  content: String,
   creationDate: {
     type: Date,
     "default": Date.now

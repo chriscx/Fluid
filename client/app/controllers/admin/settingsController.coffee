@@ -1,6 +1,7 @@
 angular.module('Admin').controller 'AdminSettingsController', ($scope, $http, $routeParams, $location, $window, PostService, PageService, MenuService) ->
 
   $scope.categoryList = []
+  $scope.menuList = []
   $scope.newMenu = {id: '', name: '', route: ''}
 
   $scope.isActive = (route) ->
@@ -18,7 +19,7 @@ angular.module('Admin').controller 'AdminSettingsController', ($scope, $http, $r
     console.log 'click'
     MenuService.create(data).success((res) ->
       MenuService.getList().success((data) ->
-        $scope.menuList = data
+        $scope.menuList.push data
       ).error (status, data) ->
         console.log status
         console.log data

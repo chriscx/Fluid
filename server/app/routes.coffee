@@ -58,7 +58,7 @@ module.exports = (app, passport) ->
       else
        res.send(404).end()
 
-  app.get '/data/blog/post/:s/:l/posts.json', expressJwt secret: secret, (req, res) ->
+  app.get '/data/blog/post/:s/:l/posts.json', (req, res) ->
     Post.find {}, '-_id -__v', {'skip': req.params.s, 'limit': req.params.l}
       .sort
         creationDate: 'desc'
@@ -75,14 +75,6 @@ module.exports = (app, passport) ->
       else
         res.json data
 
-  app.get '/data/blog/post/render/:route.json', (req, res) ->
-    Post.findOne {'id': req.params.id}, '-_id -__v', (err, data) ->
-      if err
-       res.send(500).end()
-      else
-        data.body = markdown.toHTML data.body
-        res.json data
-
   app.post '/data/blog/post/', expressJwt({secret: secret}), (req, res) ->
 
     console.log req.body
@@ -91,7 +83,8 @@ module.exports = (app, passport) ->
       title: req.body.title
       author: req.body.author
       id: utils.slugify req.body.title
-      body: req.body.body
+      body: markdown.toHTML req.body.body
+      content: req.body.body
       tags: req.body.tags
       Category: 'test'
       comments: []
@@ -109,6 +102,7 @@ module.exports = (app, passport) ->
   app.put '/data/blog/post/:id.json', expressJwt({secret: secret}), (req, res) ->
     data = req.body
     data.id = utils.slugify data.title
+    data.body = markdown.toHTML data.content
     Post.findOneAndUpdate 'id': req.params.id,
       data,
       new: true,
@@ -257,20 +251,13 @@ module.exports = (app, passport) ->
       else
         res.json data
 
-  app.get '/data/page/render/:route.json', (req, res) ->
-    Page.findOne {route: req.params.route}, '-_id -__v', (err, data) ->
-      if err
-       res.send(500).end()
-      else
-        data.body = markdown.toHTML data.body
-        res.json data
-
   app.post '/data/page/', expressJwt({secret: secret}), (req, res) ->
     newPage = new Page(
       title: req.body.title
       author: req.body.author
       route: utils.slugify req.body.title
-      body: req.body.body
+      body: markdown.toHTML req.body.body
+      content: req.body.body
       creationDate: new Date()
       updateDate: null
       published: req.body.published
@@ -284,6 +271,7 @@ module.exports = (app, passport) ->
   app.put '/data/page/:route.json', expressJwt({secret: secret}), (req, res) ->
     data = req.body
     data.route = utils.slugify data.title
+    data.body = markdown.toHTML data.content
     Page.findOneAndUpdate route: req.params.route,
     data,
     new: true,

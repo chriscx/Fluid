@@ -1,5 +1,6 @@
 angular.module('Admin').controller('AdminSettingsController', function($scope, $http, $routeParams, $location, $window, PostService, PageService, MenuService) {
   $scope.categoryList = [];
+  $scope.menuList = [];
   $scope.newMenu = {
     id: '',
     name: '',
@@ -20,7 +21,7 @@ angular.module('Admin').controller('AdminSettingsController', function($scope, $
     console.log('click');
     return MenuService.create(data).success(function(res) {
       MenuService.getList().success(function(data) {
-        return $scope.menuList = data;
+        return $scope.menuList.push(data);
       }).error(function(status, data) {
         console.log(status);
         return console.log(data);

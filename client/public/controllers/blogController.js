@@ -2,6 +2,7 @@ angular.module('Blog').controller('BlogController', function($scope, $http, $rou
   $scope.skip = 0;
   $scope.limit = 7;
   PostService.getBySlice($scope.skip, $scope.limit).success(function(data) {
+    console.log(data);
     return $scope.posts = data;
   }).error(function(status, data) {
     console.log(status);

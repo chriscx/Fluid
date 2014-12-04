@@ -3,5 +3,5 @@
     .col-md-8.col-md-offset-2
       .row
           ul.nav.nav-pills
-              li(role="{{item.name}}" ng-repeat='item in menu' ng-class="{active: isActive('{{item.route}}')}")
+              li(role="{{item.name}}" ng-repeat="item in menu | orderBy:'order'" ng-class="{active: isActive('{{item.route}}')}")
                 a(href="{{item.route}}") {{item.name}}

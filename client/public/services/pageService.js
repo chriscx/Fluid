@@ -3,12 +3,8 @@ angular.module('Page').factory('PageService', function($http) {
     getList: function() {
       return $http.get('/data/pages.json');
     },
-    get: function(route, render) {
-      if (render === true) {
-        return $http.get('/data/page/render/' + route + '.json');
-      } else {
-        return $http.get('/data/page/' + route + '.json');
-      }
+    get: function(route) {
+      return $http.get('/data/page/' + route + '.json');
     },
     remove: function(route) {
       return $http["delete"]('/data/page/' + route + '.json');

@@ -93,9 +93,7 @@ module.exports = function(app, passport) {
       }
     });
   });
-  app.get('/data/blog/post/:s/:l/posts.json', expressJwt({
-    secret: secret
-  }, function(req, res) {
+  app.get('/data/blog/post/:s/:l/posts.json', function(req, res) {
     return Post.find({}, '-_id -__v', {
       'skip': req.params.s,
       'limit': req.params.l
@@ -108,7 +106,7 @@ module.exports = function(app, passport) {
         return res.json(data);
       }
     });
-  }));
+  });
   app.get('/data/blog/post/:id.json', function(req, res) {
     return Post.findOne({
       'id': req.params.id
@@ -116,18 +114,6 @@ module.exports = function(app, passport) {
       if (err) {
         return res.send(500).end();
       } else {
-        return res.json(data);
-      }
-    });
-  });
-  app.get('/data/blog/post/render/:route.json', function(req, res) {
-    return Post.findOne({
-      'id': req.params.id
-    }, '-_id -__v', function(err, data) {
-      if (err) {
-        return res.send(500).end();
-      } else {
-        data.body = markdown.toHTML(data.body);
         return res.json(data);
       }
     });
@@ -141,7 +127,8 @@ module.exports = function(app, passport) {
       title: req.body.title,
       author: req.body.author,
       id: utils.slugify(req.body.title),
-      body: req.body.body,
+      body: markdown.toHTML(req.body.body),
+      content: req.body.body,
       tags: req.body.tags,
       Category: 'test',
       comments: [],
@@ -164,6 +151,7 @@ module.exports = function(app, passport) {
     var data;
     data = req.body;
     data.id = utils.slugify(data.title);
+    data.body = markdown.toHTML(data.content);
     return Post.findOneAndUpdate({
       'id': req.params.id
     }, data, {
@@ -371,18 +359,6 @@ module.exports = function(app, passport) {
       }
     });
   });
-  app.get('/data/page/render/:route.json', function(req, res) {
-    return Page.findOne({
-      route: req.params.route
-    }, '-_id -__v', function(err, data) {
-      if (err) {
-        return res.send(500).end();
-      } else {
-        data.body = markdown.toHTML(data.body);
-        return res.json(data);
-      }
-    });
-  });
   app.post('/data/page/', expressJwt({
     secret: secret
   }), function(req, res) {
@@ -391,7 +367,8 @@ module.exports = function(app, passport) {
       title: req.body.title,
       author: req.body.author,
       route: utils.slugify(req.body.title),
-      body: req.body.body,
+      body: markdown.toHTML(req.body.body),
+      content: req.body.body,
       creationDate: new Date(),
       updateDate: null,
       published: req.body.published
@@ -410,6 +387,7 @@ module.exports = function(app, passport) {
     var data;
     data = req.body;
     data.route = utils.slugify(data.title);
+    data.body = markdown.toHTML(data.content);
     return Page.findOneAndUpdate({
       route: req.params.route
     }, data, {

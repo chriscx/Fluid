@@ -11,7 +11,8 @@ PostSchema = new Schema
     type: String
     required: true
   id: String
-  body: String
+  body: String      # html
+  content: String   # markdown
   tags: [name: String]
   category: String
   comments: [

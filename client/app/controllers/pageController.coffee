@@ -1,7 +1,6 @@
 angular.module('Page').controller 'PageController', ($scope, $http, $routeParams, $location, $window, PageService, MenuService) ->
 
-  rendered = true
-  PageService.get($location.path().slice(1), rendered).success((data) ->
+  PageService.get($location.path().slice(1)).success((data) ->
     if data.length < 1
       $scope.page =
         title: '404 Not found'

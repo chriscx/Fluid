@@ -5,11 +5,9 @@ angular.module('Blog').factory 'PostService', ($http) ->
   getBySlice: (s, l) ->
     $http.get '/data/blog/post/' + s + '/' + l + '/posts.json'
 
-  get: (id, render) ->
-    if render is true
-      return $http.get '/data/blog/post/render/' + id + '.json'
-    else
-      return $http.get '/data/blog/post/' + id + '.json'
+  get: (id) ->
+    $http.get '/data/blog/post/' + id + '.json'
+    
   create: (data) ->
     $http.post '/data/blog/post/', data
 

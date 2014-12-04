@@ -9,7 +9,7 @@ include menu
           .page-header
             h3 {{post.title}}
             h6 by {{post.author}} - {{post.creationDate}}
-          p {{post.body}}
+          div(marked='post.body')
       //- .row
       //-   button.btn.btn-default Next
     //- .col-md-2

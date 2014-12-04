@@ -2,7 +2,7 @@ mongoose = require 'mongoose'
 
 Schema = mongoose.Schema
 
-MenuSchema = new Schema
+SettingSchema = new Schema
   id:
     type: String
     required: true
@@ -11,15 +11,10 @@ MenuSchema = new Schema
   name:
     type: String
     required: true
-  route:
-    type: String
-    required: true
   description: String
-  order: Number
-, strict: true
 
-Menu = mongoose.model "Menu", MenuSchema
+Setting = mongoose.model "Setting", SettingSchema
 
 module.exports =
-  Menu: Menu
-  Schema: MenuSchema
+  Setting: Setting
+  Schema: SettingSchema
