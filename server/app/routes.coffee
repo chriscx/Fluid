@@ -112,7 +112,7 @@ module.exports = (app, passport) ->
           else if data is `undefined`
            res.send(404).end()
           else
-            res.end(200).end()
+            res.send(200).end()
 
   app.delete '/data/blog/post/:id.json', expressJwt({secret: secret}), (req, res) ->
     Post.remove 'id': req.params.id, (err, data) ->
@@ -208,8 +208,9 @@ module.exports = (app, passport) ->
     newMenu = new Menu(
       id: utils.slugify req.body.name
       name: req.body.name
-      route: req.body.name
+      route: req.body.route
       description: req.body.description
+      order: req.body.order
     )
 
     newMenu.save (err) ->

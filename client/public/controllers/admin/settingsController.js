@@ -21,7 +21,7 @@ angular.module('Admin').controller('AdminSettingsController', function($scope, $
     console.log('click');
     return MenuService.create(data).success(function(res) {
       MenuService.getList().success(function(data) {
-        return $scope.menuList.push(data);
+        return $scope.menuList = data;
       }).error(function(status, data) {
         console.log(status);
         return console.log(data);
@@ -42,7 +42,12 @@ angular.module('Admin').controller('AdminSettingsController', function($scope, $
   };
   return $scope.deleteMenuItem = function(data) {
     return MenuService.remove(data.id).success(function(data) {
-      return console.log('success');
+      return MenuService.getList().success(function(data) {
+        return $scope.menuList = data;
+      }).error(function(status, data) {
+        console.log(status);
+        return console.log(data);
+      });
     }).error(function(status, data) {
       console.log(status);
       return console.log(data);

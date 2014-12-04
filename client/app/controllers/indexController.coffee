@@ -1,4 +1,4 @@
-angular.module('Index').controller 'IndexController', ($scope, $routeParams, $location, $window, UserService, AuthenticationService, MenuService) ->
+angular.module('Index').controller 'IndexController', ($scope, $routeParams, $location, $window, UserService, AuthenticationService, MenuService, PageService) ->
   $scope.pageName = 'Index Page'
 
   $scope.isActive = (route) ->
@@ -9,6 +9,12 @@ angular.module('Index').controller 'IndexController', ($scope, $routeParams, $lo
 
   MenuService.getList().success((data) ->
     $scope.menu = data
+  ).error (status, data) ->
+    console.log status
+    console.log data
+
+  PageService.get('index').success((data) ->
+    $scope.page = data
   ).error (status, data) ->
     console.log status
     console.log data

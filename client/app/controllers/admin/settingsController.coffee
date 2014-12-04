@@ -19,7 +19,7 @@ angular.module('Admin').controller 'AdminSettingsController', ($scope, $http, $r
     console.log 'click'
     MenuService.create(data).success((res) ->
       MenuService.getList().success((data) ->
-        $scope.menuList.push data
+        $scope.menuList = data
       ).error (status, data) ->
         console.log status
         console.log data
@@ -37,7 +37,11 @@ angular.module('Admin').controller 'AdminSettingsController', ($scope, $http, $r
 
   $scope.deleteMenuItem = (data) ->
     MenuService.remove(data.id).success((data) ->
-      console.log 'success'
+      MenuService.getList().success((data) ->
+        $scope.menuList = data
+      ).error (status, data) ->
+        console.log status
+        console.log data
     ).error (status, data) ->
       console.log status
       console.log data

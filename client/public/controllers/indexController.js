@@ -1,4 +1,4 @@
-angular.module('Index').controller('IndexController', function($scope, $routeParams, $location, $window, UserService, AuthenticationService, MenuService) {
+angular.module('Index').controller('IndexController', function($scope, $routeParams, $location, $window, UserService, AuthenticationService, MenuService, PageService) {
   $scope.pageName = 'Index Page';
   $scope.isActive = function(route) {
     console.log('path: ' + $location.path());
@@ -6,8 +6,14 @@ angular.module('Index').controller('IndexController', function($scope, $routePar
     $scope.path = $location.path();
     return $location.path() === route;
   };
-  return MenuService.getList().success(function(data) {
+  MenuService.getList().success(function(data) {
     return $scope.menu = data;
+  }).error(function(status, data) {
+    console.log(status);
+    return console.log(data);
+  });
+  return PageService.get('index').success(function(data) {
+    return $scope.page = data;
   }).error(function(status, data) {
     console.log(status);
     return console.log(data);

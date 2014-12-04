@@ -2,10 +2,7 @@ include menu
 .container
   .row
     .col-md-8.col-md-offset-2
-      legend Post
-      br
-      .row
-        .page-header
-          h3 {{post.title}}
-          h6 by {{post.author}} - {{post.creationDate}}
-        div(ng-bind-html='post.body')
+      .page-header
+        h3 {{post.title}}
+        h6 by {{post.author}} - {{post.creationDate | date:'MM/dd/yyyy @ h:mma'}}
+      div(marked='post.body')

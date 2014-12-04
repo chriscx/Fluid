@@ -15,7 +15,7 @@ include menu
               button.btn.btn-default(type='button' ng-click='createMenuItem(newItem)') Create
             .form-group
               label Select menu item
-              select.form-control(ng-model='selectedItem' ng-options='item.name for item in menuList track by item.id')
+              select.form-control(ng-model='selectedItem' ng-options="item.name for item in menuList track by item.id | orderBy:'order'")
             .form-group
               label Edit name
               input.form-control(ng-model='selectedItem.name' type='text')
@@ -27,4 +27,4 @@ include menu
               input.form-control(ng-model='selectedItem.route' type='text')
             .form-group
               button.btn.btn-default(type='button' ng-click='saveMenuItem(selectedItem)') Save
-              button.btn.btn-default(type='button' ng-click='deleteMenuItem(selectedItem)') Save
+              button.btn.btn-default(type='button' ng-click='deleteMenuItem(selectedItem)') Delete

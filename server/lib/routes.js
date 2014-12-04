@@ -162,7 +162,7 @@ module.exports = function(app, passport) {
       } else if (data === undefined) {
         return res.send(404).end();
       } else {
-        return res.end(200).end();
+        return res.send(200).end();
       }
     });
   });
@@ -302,8 +302,9 @@ module.exports = function(app, passport) {
     newMenu = new Menu({
       id: utils.slugify(req.body.name),
       name: req.body.name,
-      route: req.body.name,
-      description: req.body.description
+      route: req.body.route,
+      description: req.body.description,
+      order: req.body.order
     });
     return newMenu.save(function(err) {
       if (err) {
