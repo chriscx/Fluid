@@ -1,12 +1,14 @@
 angular.module('Page').controller('PageController', function($scope, $http, $routeParams, $location, $window, PageService, MenuService) {
+  console.log($location.path().slice(1));
   PageService.get($location.path().slice(1)).success(function(data) {
+    console.log(data);
     if (data.length < 1) {
       return $scope.page = {
         title: '404 Not found',
         body: 'Oh...Sorry but I couldn\'t find this page :/'
       };
     } else {
-      return $scope.page = data[0];
+      return $scope.page = data;
     }
   }).error(function(status, data) {
     console.log(status);
@@ -19,8 +21,6 @@ angular.module('Page').controller('PageController', function($scope, $http, $rou
     return console.log(data);
   });
   return $scope.isActive = function(route) {
-    console.log('path: ' + $location.path());
-    console.log('route: ' + route);
     $scope.path = $location.path();
     return $location.path() === route;
   };

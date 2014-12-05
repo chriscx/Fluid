@@ -30,6 +30,7 @@ angular.module('Admin').controller('AdminPagesController', function($scope, $htt
       return console.log(data);
     });
     $scope.savePage = function(page) {
+      console.log(page);
       return PageService.save(page.ident, page).success(function(data) {
         console.log('success');
         return $location.path('/admin/pages');

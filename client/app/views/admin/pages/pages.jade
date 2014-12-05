@@ -3,11 +3,10 @@ include ../menu
   .row
     .col-md-8.col-md-offset-2
       legend Pages
-      .row
-        .col-md-12
-          ul
-            li(ng-repeat='page in pageList') 
-              a(href="/admin/pages/edit/{{page.route}}") {{page.title}}
-      .row
-        .col-md-12
-          a(href="/admin/pages/create") New Page
+      a.btn.btn-success(href="/admin/pages/create") New Page
+  br
+  .row
+    .col-md-8.col-md-offset-2
+      ul.list-group
+        li.list-group-item(ng-repeat='page in pageList') 
+          a(href="/admin/pages/edit/{{page.route}}") {{page.title}}

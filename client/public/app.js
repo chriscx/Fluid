@@ -99,7 +99,7 @@ FluidApp.config([
       access: {
         requiredLogin: true
       }
-    }).when('/blog/', {
+    }).when('/blog', {
       templateUrl: 'views/blog.html',
       controller: 'BlogController',
       access: {
@@ -133,7 +133,6 @@ FluidApp.run(function($rootScope, $location, $window, AuthenticationService) {
     if (nextRoute.access.requiredLogin && !AuthenticationService.isLogged) {
       $location.path('/login');
     }
-    console.log(nextRoute);
     if (((_ref = nextRoute.originalPath) === '/login' || _ref === '/signup') && AuthenticationService.isLogged) {
       return $location.path('/admin/' + $window.sessionStorage.username);
     }

@@ -78,7 +78,7 @@ FluidApp.config ['$locationProvider', '$routeProvider', ($locationProvider, $rou
     controller: 'UserController'
     access:
       requiredLogin: true
-  ).when('/blog/',
+  ).when('/blog',
     templateUrl: 'views/blog.html'
     controller: 'BlogController'
     access:
@@ -103,5 +103,4 @@ FluidApp.config ($httpProvider) ->
 FluidApp.run ($rootScope, $location, $window, AuthenticationService) ->
   $rootScope.$on '$routeChangeStart', (event, nextRoute, currentRoute) ->
     $location.path '/login' if nextRoute.access.requiredLogin and not AuthenticationService.isLogged
-    console.log nextRoute
     $location.path '/admin/' + $window.sessionStorage.username if nextRoute.originalPath in ['/login', '/signup'] and AuthenticationService.isLogged
