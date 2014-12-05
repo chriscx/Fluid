@@ -11,8 +11,3 @@ include menu
       button.btn.btn-default(type='submit' ng-click='logIn(login.username, login.password)') Submit
       a(href='/')
         button.btn.btn-primary(type='button') Cancel
-  .row{hide: isActive('{{item.route}}')}
-    .alert.alert-danger(role="alert")
-      span.glyphicon.glyphicon-exclamation-sign(aria-hidden="true")
-      span.sr-only Error:
-      | {{errorMessage}}

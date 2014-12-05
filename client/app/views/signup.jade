@@ -19,8 +19,3 @@ include menu
       button.btn.btn-default(type='submit', ng-click='signUp(signup.username, signup.password, signup.firstname, signup.lastname)') Submit
       a(href='/')
         button.btn.btn-primary(type="button") Cancel
-  .row
-    .alert.alert-danger(role="alert")
-      span.glyphicon.glyphicon-exclamation-sign(aria-hidden="true")
-      span.sr-only Error:
-      | {{errorMessage}}

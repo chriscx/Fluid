@@ -6,6 +6,20 @@ include menu
         .col-md-12
           form.form
             .form-group
+              label Website name
+              input.form-control(ng-model='setting.name' type='text')
+          form.form
+            .form-group
+              label Keywords
+              input.form-control(ng-model='setting.keywords' type='text')
+          //- form.form
+          //-   .form-group
+          //-     label Mailing info
+          //-     input.form-control(ng-model='setting.keywords' type='text')
+      .row
+        .col-md-12
+          form.form
+            .form-group
               label New menu item
               input.form-control(ng-model='newItem.name' type='text')
             .form-group
