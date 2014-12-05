@@ -15,9 +15,6 @@ angular.module('Blog').controller('BlogController', function($scope, $http, $rou
     return console.log(data);
   });
   return $scope.isActive = function(route) {
-    console.log('path: ' + $location.path());
-    console.log('route: ' + route);
-    $scope.path = $location.path();
     return $location.path() === route;
   };
 });
