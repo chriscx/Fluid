@@ -18,10 +18,10 @@ angular.module('Admin').controller 'AdminPostsController', ($scope, $http, $rout
       published: true
 
     $scope.createPost = (post) ->
-      PostService.create(post).success((data) ->
+      PostService.create(post).success((data, status, headers, config) ->
         console.log 'success'
         $location.path '/admin/blog/posts'
-      ).error (status, data) ->
+      ).error (data, status, headers, config) ->
         console.log status
         console.log data
 
@@ -30,14 +30,14 @@ angular.module('Admin').controller 'AdminPostsController', ($scope, $http, $rout
     PostService.get($location.path().slice(23)).success((data) ->
       $scope.post = data
       $scope.post.ident = $scope.post.id
-    ).error (status, data) ->
+    ).error (data, status, headers, config) ->
       console.log status
       console.log data
 
     CategoryService.getList().success((data) ->
       console.log data
       $scope.categories = data
-    ).error (status, data) ->
+    ).error (data, status, headers, config) ->
       console.log status
       console.log data
 
@@ -45,7 +45,7 @@ angular.module('Admin').controller 'AdminPostsController', ($scope, $http, $rout
       PostService.save(post.ident, post).success((data) ->
         console.log 'success'
         $location.path '/admin/blog/posts'
-      ).error (status, data) ->
+      ).error (data, status, headers, config) ->
         console.log status
         console.log data
 
@@ -53,7 +53,7 @@ angular.module('Admin').controller 'AdminPostsController', ($scope, $http, $rout
       PostService.remove(post.ident).success((data) ->
         console.log 'success'
         $location.path '/admin/blog/posts'
-      ).error (status, data) ->
+      ).error (data, status, headers, config) ->
         console.log status
         console.log data
 
@@ -62,7 +62,7 @@ angular.module('Admin').controller 'AdminPostsController', ($scope, $http, $rout
     PostService.getList().success((data) ->
       $scope.postList = data
       console.log $scope.postList
-    ).error (status, data) ->
+    ).error (data, status, headers, config) ->
       console.log status
       console.log data
 

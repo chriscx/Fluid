@@ -6,14 +6,9 @@ angular.module('User').factory('UserService', function($http) {
         password: password
       });
     },
-    signUp: function(username, password, email, firstname, lastname) {
-      return $http.post('/signup', {
-        username: username,
-        password: password,
-        email: email,
-        firstname: firstname,
-        lastname: lastname
-      });
+    signUp: function(user) {
+      console.log(user);
+      return $http.post('/signup', user);
     },
     forgotPassword: function(email) {
       return $http.post('/forgot', {

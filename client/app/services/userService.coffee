@@ -1,16 +1,13 @@
 angular.module('User').factory 'UserService', ($http) ->
+
   logIn: (username, password) ->
     $http.post '/login',
       username: username
       password: password
 
-  signUp: (username, password, email, firstname, lastname) ->
-    $http.post '/signup',
-      username: username
-      password: password
-      email: email
-      firstname: firstname
-      lastname: lastname
+  signUp: (user) ->
+    console.log user
+    $http.post '/signup', user
 
   forgotPassword: (email) ->
     $http.post '/forgot', email: email

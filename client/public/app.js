@@ -99,12 +99,6 @@ FluidApp.config([
       access: {
         requiredLogin: true
       }
-    }).when('/admin/files', {
-      templateUrl: 'views/admin/files.html',
-      controller: 'FilesController',
-      access: {
-        requiredLogin: true
-      }
     }).when('/blog', {
       templateUrl: 'views/blog.html',
       controller: 'BlogController',

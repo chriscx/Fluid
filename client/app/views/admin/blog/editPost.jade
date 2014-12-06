@@ -20,5 +20,6 @@ include ../menu
             .form-group
                   div(marked="page.content")
             .form-group
-              button.btn.btn-default(type='button' ng-click='savePost(post)') Publish
-              button.btn.btn-default(type='button' ng-click='deletePost(post)') Delete
+              .btn-toolbar
+                button.btn.btn-success(type='button' ng-click='savePost(post)') Publish
+                button.btn.btn-danger(type='button' ng-click='deletePost(post)') Delete

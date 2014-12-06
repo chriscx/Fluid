@@ -2,16 +2,16 @@ include menu
 .container
   .row
     .col-md-8.col-md-offset-2
-      .row
-        .col-md-12
-          form.form
-            .form-group
-              label Website name
-              input.form-control(ng-model='setting.name' type='text')
-          form.form
-            .form-group
-              label Keywords
-              input.form-control(ng-model='setting.keywords' type='text')
+      //- .row
+      //-   .col-md-12
+      //-     form.form
+      //-       .form-group
+      //-         label Website name
+      //-         input.form-control(ng-model='setting.name' type='text')
+      //-     form.form
+      //-       .form-group
+      //-         label Keywords
+      //-         input.form-control(ng-model='setting.keywords' type='text')
           //- form.form
           //-   .form-group
           //-     label Mailing info
@@ -40,5 +40,6 @@ include menu
               label Edit route
               input.form-control(ng-model='selectedItem.route' type='text')
             .form-group
-              button.btn.btn-default(type='button' ng-click='saveMenuItem(selectedItem)') Save
-              button.btn.btn-default(type='button' ng-click='deleteMenuItem(selectedItem)') Delete
+              .btn-toolbar
+                button.btn.btn-success(type='button' ng-click='saveMenuItem(selectedItem)') Save
+                button.btn.btn-danger(type='button' ng-click='deleteMenuItem(selectedItem)') Delete

@@ -1,4 +1,5 @@
 angular.module('User').controller('UserController', function($scope, $http, $routeParams, $location, $window, UserService, AuthenticationService) {
+  $scope.user = {};
   $scope.logIn = function(username, password) {
     console.log('login attempt: ' + username + ' ' + password);
     if (username !== undefined && password !== undefined) {
@@ -17,10 +18,11 @@ angular.module('User').controller('UserController', function($scope, $http, $rou
       });
     }
   };
-  $scope.signUp = function(username, password, email, firstname, lastname) {
-    console.log('click signup');
-    if (username !== undefined && password !== undefined && email !== undefined) {
-      return UserService.signUp(username, password, email, firstname, lastname).success(function(data) {
+  $scope.signUp = function(newUser) {
+    console.log(newUser);
+    if (newUser.username !== undefined && newUser.password !== undefined && newUser.email !== undefined && newUser.password === newUser.passwordCheck) {
+      console.log(newUser);
+      return UserService.signUp(newUser).success(function(data) {
         $location.path('/login');
         return console.log('registration success');
       }).error(function(status, data) {

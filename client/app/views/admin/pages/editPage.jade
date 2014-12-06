@@ -17,5 +17,6 @@ include ../menu
             .form-group
               div(marked="page.content")
             .form-group
-              button.btn.btn-default(type='button' ng-click='savePage(page)') Publish
-              button.btn.btn-default(type='button' ng-click='deletePage(page)') Delete
+              .btn-toolbar
+                button.btn.btn-success(type='button' ng-click='savePage(page)') Publish
+                button.btn.btn-danger(type='button' ng-click='deletePage(page)') Delete

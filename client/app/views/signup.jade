@@ -5,17 +5,18 @@ include menu
     br
     form(role='form', method="post", style='max-width: 300px;')
       .form-group
-          input.form-control(type='text', name="username", placeholder='Enter Username', ng-model='signup.username')
+          input.form-control(type='text', name="username", placeholder='Enter Username', ng-model='user.username')
       .form-group
-          input.form-control(type='email', name="email", placeholder='Enter Email', ng-model='signup.email')
+          input.form-control(type='email', name="email", placeholder='Enter Email', ng-model='user.email')
       .form-group
-        input.form-control(type='password', name="password", placeholder='Password', ng-model='signup.password')
+        input.form-control(type='password', name="password", placeholder='Password', ng-model='user.password')
       .form-group
-        input.form-control(type='password', name="passwordCheck", placeholder='Password', ng-model='signup.passwordcheck')
+        input.form-control(type='password', name="passwordCheck", placeholder='Password', ng-model='user.passwordCheck')
+      //- .form-group
+      //-   input.form-control(type='text', name="firstname", placeholder='Firstname', ng-model='signup.firstname')
+      //- .form-group
+      //-   input.form-control(type='text', name="lastname", placeholder='Lastname', ng-model='signup.lastname')
       .form-group
-        input.form-control(type='text', name="firstname", placeholder='Firstname', ng-model='signup.firstname')
-      .form-group
-        input.form-control(type='text', name="lastname", placeholder='Lastname', ng-model='signup.lastname')
-      button.btn.btn-default(type='submit', ng-click='signUp(signup.username, signup.password, signup.firstname, signup.lastname)') Submit
-      a(href='/')
-        button.btn.btn-primary(type="button") Cancel
+        .btn-toolbar
+          button.btn.btn-default(type='button', ng-click='signUp(user)') Submit
+          a.btn.btn-primary(type="button", href='/') Cancel

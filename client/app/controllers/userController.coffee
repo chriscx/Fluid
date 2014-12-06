@@ -1,5 +1,7 @@
 angular.module('User').controller 'UserController', ($scope, $http, $routeParams, $location, $window, UserService, AuthenticationService) ->
 
+  $scope.user = {}
+
   $scope.logIn = (username, password) ->
     console.log 'login attempt: ' + username + ' ' + password
     if username isnt `undefined` and password isnt `undefined`
@@ -16,16 +18,20 @@ angular.module('User').controller 'UserController', ($scope, $http, $routeParams
         console.log status
         console.log data
 
-  $scope.signUp = (username, password, email, firstname, lastname) ->
-    console.log 'click signup'
-    if username isnt `undefined` and password isnt `undefined` and email isnt `undefined`
-      UserService.signUp(username, password, email, firstname, lastname).success((data) ->
-        $location.path '/login'
-        console.log 'registration success'
-      ).error (status, data) ->
-        $scope.errorMessage = "Woops something went wrong... couldn't create an account for you"
-        console.log status
-        console.log data
+  $scope.signUp = (newUser) ->
+    console.log newUser
+    if newUser.username isnt `undefined` and
+      newUser.password isnt `undefined` and
+      newUser.email isnt `undefined` and
+      newUser.password == newUser.passwordCheck
+        console.log newUser
+        UserService.signUp(newUser).success((data) ->
+          $location.path '/login'
+          console.log 'registration success'
+        ).error (status, data) ->
+          $scope.errorMessage = "Woops something went wrong... couldn't create an account for you"
+          console.log status
+          console.log data
 
   $scope.update = (username, email, firstname, lastname, country) ->
     if username isnt `undefined` and

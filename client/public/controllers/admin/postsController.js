@@ -15,10 +15,10 @@ angular.module('Admin').controller('AdminPostsController', function($scope, $htt
       published: true
     };
     return $scope.createPost = function(post) {
-      return PostService.create(post).success(function(data) {
+      return PostService.create(post).success(function(data, status, headers, config) {
         console.log('success');
         return $location.path('/admin/blog/posts');
-      }).error(function(status, data) {
+      }).error(function(data, status, headers, config) {
         console.log(status);
         return console.log(data);
       });
@@ -27,14 +27,14 @@ angular.module('Admin').controller('AdminPostsController', function($scope, $htt
     PostService.get($location.path().slice(23)).success(function(data) {
       $scope.post = data;
       return $scope.post.ident = $scope.post.id;
-    }).error(function(status, data) {
+    }).error(function(data, status, headers, config) {
       console.log(status);
       return console.log(data);
     });
     CategoryService.getList().success(function(data) {
       console.log(data);
       return $scope.categories = data;
-    }).error(function(status, data) {
+    }).error(function(data, status, headers, config) {
       console.log(status);
       return console.log(data);
     });
@@ -42,7 +42,7 @@ angular.module('Admin').controller('AdminPostsController', function($scope, $htt
       return PostService.save(post.ident, post).success(function(data) {
         console.log('success');
         return $location.path('/admin/blog/posts');
-      }).error(function(status, data) {
+      }).error(function(data, status, headers, config) {
         console.log(status);
         return console.log(data);
       });
@@ -51,7 +51,7 @@ angular.module('Admin').controller('AdminPostsController', function($scope, $htt
       return PostService.remove(post.ident).success(function(data) {
         console.log('success');
         return $location.path('/admin/blog/posts');
-      }).error(function(status, data) {
+      }).error(function(data, status, headers, config) {
         console.log(status);
         return console.log(data);
       });
@@ -60,7 +60,7 @@ angular.module('Admin').controller('AdminPostsController', function($scope, $htt
     return PostService.getList().success(function(data) {
       $scope.postList = data;
       return console.log($scope.postList);
-    }).error(function(status, data) {
+    }).error(function(data, status, headers, config) {
       console.log(status);
       return console.log(data);
     });
