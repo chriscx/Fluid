@@ -1,6 +1,6 @@
 var FluidApp;
 
-FluidApp = angular.module('FluidApp', ['ngRoute', 'ngAnimate', 'hc.marked', 'Index', 'User', 'Blog', 'Page', 'Admin']);
+FluidApp = angular.module('FluidApp', ['ngRoute', 'ngAnimate', 'hc.marked', 'ui.bootstrap', 'Index', 'User', 'Blog', 'Page', 'Admin']);
 
 angular.module('Index', []);
 
@@ -134,7 +134,7 @@ FluidApp.run(function($rootScope, $location, $window, AuthenticationService) {
       $location.path('/login');
     }
     if (((_ref = nextRoute.originalPath) === '/login' || _ref === '/signup') && AuthenticationService.isLogged) {
-      return $location.path('/admin/' + $window.sessionStorage.username);
+      return $location.path('/admin');
     }
   });
 });

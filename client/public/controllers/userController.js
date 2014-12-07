@@ -1,4 +1,5 @@
-angular.module('User').controller('UserController', function($scope, $http, $routeParams, $location, $window, UserService, AuthenticationService) {
+angular.module('User').controller('UserController', function($scope, $http, $routeParams, $location, $window, UserService, AuthenticationService, MenuService) {
+  $scope.alerts = [];
   $scope.user = {};
   $scope.logIn = function(username, password) {
     console.log('login attempt: ' + username + ' ' + password);
@@ -12,7 +13,10 @@ angular.module('User').controller('UserController', function($scope, $http, $rou
         $location.path('/admin');
         return console.log('connexion success');
       }).error(function(status, data) {
-        $scope.errorMessage = "Couldn't login :( Please check username and password !";
+        $scope.alerts.push({
+          type: 'danger',
+          msg: "Couldn't login :( Please check username and password !"
+        });
         console.log(status);
         return console.log(data);
       });
@@ -26,7 +30,10 @@ angular.module('User').controller('UserController', function($scope, $http, $rou
         $location.path('/login');
         return console.log('registration success');
       }).error(function(status, data) {
-        $scope.errorMessage = "Woops something went wrong... couldn't create an account for you";
+        $scope.alerts.push({
+          type: 'danger',
+          msg: "Woops something went wrong... couldn't create an account for you"
+        });
         console.log(status);
         return console.log(data);
       });
@@ -57,7 +64,7 @@ angular.module('User').controller('UserController', function($scope, $http, $rou
       });
     }
   };
-  return $scope.resetPassword = function(password) {
+  $scope.resetPassword = function(password) {
     if (password !== undefined) {
       return UserService.resetPassword(password).success(function(data) {
         return console.log('success');
@@ -67,4 +74,10 @@ angular.module('User').controller('UserController', function($scope, $http, $rou
       });
     }
   };
+  return MenuService.getList().success(function(data) {
+    return $scope.menu = data;
+  }).error(function(status, data) {
+    console.log(status);
+    return console.log(data);
+  });
 });

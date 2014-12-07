@@ -1,4 +1,4 @@
-FluidApp = angular.module('FluidApp', ['ngRoute', 'ngAnimate', 'hc.marked', 'Index', 'User', 'Blog', 'Page', 'Admin'])
+FluidApp = angular.module('FluidApp', ['ngRoute', 'ngAnimate', 'hc.marked', 'ui.bootstrap', 'Index', 'User', 'Blog', 'Page', 'Admin'])
 
 angular.module('Index', [])
 angular.module('User', [])
@@ -103,4 +103,4 @@ FluidApp.config ($httpProvider) ->
 FluidApp.run ($rootScope, $location, $window, AuthenticationService) ->
   $rootScope.$on '$routeChangeStart', (event, nextRoute, currentRoute) ->
     $location.path '/login' if nextRoute.access.requiredLogin and not AuthenticationService.isLogged
-    $location.path '/admin/' + $window.sessionStorage.username if nextRoute.originalPath in ['/login', '/signup'] and AuthenticationService.isLogged
+    $location.path '/admin' if nextRoute.originalPath in ['/login', '/signup'] and AuthenticationService.isLogged

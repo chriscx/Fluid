@@ -1,8 +1,7 @@
 include menu
 .container
   .row
-    legend Login to an account
-    br
+    h1 Login
     form(role='form', method="post", style='max-width: 300px;')
       .form-group
         input.form-control(type='text', name='username', placeholder='Enter Username', ng-model='login.username')
@@ -12,3 +11,5 @@ include menu
         .btn-toolbar
           button.btn.btn-default(type='button', ng-click='logIn(login.username, login.password)') Submit
           a.btn.btn-primary(type="button", href='/') Cancel
+  .row
+    alert(ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)") {{alert.msg}}

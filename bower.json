@@ -22,6 +22,7 @@
     "angular-resource": "~1.2.26",
     "angular-cookies": "~1.2.26",
     "angular-strap": "~2.1.2",
-    "angular-marked": "~0.0.12"
+    "angular-marked": "~0.0.12",
+    "angular-bootstrap": "~0.12.0"
   }
 }

@@ -1,5 +1,6 @@
-angular.module('User').controller 'UserController', ($scope, $http, $routeParams, $location, $window, UserService, AuthenticationService) ->
+angular.module('User').controller 'UserController', ($scope, $http, $routeParams, $location, $window, UserService, AuthenticationService, MenuService) ->
 
+  $scope.alerts = []
   $scope.user = {}
 
   $scope.logIn = (username, password) ->
@@ -14,7 +15,7 @@ angular.module('User').controller 'UserController', ($scope, $http, $routeParams
         $location.path '/admin'
         console.log 'connexion success'
       ).error (status, data) ->
-        $scope.errorMessage = "Couldn't login :( Please check username and password !"
+        $scope.alerts.push {type: 'danger', msg: "Couldn't login :( Please check username and password !"}
         console.log status
         console.log data
 
@@ -29,7 +30,7 @@ angular.module('User').controller 'UserController', ($scope, $http, $routeParams
           $location.path '/login'
           console.log 'registration success'
         ).error (status, data) ->
-          $scope.errorMessage = "Woops something went wrong... couldn't create an account for you"
+          $scope.alerts.push {type: 'danger', msg: "Woops something went wrong... couldn't create an account for you"}
           console.log status
           console.log data
 
@@ -60,3 +61,9 @@ angular.module('User').controller 'UserController', ($scope, $http, $routeParams
       ).error (status, data) ->
         console.log status
         console.log data
+
+  MenuService.getList().success((data) ->
+    $scope.menu = data
+  ).error (status, data) ->
+    console.log status
+    console.log data
