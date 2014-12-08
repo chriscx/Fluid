@@ -1,4 +1,5 @@
 path = require 'path'
+fs = require 'fs'
 expressJwt = require 'express-jwt'
 jwt = require 'jsonwebtoken'
 nodemailer = require 'nodemailer'
@@ -9,6 +10,8 @@ User = require('./models/user').User
 Page = require('./models/page').Page
 Menu = require('./models/menu').Menu
 Post = require('./models/blog').Post
+Setting = require('./models/setting').Setting
+File = require('./models/file').File
 Category = require('./models/category').Category
 
 secret = 'this is my secret for jwt'
@@ -292,6 +295,30 @@ module.exports = (app, passport) ->
        res.send(404).end()
       else
         res.send(200).end()
+
+  app.get '/data/files.json', expressJwt({secret: secret}), (req, res) ->
+    File.find {}, 'name path', (err, data) ->
+      if err
+       res.send(500).end()
+      else
+        res.json data
+
+  app.post '/data/files', (req, res) ->
+    req.pipe req.busboy
+    req.busboy.on "file", (fieldname, file, filename) ->
+      console.log "Uploading: " + filename
+      fstream = fs.createWriteStream("#{__dirname}/../files/" + filename)
+      file.pipe fstream
+      fstream.on "close", ->
+        file = File(
+          name = filename
+          path = "files/" + filename
+        )
+        file.save()
+        res.redirect('/admin/files')
+
+  app.delete '/data/files/:name', expressJwt({secret: secret}), (req, res) ->
+    console.log "not supported yet"
 
   app.post '/signup', (req, res, next) ->
     console.log('POST signup')

@@ -21,7 +21,6 @@ angular.module('Page').controller('PageController', function($scope, $http, $rou
     return console.log(data);
   });
   return $scope.isActive = function(route) {
-    $scope.path = $location.path();
     return $location.path() === route;
   };
 });

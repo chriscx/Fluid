@@ -1,7 +1,10 @@
-angular.module('Admin').controller 'AdminPostsController', ($scope, $http, $routeParams, $location, $window, PostService, PageService, CategoryService) ->
+angular.module('Admin').controller 'AdminPostsController', ($scope, $http, $routeParams, $location, $window, UserService, PostService, PageService, CategoryService) ->
+
+  err = (status, data) ->
+    if status >= 400 and data.message == 'jwt expired'
+      UserService.resetAuth()
 
   $scope.isActive = (route) ->
-    $scope.path = $location.path()
     $location.path() == route
 
   $scope.postList = []
@@ -22,6 +25,7 @@ angular.module('Admin').controller 'AdminPostsController', ($scope, $http, $rout
         console.log 'success'
         $location.path '/admin/blog/posts'
       ).error (data, status, headers, config) ->
+        err status, data
         console.log status
         console.log data
 
@@ -31,6 +35,7 @@ angular.module('Admin').controller 'AdminPostsController', ($scope, $http, $rout
       $scope.post = data
       $scope.post.ident = $scope.post.id
     ).error (data, status, headers, config) ->
+      err status, data
       console.log status
       console.log data
 
@@ -38,6 +43,7 @@ angular.module('Admin').controller 'AdminPostsController', ($scope, $http, $rout
       console.log data
       $scope.categories = data
     ).error (data, status, headers, config) ->
+      err status, data
       console.log status
       console.log data
 
@@ -46,6 +52,7 @@ angular.module('Admin').controller 'AdminPostsController', ($scope, $http, $rout
         console.log 'success'
         $location.path '/admin/blog/posts'
       ).error (data, status, headers, config) ->
+        err status, data
         console.log status
         console.log data
 
@@ -54,6 +61,7 @@ angular.module('Admin').controller 'AdminPostsController', ($scope, $http, $rout
         console.log 'success'
         $location.path '/admin/blog/posts'
       ).error (data, status, headers, config) ->
+        err status, data
         console.log status
         console.log data
 
@@ -63,6 +71,7 @@ angular.module('Admin').controller 'AdminPostsController', ($scope, $http, $rout
       $scope.postList = data
       console.log $scope.postList
     ).error (data, status, headers, config) ->
+      err status, data
       console.log status
       console.log data
 

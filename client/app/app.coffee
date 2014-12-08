@@ -68,6 +68,16 @@ FluidApp.config ['$locationProvider', '$routeProvider', ($locationProvider, $rou
     controller: 'AdminPagesController'
     access:
       requiredLogin: true
+  ).when('/admin/files',
+    templateUrl: 'views/admin/files/files.html'
+    controller: 'AdminFilesController'
+    access:
+      requiredLogin: true
+  ).when('/admin/files/upload',
+    templateUrl: 'views/admin/files/uploadFile.html'
+    controller: 'UserController'
+    access:
+      requiredLogin: true
   ).when('/admin/:user',
     templateUrl: 'views/admin/users/user.html'
     controller: 'UserController'
@@ -102,5 +112,7 @@ FluidApp.config ($httpProvider) ->
 
 FluidApp.run ($rootScope, $location, $window, AuthenticationService) ->
   $rootScope.$on '$routeChangeStart', (event, nextRoute, currentRoute) ->
+    console.log $window.sessionStorage.token
+    console.log AuthenticationService
     $location.path '/login' if nextRoute.access.requiredLogin and not AuthenticationService.isLogged
     $location.path '/admin' if nextRoute.originalPath in ['/login', '/signup'] and AuthenticationService.isLogged

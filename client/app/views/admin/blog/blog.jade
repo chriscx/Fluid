@@ -18,5 +18,6 @@ include ../menu
               label Edit category
               input.form-control(ng-model='selectedCategory.name' type='text')
             .form-group
-              button.btn.btn-success(type='button' ng-click='saveCategory(selectedCategory)') Save
-              button.btn.btn-danger(type='button' ng-click='deleteCategory(selectedCategory)') Delete
+              .btn-toolbar
+                button.btn.btn-success(type='button' ng-click='saveCategory(selectedCategory)') Save
+                button.btn.btn-danger(type='button' ng-click='deleteCategory(selectedCategory)') Delete

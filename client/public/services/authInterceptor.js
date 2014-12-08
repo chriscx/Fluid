@@ -8,7 +8,7 @@ angular.module('User').factory("authInterceptor", function($rootScope, $q, $wind
       return config;
     },
     response: function(response) {
-      if (response.status === 401 || response.status === 500) {
+      if (response.status === 401) {
         AuthenticationService.isLogged = false;
       }
       return response || $q.when(response);

@@ -3,15 +3,17 @@ angular.module('Admin').controller 'AdminBlogController', ($scope, $http, $route
   $scope.categoryList = []
   $scope.newCategory = {id: '', name: ''}
 
+  err = (status, data) ->
+    if status >= 400 and data.message == 'jwt expired'
+      UserService.resetAuth()
+
   $scope.isActive = (route) ->
-    console.log 'path: ' + $location.path()
-    console.log 'route: ' + route
-    $scope.path = $location.path()
     $location.path() == route
 
   CategoryService.getList().success((data) ->
     $scope.categoryList = data
   ).error (status, data) ->
+    err status, data
     console.log status
     console.log data
 
@@ -20,10 +22,12 @@ angular.module('Admin').controller 'AdminBlogController', ($scope, $http, $route
       CategoryService.getList().success((data) ->
         $scope.categoryList = data
       ).error (status, data) ->
+        err status, data
         console.log status
         console.log data
       console.log 'success'
     ).error (status, data) ->
+      err status, data
       console.log status
       console.log data
 
@@ -32,6 +36,7 @@ angular.module('Admin').controller 'AdminBlogController', ($scope, $http, $route
       console.log 'success'
       $location.path '/admin/blog'
     ).error (status, data) ->
+      err status, data
       console.log status
       console.log data
 
@@ -40,5 +45,6 @@ angular.module('Admin').controller 'AdminBlogController', ($scope, $http, $route
       console.log 'success'
       $location.path '/admin/blog'
     ).error (status, data) ->
+      err status, data
       console.log status
       console.log data

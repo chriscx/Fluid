@@ -20,7 +20,4 @@ angular.module('Page').controller 'PageController', ($scope, $http, $routeParams
     console.log data
 
   $scope.isActive = (route) ->
-    # console.log 'path: ' + $location.path()
-    # console.log 'route: ' + route
-    $scope.path = $location.path()
     $location.path() == route

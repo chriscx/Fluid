@@ -1,6 +1,11 @@
-angular.module('Admin').controller('AdminPostsController', function($scope, $http, $routeParams, $location, $window, PostService, PageService, CategoryService) {
+angular.module('Admin').controller('AdminPostsController', function($scope, $http, $routeParams, $location, $window, UserService, PostService, PageService, CategoryService) {
+  var err;
+  err = function(status, data) {
+    if (status >= 400 && data.message === 'jwt expired') {
+      return UserService.resetAuth();
+    }
+  };
   $scope.isActive = function(route) {
-    $scope.path = $location.path();
     return $location.path() === route;
   };
   $scope.postList = [];
@@ -19,6 +24,7 @@ angular.module('Admin').controller('AdminPostsController', function($scope, $htt
         console.log('success');
         return $location.path('/admin/blog/posts');
       }).error(function(data, status, headers, config) {
+        err(status, data);
         console.log(status);
         return console.log(data);
       });
@@ -28,6 +34,7 @@ angular.module('Admin').controller('AdminPostsController', function($scope, $htt
       $scope.post = data;
       return $scope.post.ident = $scope.post.id;
     }).error(function(data, status, headers, config) {
+      err(status, data);
       console.log(status);
       return console.log(data);
     });
@@ -35,6 +42,7 @@ angular.module('Admin').controller('AdminPostsController', function($scope, $htt
       console.log(data);
       return $scope.categories = data;
     }).error(function(data, status, headers, config) {
+      err(status, data);
       console.log(status);
       return console.log(data);
     });
@@ -43,6 +51,7 @@ angular.module('Admin').controller('AdminPostsController', function($scope, $htt
         console.log('success');
         return $location.path('/admin/blog/posts');
       }).error(function(data, status, headers, config) {
+        err(status, data);
         console.log(status);
         return console.log(data);
       });
@@ -52,6 +61,7 @@ angular.module('Admin').controller('AdminPostsController', function($scope, $htt
         console.log('success');
         return $location.path('/admin/blog/posts');
       }).error(function(data, status, headers, config) {
+        err(status, data);
         console.log(status);
         return console.log(data);
       });
@@ -61,6 +71,7 @@ angular.module('Admin').controller('AdminPostsController', function($scope, $htt
       $scope.postList = data;
       return console.log($scope.postList);
     }).error(function(data, status, headers, config) {
+      err(status, data);
       console.log(status);
       return console.log(data);
     });

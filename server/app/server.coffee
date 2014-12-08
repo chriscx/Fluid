@@ -13,6 +13,7 @@ expressSession = require 'express-session'
 expressJwt = require 'express-jwt'
 jwt = require 'jsonwebtoken'
 bcrypt = require 'bcrypt-nodejs'
+busboy = require 'connect-busboy'
 User = require('./models/user').User
 
 app = express()
@@ -132,6 +133,8 @@ app.use express.static "#{__dirname}/../../client/public"
 
 app.use (err, req, res, next) ->
   res.send 401, "invalid token..."  if err.name is "UnauthorizedError"
+
+app.use busboy()
 
 require('./routes') app, passport
 

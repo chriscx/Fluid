@@ -1,18 +1,22 @@
 angular.module('Admin').controller('AdminBlogController', function($scope, $http, $routeParams, $location, $window, PostService, PageService, CategoryService) {
+  var err;
   $scope.categoryList = [];
   $scope.newCategory = {
     id: '',
     name: ''
   };
+  err = function(status, data) {
+    if (status >= 400 && data.message === 'jwt expired') {
+      return UserService.resetAuth();
+    }
+  };
   $scope.isActive = function(route) {
-    console.log('path: ' + $location.path());
-    console.log('route: ' + route);
-    $scope.path = $location.path();
     return $location.path() === route;
   };
   CategoryService.getList().success(function(data) {
     return $scope.categoryList = data;
   }).error(function(status, data) {
+    err(status, data);
     console.log(status);
     return console.log(data);
   });
@@ -21,11 +25,13 @@ angular.module('Admin').controller('AdminBlogController', function($scope, $http
       CategoryService.getList().success(function(data) {
         return $scope.categoryList = data;
       }).error(function(status, data) {
+        err(status, data);
         console.log(status);
         return console.log(data);
       });
       return console.log('success');
     }).error(function(status, data) {
+      err(status, data);
       console.log(status);
       return console.log(data);
     });
@@ -35,6 +41,7 @@ angular.module('Admin').controller('AdminBlogController', function($scope, $http
       console.log('success');
       return $location.path('/admin/blog');
     }).error(function(status, data) {
+      err(status, data);
       console.log(status);
       return console.log(data);
     });
@@ -44,6 +51,7 @@ angular.module('Admin').controller('AdminBlogController', function($scope, $http
       console.log('success');
       return $location.path('/admin/blog');
     }).error(function(status, data) {
+      err(status, data);
       console.log(status);
       return console.log(data);
     });

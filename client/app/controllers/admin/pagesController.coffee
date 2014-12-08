@@ -1,7 +1,10 @@
 angular.module('Admin').controller 'AdminPagesController', ($scope, $http, $routeParams, $location, $window, PostService, PageService, CategoryService) ->
 
+  err = (status, data) ->
+    if status >= 400 and data.message == 'jwt expired'
+      UserService.resetAuth()
+
   $scope.isActive = (route) ->
-    $scope.path = $location.path()
     $location.path() == route
 
   if $location.path().lastIndexOf('/admin/pages/create', 0) == 0
@@ -18,6 +21,7 @@ angular.module('Admin').controller 'AdminPagesController', ($scope, $http, $rout
         console.log 'success'
         $location.path '/admin/pages'
       ).error (status, data) ->
+        err status, data
         console.log status
         console.log data
 
@@ -28,6 +32,7 @@ angular.module('Admin').controller 'AdminPagesController', ($scope, $http, $rout
       $scope.page.ident = $scope.page.route
       console.log $scope.page
     ).error (status, data) ->
+      err status, data
       console.log status
       console.log data
 
@@ -37,6 +42,7 @@ angular.module('Admin').controller 'AdminPagesController', ($scope, $http, $rout
         console.log 'success'
         $location.path '/admin/pages'
       ).error (status, data) ->
+        err status, data
         console.log status
         console.log data
 
@@ -45,6 +51,7 @@ angular.module('Admin').controller 'AdminPagesController', ($scope, $http, $rout
         console.log 'success'
         $location.path '/admin/pages'
       ).error (status, data) ->
+        err status, data
         console.log status
         console.log data
 
@@ -53,6 +60,7 @@ angular.module('Admin').controller 'AdminPagesController', ($scope, $http, $rout
     PageService.getList().success((data) ->
       $scope.pageList = data
     ).error (status, data) ->
+      err status, data
       console.log status
       console.log data
 

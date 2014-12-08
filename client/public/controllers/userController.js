@@ -23,12 +23,9 @@ angular.module('User').controller('UserController', function($scope, $http, $rou
     }
   };
   $scope.signUp = function(newUser) {
-    console.log(newUser);
     if (newUser.username !== undefined && newUser.password !== undefined && newUser.email !== undefined && newUser.password === newUser.passwordCheck) {
-      console.log(newUser);
       return UserService.signUp(newUser).success(function(data) {
-        $location.path('/login');
-        return console.log('registration success');
+        return $location.path('/login');
       }).error(function(status, data) {
         $scope.alerts.push({
           type: 'danger',
