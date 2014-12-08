@@ -1,6 +1,5 @@
 angular.module('Admin').controller('AdminPagesController', function($scope, $http, $routeParams, $location, $window, PostService, PageService, CategoryService) {
   $scope.isActive = function(route) {
-    $scope.path = $location.path();
     return $location.path() === route;
   };
   if ($location.path().lastIndexOf('/admin/pages/create', 0) === 0) {

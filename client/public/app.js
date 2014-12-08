@@ -87,6 +87,18 @@ FluidApp.config([
       access: {
         requiredLogin: true
       }
+    }).when('/admin/files', {
+      templateUrl: 'views/admin/files/files.html',
+      controller: 'AdminFilesController',
+      access: {
+        requiredLogin: true
+      }
+    }).when('/admin/files/upload', {
+      templateUrl: 'views/admin/files/uploadFile.html',
+      controller: 'UserController',
+      access: {
+        requiredLogin: true
+      }
     }).when('/admin/:user', {
       templateUrl: 'views/admin/users/user.html',
       controller: 'UserController',
@@ -130,6 +142,8 @@ FluidApp.config(function($httpProvider) {
 FluidApp.run(function($rootScope, $location, $window, AuthenticationService) {
   return $rootScope.$on('$routeChangeStart', function(event, nextRoute, currentRoute) {
     var _ref;
+    console.log($window.sessionStorage.token);
+    console.log(AuthenticationService);
     if (nextRoute.access.requiredLogin && !AuthenticationService.isLogged) {
       $location.path('/login');
     }

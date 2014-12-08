@@ -4,9 +4,6 @@ angular.module('Admin').controller 'AdminBlogController', ($scope, $http, $route
   $scope.newCategory = {id: '', name: ''}
 
   $scope.isActive = (route) ->
-    console.log 'path: ' + $location.path()
-    console.log 'route: ' + route
-    $scope.path = $location.path()
     $location.path() == route
 
   CategoryService.getList().success((data) ->

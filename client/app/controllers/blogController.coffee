@@ -19,6 +19,4 @@ angular.module('Blog').controller 'BlogController', ($scope, $http, $routeParams
     console.log data
 
   $scope.isActive = (route) ->
-    console.log 'route ' + route
-    console.log 'path ' + $location.path() 
     $location.path() == route

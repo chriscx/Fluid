@@ -20,15 +20,12 @@ angular.module('User').controller 'UserController', ($scope, $http, $routeParams
         console.log data
 
   $scope.signUp = (newUser) ->
-    console.log newUser
     if newUser.username isnt `undefined` and
       newUser.password isnt `undefined` and
       newUser.email isnt `undefined` and
       newUser.password == newUser.passwordCheck
-        console.log newUser
         UserService.signUp(newUser).success((data) ->
           $location.path '/login'
-          console.log 'registration success'
         ).error (status, data) ->
           $scope.alerts.push {type: 'danger', msg: "Woops something went wrong... couldn't create an account for you"}
           console.log status

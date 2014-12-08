@@ -1,0 +1,13 @@
+include ../menu
+.container
+  .row
+    .col-md-8.col-md-offset-2
+      .row
+        .col-md-12
+          form.form(enctype="multipart/form-data" action="/data/files" method="post")
+            .form-group
+              label File:
+              input.form-control(type='file' ng-model='file.path')
+            .form-group
+              .btn-toolbar
+                button.btn.btn-success(type='submit' ng-click='uploadFile(file)') Upload

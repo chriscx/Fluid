@@ -1,7 +1,6 @@
 angular.module('Admin').controller 'AdminPostsController', ($scope, $http, $routeParams, $location, $window, PostService, PageService, CategoryService) ->
 
   $scope.isActive = (route) ->
-    $scope.path = $location.path()
     $location.path() == route
 
   $scope.postList = []

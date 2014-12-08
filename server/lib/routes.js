@@ -1,4 +1,4 @@
-var Category, Menu, Page, Post, User, crypto, expressJwt, jwt, markdown, nodemailer, path, secret, utils;
+var Category, File, Menu, Page, Post, Setting, User, crypto, expressJwt, jwt, markdown, nodemailer, path, secret, utils;
 
 path = require('path');
 
@@ -21,6 +21,10 @@ Page = require('./models/page').Page;
 Menu = require('./models/menu').Menu;
 
 Post = require('./models/blog').Post;
+
+Setting = require('./models/setting').Setting;
+
+File = require('./models/file').File;
 
 Category = require('./models/category').Category;
 
@@ -417,6 +421,26 @@ module.exports = function(app, passport) {
         return res.send(200).end();
       }
     });
+  });
+  app.get('/data/files.json', expressJwt({
+    secret: secret
+  }), function(req, res) {
+    return File.find({}, 'name path', function(err, data) {
+      if (err) {
+        return res.send(500).end();
+      } else {
+        return res.json(data);
+      }
+    });
+  });
+  app.post('/data/files', function(req, res) {
+    console.log(req.files);
+    return res.redirect('/admin/files');
+  });
+  app["delete"]('/data/files', expressJwt({
+    secret: secret
+  }), function(req, res) {
+    return console.log("not supported yet");
   });
   app.post('/signup', function(req, res, next) {
     console.log('POST signup');

@@ -7,7 +7,6 @@ angular.module('Admin').controller('AdminSettingsController', function($scope, $
     route: ''
   };
   $scope.isActive = function(route) {
-    $scope.path = $location.path();
     return $location.path() === route;
   };
   MenuService.getList().success(function(data) {

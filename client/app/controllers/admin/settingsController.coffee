@@ -5,7 +5,6 @@ angular.module('Admin').controller 'AdminSettingsController', ($scope, $http, $r
   $scope.newMenu = {id: '', name: '', route: ''}
 
   $scope.isActive = (route) ->
-    $scope.path = $location.path()
     $location.path() == route
 
   MenuService.getList().success((data) ->

@@ -5,9 +5,6 @@ angular.module('Admin').controller('AdminBlogController', function($scope, $http
     name: ''
   };
   $scope.isActive = function(route) {
-    console.log('path: ' + $location.path());
-    console.log('route: ' + route);
-    $scope.path = $location.path();
     return $location.path() === route;
   };
   CategoryService.getList().success(function(data) {
