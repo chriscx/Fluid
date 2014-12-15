@@ -1,4 +1,5 @@
 path = require 'path'
+fs = require 'fs'
 expressJwt = require 'express-jwt'
 jwt = require 'jsonwebtoken'
 nodemailer = require 'nodemailer'
@@ -302,11 +303,21 @@ module.exports = (app, passport) ->
       else
         res.json data
 
-  app.post '/data/files', (req, res) ->
-    console.log req.files
-    res.redirect('/admin/files')
+  app.post '/data/files', expressJwt({secret: secret}), (req, res) ->
+    req.pipe req.busboy
+    req.busboy.on "file", (fieldname, file, filename) ->
+      console.log "Uploading: " + filename
+      fstream = fs.createWriteStream("#{__dirname}/../files/" + filename)
+      file.pipe fstream
+      fstream.on "close", ->
+        file = File(
+          name = filename
+          path = "files/" + filename
+        )
+        file.save()
+        res.redirect('/admin/files')
 
-  app.delete '/data/files', expressJwt({secret: secret}), (req, res) ->
+  app.delete '/data/files/:name', expressJwt({secret: secret}), (req, res) ->
     console.log "not supported yet"
 
   app.post '/signup', (req, res, next) ->

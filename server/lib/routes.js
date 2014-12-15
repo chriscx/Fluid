@@ -1,6 +1,8 @@
-var Category, File, Menu, Page, Post, Setting, User, crypto, expressJwt, jwt, markdown, nodemailer, path, secret, utils;
+var Category, File, Menu, Page, Post, Setting, User, crypto, expressJwt, fs, jwt, markdown, nodemailer, path, secret, utils;
 
 path = require('path');
+
+fs = require('fs');
 
 expressJwt = require('express-jwt');
 
@@ -433,11 +435,24 @@ module.exports = function(app, passport) {
       }
     });
   });
-  app.post('/data/files', function(req, res) {
-    console.log(req.files);
-    return res.redirect('/admin/files');
+  app.post('/data/files', expressJwt({
+    secret: secret
+  }), function(req, res) {
+    req.pipe(req.busboy);
+    return req.busboy.on("file", function(fieldname, file, filename) {
+      var fstream;
+      console.log("Uploading: " + filename);
+      fstream = fs.createWriteStream(("" + __dirname + "/../files/") + filename);
+      file.pipe(fstream);
+      return fstream.on("close", function() {
+        var name;
+        file = File(name = filename, path = "files/" + filename);
+        file.save();
+        return res.redirect('/admin/files');
+      });
+    });
   });
-  app["delete"]('/data/files', expressJwt({
+  app["delete"]('/data/files/:name', expressJwt({
     secret: secret
   }), function(req, res) {
     return console.log("not supported yet");

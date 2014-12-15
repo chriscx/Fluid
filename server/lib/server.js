@@ -1,4 +1,4 @@
-var LocalStrategy, User, app, bcrypt, bodyParser, cluster, cookieParser, express, expressJwt, expressSession, fs, i, jwt, methodOverride, mongoose, numCPUs, passport, path, server;
+var LocalStrategy, User, app, bcrypt, bodyParser, busboy, cluster, cookieParser, express, expressJwt, expressSession, fs, i, jwt, methodOverride, mongoose, numCPUs, passport, path, server;
 
 fs = require('fs');
 
@@ -29,6 +29,8 @@ expressJwt = require('express-jwt');
 jwt = require('jsonwebtoken');
 
 bcrypt = require('bcrypt-nodejs');
+
+busboy = require('connect-busboy');
 
 User = require('./models/user').User;
 
@@ -150,6 +152,8 @@ app.use(function(err, req, res, next) {
     return res.send(401, "invalid token...");
   }
 });
+
+app.use(busboy());
 
 require('./routes')(app, passport);
 

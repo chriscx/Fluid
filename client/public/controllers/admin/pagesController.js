@@ -1,4 +1,10 @@
 angular.module('Admin').controller('AdminPagesController', function($scope, $http, $routeParams, $location, $window, PostService, PageService, CategoryService) {
+  var err;
+  err = function(status, data) {
+    if (status >= 400 && data.message === 'jwt expired') {
+      return UserService.resetAuth();
+    }
+  };
   $scope.isActive = function(route) {
     return $location.path() === route;
   };
@@ -15,6 +21,7 @@ angular.module('Admin').controller('AdminPagesController', function($scope, $htt
         console.log('success');
         return $location.path('/admin/pages');
       }).error(function(status, data) {
+        err(status, data);
         console.log(status);
         return console.log(data);
       });
@@ -25,6 +32,7 @@ angular.module('Admin').controller('AdminPagesController', function($scope, $htt
       $scope.page.ident = $scope.page.route;
       return console.log($scope.page);
     }).error(function(status, data) {
+      err(status, data);
       console.log(status);
       return console.log(data);
     });
@@ -34,6 +42,7 @@ angular.module('Admin').controller('AdminPagesController', function($scope, $htt
         console.log('success');
         return $location.path('/admin/pages');
       }).error(function(status, data) {
+        err(status, data);
         console.log(status);
         return console.log(data);
       });
@@ -43,6 +52,7 @@ angular.module('Admin').controller('AdminPagesController', function($scope, $htt
         console.log('success');
         return $location.path('/admin/pages');
       }).error(function(status, data) {
+        err(status, data);
         console.log(status);
         return console.log(data);
       });
@@ -51,6 +61,7 @@ angular.module('Admin').controller('AdminPagesController', function($scope, $htt
     return PageService.getList().success(function(data) {
       return $scope.pageList = data;
     }).error(function(status, data) {
+      err(status, data);
       console.log(status);
       return console.log(data);
     });

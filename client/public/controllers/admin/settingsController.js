@@ -1,10 +1,16 @@
 angular.module('Admin').controller('AdminSettingsController', function($scope, $http, $routeParams, $location, $window, PostService, PageService, MenuService) {
+  var err;
   $scope.categoryList = [];
   $scope.menuList = [];
   $scope.newMenu = {
     id: '',
     name: '',
     route: ''
+  };
+  err = function(status, data) {
+    if (status >= 400 && data.message === 'jwt expired') {
+      return UserService.resetAuth();
+    }
   };
   $scope.isActive = function(route) {
     return $location.path() === route;
@@ -13,6 +19,7 @@ angular.module('Admin').controller('AdminSettingsController', function($scope, $
     $scope.menuList = data;
     return console.log('success');
   }).error(function(status, data) {
+    err(status, data);
     console.log(status);
     return console.log(data);
   });
@@ -22,11 +29,13 @@ angular.module('Admin').controller('AdminSettingsController', function($scope, $
       MenuService.getList().success(function(data) {
         return $scope.menuList = data;
       }).error(function(status, data) {
+        err(status, data);
         console.log(status);
         return console.log(data);
       });
       return console.log('success');
     }).error(function(status, data) {
+      err(status, data);
       console.log(status);
       return console.log(data);
     });
@@ -35,6 +44,7 @@ angular.module('Admin').controller('AdminSettingsController', function($scope, $
     return MenuService.save(data.id, data).success(function(data) {
       return console.log('success');
     }).error(function(status, data) {
+      err(status, data);
       console.log(status);
       return console.log(data);
     });
@@ -44,10 +54,12 @@ angular.module('Admin').controller('AdminSettingsController', function($scope, $
       return MenuService.getList().success(function(data) {
         return $scope.menuList = data;
       }).error(function(status, data) {
+        err(status, data);
         console.log(status);
         return console.log(data);
       });
     }).error(function(status, data) {
+      err(status, data);
       console.log(status);
       return console.log(data);
     });

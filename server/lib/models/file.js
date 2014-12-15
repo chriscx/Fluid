@@ -5,6 +5,10 @@ mongoose = require('mongoose');
 Schema = mongoose.Schema;
 
 FileSchema = new Schema({
+  name: {
+    type: String,
+    required: true
+  },
   path: {
     type: String,
     required: true,

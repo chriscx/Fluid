@@ -1,4 +1,4 @@
-angular.module('User').factory('UserService', function($http) {
+angular.module('User').factory('UserService', function($http, $location, $window, AuthenticationService) {
   return {
     logIn: function(username, password) {
       return $http.post('/login', {
@@ -20,6 +20,14 @@ angular.module('User').factory('UserService', function($http) {
         hash: hash,
         password: password
       });
+    },
+    resetAuth: function() {
+      AuthenticationService.isLogged = false;
+      delete $window.sessionStorage.token;
+      delete $window.sessionStorage.username;
+      delete $window.sessionStorage.firstname;
+      delete $window.sessionStorage.lastname;
+      return $location.path = '/login';
     },
     getUserData: function(username) {
       return $http.get('/data/user/' + username + '.json');
