@@ -9,8 +9,8 @@ include ../menu
               label Edit Title
               input.form-control(ng-model='post.title' type='text')
             .form-group
-              //- label Edit Tags
-              //- input.form-control(type='tags' placeholder='Tags' id='input_post_tags' ng-model='SelectedPost.tags[0].name')
+              label Edit Tags
+              input.form-control(type='tags' placeholder='Tags' id='input_post_tags' ng-model='post.tags')
             .form-group
               label Select Category
               select.form-control(ng-model='post.category' ng-options='category.name for category in categories track by category.name')

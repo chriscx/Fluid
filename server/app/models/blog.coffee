@@ -1,4 +1,5 @@
 mongoose = require 'mongoose'
+category = require('./category').Schema
 
 Schema = mongoose.Schema
 

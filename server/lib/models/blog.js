@@ -1,6 +1,8 @@
-var Post, PostSchema, Schema, mongoose;
+var Post, PostSchema, Schema, category, mongoose;
 
 mongoose = require('mongoose');
+
+category = require('./category').Schema;
 
 Schema = mongoose.Schema;
 

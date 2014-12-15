@@ -34,6 +34,7 @@ angular.module('Admin').controller 'AdminPostsController', ($scope, $http, $rout
     PostService.get($location.path().slice(23)).success((data) ->
       $scope.post = data
       $scope.post.ident = $scope.post.id
+      $scope.post.tags = $scope.post.tags.join(", ")
     ).error (data, status, headers, config) ->
       err status, data
       console.log status
@@ -48,6 +49,10 @@ angular.module('Admin').controller 'AdminPostsController', ($scope, $http, $rout
       console.log data
 
     $scope.savePost = (post) ->
+      console.log 'post save'
+      post.category = post.category.id
+      post.tags = post.tags.split(", ")
+      console.log post
       PostService.save(post.ident, post).success((data) ->
         console.log 'success'
         $location.path '/admin/blog/posts'

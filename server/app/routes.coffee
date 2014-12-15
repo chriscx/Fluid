@@ -4,6 +4,8 @@ expressJwt = require 'express-jwt'
 jwt = require 'jsonwebtoken'
 nodemailer = require 'nodemailer'
 crypto = require 'crypto'
+Hashids = require 'hashids'
+hash = new Hashids('this is my salt')
 markdown = require('markdown').markdown
 utils = require './utils'
 User = require('./models/user').User
@@ -158,7 +160,7 @@ module.exports = (app, passport) ->
 
   app.post '/data/blog/category/', expressJwt({secret: secret}), (req, res) ->
     newCategory = new Category(
-      id: utils.slugify req.body.name
+      id: hash.encode req.body.name
       name: req.body.name,
       description: req.body.description
     )
@@ -171,7 +173,6 @@ module.exports = (app, passport) ->
 
   app.put '/data/blog/category/:id.json', expressJwt({secret: secret}), (req, res) ->
     data = req.body
-    data.id = utils.slugify data.name
     Category.findOneAndUpdate {id: req.params.id},
       data,
       new: true,
@@ -303,18 +304,19 @@ module.exports = (app, passport) ->
       else
         res.json data
 
-  app.post '/data/files', expressJwt({secret: secret}), (req, res) ->
+  app.post '/data/files', (req, res) ->
     req.pipe req.busboy
     req.busboy.on "file", (fieldname, file, filename) ->
       console.log "Uploading: " + filename
-      fstream = fs.createWriteStream("#{__dirname}/../files/" + filename)
+      fstream = fs.createWriteStream("#{__dirname}/../../client/public/media/" + filename)
       file.pipe fstream
       fstream.on "close", ->
         file = File(
-          name = filename
-          path = "files/" + filename
+          id: filename
+          path: filename
         )
         file.save()
+        console.log 'REDIRECT'
         res.redirect('/admin/files')
 
   app.delete '/data/files/:name', expressJwt({secret: secret}), (req, res) ->

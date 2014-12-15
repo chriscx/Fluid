@@ -3,5 +3,5 @@ angular.module('User').factory 'FileService', ($http, $location, $window, Authen
   getList: () ->
     $http.get '/data/files.json'
 
-  removeFile: (name) ->
-    $http.delete '/data/files/' + name
+  remove: (id) ->
+    $http.delete '/data/files/' + id

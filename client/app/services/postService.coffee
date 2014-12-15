@@ -7,7 +7,7 @@ angular.module('Blog').factory 'PostService', ($http) ->
 
   get: (id) ->
     $http.get '/data/blog/post/' + id + '.json'
-    
+
   create: (data) ->
     $http.post '/data/blog/post/', data
 

@@ -4,5 +4,6 @@ include menu
     .col-md-8
       .page-header
         h1 {{post.title}}
-        h5 by {{post.author}} - {{post.creationDate | date:'MM/dd/yyyy @ h:mma'}}
+        h5 by {{post.author}} - {{post.creationDate | date:'MM/dd/yyyy @ h:mma'}} - 
+          a(href='') {{post.category.name}}
         div(marked='post.body')

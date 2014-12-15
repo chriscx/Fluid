@@ -32,7 +32,8 @@ angular.module('Admin').controller('AdminPostsController', function($scope, $htt
   } else if ($location.path().lastIndexOf('/admin/blog/posts/edit', 0) === 0) {
     PostService.get($location.path().slice(23)).success(function(data) {
       $scope.post = data;
-      return $scope.post.ident = $scope.post.id;
+      $scope.post.ident = $scope.post.id;
+      return $scope.post.tags = $scope.post.tags.join(", ");
     }).error(function(data, status, headers, config) {
       err(status, data);
       console.log(status);
@@ -47,6 +48,10 @@ angular.module('Admin').controller('AdminPostsController', function($scope, $htt
       return console.log(data);
     });
     $scope.savePost = function(post) {
+      console.log('post save');
+      post.category = post.category.id;
+      post.tags = post.tags.split(", ");
+      console.log(post);
       return PostService.save(post.ident, post).success(function(data) {
         console.log('success');
         return $location.path('/admin/blog/posts');

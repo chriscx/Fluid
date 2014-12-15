@@ -5,7 +5,8 @@ include menu
       .page-header
         h1
           a(href='/blog/{{post.id}}') {{post.title}}
-          h5 by {{post.author}} - {{post.creationDate | date:'MM/dd/yyyy @ h:mma'}}
+          h5 by {{post.author}} - {{post.creationDate | date:'MM/dd/yyyy @ h:mma'}} - 
+            a(href='') {{post.category.name}}
           div(marked='post.body')
             //- .row
             //-   button.btn.btn-default Next

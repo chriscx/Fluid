@@ -1,4 +1,4 @@
-var Category, File, Menu, Page, Post, Setting, User, crypto, expressJwt, fs, jwt, markdown, nodemailer, path, secret, utils;
+var Category, File, Hashids, Menu, Page, Post, Setting, User, crypto, expressJwt, fs, hash, jwt, markdown, nodemailer, path, secret, utils;
 
 path = require('path');
 
@@ -11,6 +11,10 @@ jwt = require('jsonwebtoken');
 nodemailer = require('nodemailer');
 
 crypto = require('crypto');
+
+Hashids = require('hashids');
+
+hash = new Hashids('this is my salt');
 
 markdown = require('markdown').markdown;
 
@@ -236,7 +240,7 @@ module.exports = function(app, passport) {
   }), function(req, res) {
     var newCategory;
     newCategory = new Category({
-      id: utils.slugify(req.body.name),
+      id: hash.encode(req.body.name),
       name: req.body.name,
       description: req.body.description
     });
@@ -253,7 +257,6 @@ module.exports = function(app, passport) {
   }), function(req, res) {
     var data;
     data = req.body;
-    data.id = utils.slugify(data.name);
     return Category.findOneAndUpdate({
       id: req.params.id
     }, data, {
@@ -435,19 +438,20 @@ module.exports = function(app, passport) {
       }
     });
   });
-  app.post('/data/files', expressJwt({
-    secret: secret
-  }), function(req, res) {
+  app.post('/data/files', function(req, res) {
     req.pipe(req.busboy);
     return req.busboy.on("file", function(fieldname, file, filename) {
       var fstream;
       console.log("Uploading: " + filename);
-      fstream = fs.createWriteStream(("" + __dirname + "/../files/") + filename);
+      fstream = fs.createWriteStream(("" + __dirname + "/../../client/public/media/") + filename);
       file.pipe(fstream);
       return fstream.on("close", function() {
-        var name;
-        file = File(name = filename, path = "files/" + filename);
+        file = File({
+          id: filename,
+          path: filename
+        });
         file.save();
+        console.log('REDIRECT');
         return res.redirect('/admin/files');
       });
     });
