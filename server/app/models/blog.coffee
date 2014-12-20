@@ -1,5 +1,4 @@
 mongoose = require 'mongoose'
-
 Schema = mongoose.Schema
 
 PostSchema = new Schema
@@ -13,7 +12,7 @@ PostSchema = new Schema
   id: String
   body: String      # html
   content: String   # markdown
-  tags: [name: String]
+  tags: [String]
   category: String
   comments: [
     body: String

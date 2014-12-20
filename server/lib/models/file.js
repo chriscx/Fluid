@@ -5,7 +5,7 @@ mongoose = require('mongoose');
 Schema = mongoose.Schema;
 
 FileSchema = new Schema({
-  name: {
+  id: {
     type: String,
     required: true
   },

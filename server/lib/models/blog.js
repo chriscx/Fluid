@@ -18,11 +18,7 @@ PostSchema = new Schema({
   id: String,
   body: String,
   content: String,
-  tags: [
-    {
-      name: String
-    }
-  ],
+  tags: [String],
   category: String,
   comments: [
     {

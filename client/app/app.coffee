@@ -33,11 +33,6 @@ FluidApp.config ['$locationProvider', '$routeProvider', ($locationProvider, $rou
     controller: 'AdminSettingsController'
     access:
       requiredLogin: true
-  ).when('/admin/blog',
-    templateUrl: 'views/admin/blog/blog.html'
-    controller: 'AdminBlogController'
-    access:
-      requiredLogin: true
   ).when('/admin/blog/posts',
     templateUrl: 'views/admin/blog/posts.html'
     controller: 'AdminPostsController'

@@ -4,6 +4,8 @@ expressJwt = require 'express-jwt'
 jwt = require 'jsonwebtoken'
 nodemailer = require 'nodemailer'
 crypto = require 'crypto'
+Hashids = require 'hashids'
+hash = new Hashids('this is my salt')
 markdown = require('markdown').markdown
 utils = require './utils'
 User = require('./models/user').User
@@ -12,7 +14,6 @@ Menu = require('./models/menu').Menu
 Post = require('./models/blog').Post
 Setting = require('./models/setting').Setting
 File = require('./models/file').File
-Category = require('./models/category').Category
 
 secret = 'this is my secret for jwt'
 
@@ -23,9 +24,9 @@ module.exports = (app, passport) ->
     User.findOne {username: req.user.username}, '-_id -__v', (err, data) ->
       delete data.password
       if err
-       res.send(500).end()
+       res.sendStatus(500).end()
       else if data is `undefined`
-       res.send(404).end()
+       res.sendStatus(404).end()
       else
         res.json data
 
@@ -36,21 +37,21 @@ module.exports = (app, passport) ->
       new: true,
         (err, data) ->
           if err
-           res.send(500).end()
+           res.sendStatus(500).end()
           else if data is `undefined`
-           res.send(404).end()
+           res.sendStatus(404).end()
           else
-            res.send(200).end()
+            res.sendStatus(200).end()
 
   app.delete '/data/user/:user.json', expressJwt({secret: secret}), (req, res) ->
     console.log('DEL user \'' + req.user.username + '\' JSON object')
     User.remove {'username': req.user.username}, (err, data) ->
       if err
-       res.send(500).end()
+       res.sendStatus(500).end()
       else if data.length < 1
-       res.send(404).end()
+       res.sendStatus(404).end()
       else
-        res.send(200).end()
+        res.sendStatus(200).end()
 
   app.get '/data/blog/posts.json', expressJwt({secret: secret}), (req, res) ->
     console.log('GET playlist list of \'' + req.user.username + '\' JSON object')
@@ -59,7 +60,7 @@ module.exports = (app, passport) ->
       unless err
         res.json data
       else
-       res.send(404).end()
+       res.sendStatus(404).end()
 
   app.get '/data/blog/post/:s/:l/posts.json', (req, res) ->
     Post.find {}, '-_id -__v', {'skip': req.params.s, 'limit': req.params.l}
@@ -67,14 +68,14 @@ module.exports = (app, passport) ->
         creationDate: 'desc'
       .exec (err, data) ->
         if err
-         res.send(500).end()
+         res.sendStatus(500).end()
         else
           res.json data
 
   app.get '/data/blog/post/:id.json', (req, res) ->
     Post.findOne {'id': req.params.id}, '-_id -__v', (err, data) ->
       if err
-       res.send(500).end()
+       res.sendStatus(500).end()
       else
         res.json data
 
@@ -98,9 +99,9 @@ module.exports = (app, passport) ->
     newPost.save (err) ->
       if err
         console.log err
-        res.send(500).end()
+        res.sendStatus(500).end()
       else
-        res.send(200).end()
+        res.sendStatus(200).end()
 
   app.put '/data/blog/post/:id.json', expressJwt({secret: secret}), (req, res) ->
     data = req.body
@@ -111,98 +112,53 @@ module.exports = (app, passport) ->
       new: true,
         (err, data) ->
           if err
-           res.send(500).end()
+           res.sendStatus(500).end()
           else if data is `undefined`
-           res.send(404).end()
+           res.sendStatus(404).end()
           else
-            res.send(200).end()
+            res.sendStatus(200).end()
 
   app.delete '/data/blog/post/:id.json', expressJwt({secret: secret}), (req, res) ->
     Post.remove 'id': req.params.id, (err, data) ->
       if err
-       res.send(500).end()
+       res.sendStatus(500).end()
       else if data.length < 1
-       res.send(404).end()
+       res.sendStatus(404).end()
       else
-        res.send(200).end()
+        res.sendStatus(200).end()
 
   app.get '/data/blog/tag/:name/posts.json', (req, res) ->
     Post.find {'tags.name': req.params.name}, '-_id -__v', (err, data) ->
       if err
-       res.send(500).end()
+       res.sendStatus(500).end()
       else
         res.json data
 
   app.get '/data/blog/category/:name/posts.json', (req, res) ->
     Post.find {'category': req.params.name}, '-_id -__v', (err, data) ->
       if err
-       res.send(500).end()
+       res.sendStatus(500).end()
       else
         res.json data
 
   app.get '/data/blog/categories.json', (req, res) ->
-    Category.find {}, '-_id -__v', (err, data) ->
+    Post.find({}).distinct 'category', (err, data) ->
       if err
-       res.send(500).end()
+       res.sendStatus(500).end()
       else
         res.json data
-
-  app.get '/data/blog/category/:id.json', (req, res) ->
-    Category.findOne {id: req.params.id}, '-_id -__v', (err, data) ->
-      if err
-       res.send(500).end()
-      else if data is `undefined`
-       res.send(404).end()
-      else
-        res.json data
-
-  app.post '/data/blog/category/', expressJwt({secret: secret}), (req, res) ->
-    newCategory = new Category(
-      id: utils.slugify req.body.name
-      name: req.body.name,
-      description: req.body.description
-    )
-
-    newCategory.save (err) ->
-      if err
-       res.send(500).end()
-      else
-        res.send(200).end()
-
-  app.put '/data/blog/category/:id.json', expressJwt({secret: secret}), (req, res) ->
-    data = req.body
-    data.id = utils.slugify data.name
-    Category.findOneAndUpdate {id: req.params.id},
-      data,
-      new: true,
-        (err, data) ->
-          if err
-           res.send(500).end()
-          else if data is `undefined`
-           res.send(404).end()
-          else
-            res.send(200).end()
-
-  app.delete '/data/blog/category/:id.json', expressJwt({secret: secret}), (req, res) ->
-    Category.remove {id: req.params.id}, (err, data) ->
-      if err
-       res.send(500).end()
-      else if data.length < 1
-       res.send(404).end()
-      else
-        res.send(200).end()
 
   app.get '/data/menu.json', (req, res) ->
     Menu.find {}, '-_id -__v', (err, data) ->
       if err
-       res.send(500).end()
+       res.sendStatus(500).end()
       else
         res.json data
 
   app.get '/data/menu/:id.json', (req, res) ->
     Menu.findOne {id: req.params.id}, '-_id -__v', (err, data) ->
       if err
-       res.send(500).end()
+       res.sendStatus(500).end()
       else
         res.json data
 
@@ -218,9 +174,9 @@ module.exports = (app, passport) ->
 
     newMenu.save (err) ->
       if err
-       res.send(500).end()
+       res.sendStatus(500).end()
       else
-        res.send(200).end()
+        res.sendStatus(200).end()
 
   app.put '/data/menu/:id.json', (req, res) ->
     Menu.findOneAndUpdate {id: req.params.id},
@@ -228,30 +184,77 @@ module.exports = (app, passport) ->
     new: true,
       (err, data) ->
         if err
-         res.send(500).end()
+         res.sendStatus(500).end()
         else
-          res.send(200).end()
+          res.sendStatus(200).end()
 
   app.delete '/data/menu/:id.json', (req, res) ->
     Menu.remove {id: req.params.id}, (err, data) ->
       if err
-       res.send(500).end()
+       res.sendStatus(500).end()
       else if data.length < 1
-       res.send(404).end()
+       res.sendStatus(404).end()
       else
-        res.send(200).end()
+        res.sendStatus(200).end()
+
+  app.get '/data/settings.json', (req, res) ->
+    Menu.find {}, '-_id -__v', (err, data) ->
+      if err
+       res.sendStatus(500).end()
+      else
+        res.json data
+
+  app.get '/data/settings/:id.json', (req, res) ->
+    Menu.findOne {id: req.params.id}, '-_id -__v', (err, data) ->
+      if err
+       res.sendStatus(500).end()
+      else
+        res.json data
+
+  app.post '/data/settings/', (req, res) ->
+    # if route is updated, the settings link will be void
+    newSetting = new Setting(
+      id: utils.slugify req.body.name
+      name: req.body.name
+      value: req.body.value
+    )
+
+    newSetting.save (err) ->
+      if err
+       res.sendStatus(500).end()
+      else
+        res.sendStatus(200).end()
+
+  app.put '/data/settings/:id.json', (req, res) ->
+    Setting.findOneAndUpdate {id: req.params.id},
+    req.body,
+    new: true,
+      (err, data) ->
+        if err
+         res.sendStatus(500).end()
+        else
+          res.sendStatus(200).end()
+
+  app.delete '/data/settings/:id.json', (req, res) ->
+    Setting.remove {id: req.params.id}, (err, data) ->
+      if err
+       res.sendStatus(500).end()
+      else if data.length < 1
+       res.sendStatus(404).end()
+      else
+        res.sendStatus(200).end()
 
   app.get '/data/pages.json', (req, res) ->
     Page.find {}, 'route title', (err, data) ->
       if err
-       res.send(500).end()
+       res.sendStatus(500).end()
       else
         res.json data
 
   app.get '/data/page/:route.json', (req, res) ->
     Page.findOne {route: req.params.route}, '-_id -__v', (err, data) ->
       if err
-       res.send(500).end()
+       res.sendStatus(500).end()
       else
         res.json data
 
@@ -268,9 +271,9 @@ module.exports = (app, passport) ->
     )
     newPage.save (err, data) ->
       if err
-       res.send(500).end()
+       res.sendStatus(500).end()
       else
-        res.send(200).end()
+        res.sendStatus(200).end()
 
   app.put '/data/page/:route.json', expressJwt({secret: secret}), (req, res) ->
     data = req.body
@@ -281,40 +284,41 @@ module.exports = (app, passport) ->
     new: true,
       (err, data) ->
         if err
-         res.send(500).end()
+         res.sendStatus(500).end()
         else if data is `undefined`
-         res.send(404).end()
+         res.sendStatus(404).end()
         else
-          res.send(200).end()
+          res.sendStatus(200).end()
 
   app.delete '/data/page/:route.json', expressJwt({secret: secret}), (req, res) ->
     Page.remove {route: req.params.route}, (err, data) ->
       if err
-       res.send(500).end()
+       res.sendStatus(500).end()
       else if data.length < 1
-       res.send(404).end()
+       res.sendStatus(404).end()
       else
-        res.send(200).end()
+        res.sendStatus(200).end()
 
   app.get '/data/files.json', expressJwt({secret: secret}), (req, res) ->
     File.find {}, 'name path', (err, data) ->
       if err
-       res.send(500).end()
+       res.sendStatus(500).end()
       else
         res.json data
 
-  app.post '/data/files', expressJwt({secret: secret}), (req, res) ->
+  app.post '/data/files', (req, res) ->
     req.pipe req.busboy
     req.busboy.on "file", (fieldname, file, filename) ->
       console.log "Uploading: " + filename
-      fstream = fs.createWriteStream("#{__dirname}/../files/" + filename)
+      fstream = fs.createWriteStream("#{__dirname}/../../client/public/media/" + filename)
       file.pipe fstream
       fstream.on "close", ->
         file = File(
-          name = filename
-          path = "files/" + filename
+          id: filename
+          path: filename
         )
         file.save()
+        console.log 'REDIRECT'
         res.redirect('/admin/files')
 
   app.delete '/data/files/:name', expressJwt({secret: secret}), (req, res) ->
@@ -324,17 +328,17 @@ module.exports = (app, passport) ->
     console.log('POST signup')
     passport.authenticate('signup', (err, user, info) ->
       return next(err) if err
-      return res.send(409).end() unless user
+      return res.sendStatus(409).end() unless user
       req.logIn user, (err) ->
         return next(err) if err
-        res.send(201).end()
+        res.sendStatus(201).end()
     ) req, res, next
 
   app.post '/login', (req, res, next) ->
     console.log('POST login')
     passport.authenticate('login', (err, user, info) ->
       return next(err) if err
-      return res.send(401).end() unless user
+      return res.sendStatus(401).end() unless user
       req.logIn user, (err) ->
         return next(err) if err
         profile = username: user.username, email: user.email, firstname: user.firstname, lastname: user.lastname
@@ -345,9 +349,9 @@ module.exports = (app, passport) ->
   app.post '/forgot', (req, res, next) ->
     User.findOne username: req.user.username, (err, user) ->
       if err
-       res.send(500).end()
+       res.sendStatus(500).end()
       else if user.length < 1
-       res.send(404).end()
+       res.sendStatus(404).end()
       else
         crypto.randomBytes 20, (err, buf) ->
         token = buf.toString("hex")
@@ -360,15 +364,15 @@ module.exports = (app, passport) ->
 
         smtpTransport.sendMail mailOptions, (err) ->
           unless err
-            res.send(200).end()
+            res.sendStatus(200).end()
           else
-            res.send(500).end()
+            res.sendStatus(500).end()
 
   app.post '/reset', (req, res, next) ->
     console.log('POST reset')
     passport.authenticate('reset', (err, user, info) ->
       return next(err) if err
-      return res.send(401).end() unless user
+      return res.sendStatus(401).end() unless user
       req.logIn user, (err) ->
         return next(err) if err
         console.log 'user' + user

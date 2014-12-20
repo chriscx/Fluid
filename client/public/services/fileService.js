@@ -3,8 +3,8 @@ angular.module('User').factory('FileService', function($http, $location, $window
     getList: function() {
       return $http.get('/data/files.json');
     },
-    removeFile: function(name) {
-      return $http["delete"]('/data/files/' + name);
+    remove: function(id) {
+      return $http["delete"]('/data/files/' + id);
     }
   };
 });

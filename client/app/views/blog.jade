@@ -5,12 +5,17 @@ include menu
       .page-header
         h1
           a(href='/blog/{{post.id}}') {{post.title}}
-          h5 by {{post.author}} - {{post.creationDate | date:'MM/dd/yyyy @ h:mma'}}
+          h5 by {{post.author}} - {{post.creationDate | date:'MM/dd/yyyy @ h:mma'}} - 
+            a(href='') {{post.category}}
           div(marked='post.body')
-            //- .row
-            //-   button.btn.btn-default Next
-            //- .col-md-2
-            //-   .bio
-            //-     p
-            //-       img.img-circle(src='/img/avatar.png')
-            //-     p Description on the blog
+  .row
+    nav
+      ul.pager
+        li.previous(ng-class="{disabled: navIsActive()}")
+          a(ng-click='getPrevious()')
+            span(aria-hidden='true') ←
+            | Older
+        li.next(ng-class="{disabled: navIsActive()}")
+          a(ng-click='getNext()')
+            | Newer
+            span(aria-hidden='true') →

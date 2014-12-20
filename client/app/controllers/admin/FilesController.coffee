@@ -1,7 +1,12 @@
-angular.module('Admin').controller 'AdminFilesController', ($scope, $http, $routeParams, $location, $window) ->
+angular.module('Admin').controller 'AdminFilesController', ($scope, $http, $routeParams, $location, $window, FileService) ->
 
-  $scope.isActive = (route) ->
-    $location.path() == route
+  $scope.fileList = []
+
+  FileService.getList().success((data) ->
+    $scope.fileList = data
+    console.log 'success'
+  ).error (status, data) ->
+    err status, data
 
   err = (status, data) ->
     if status >= 400 and data.message == 'jwt expired'
@@ -10,10 +15,13 @@ angular.module('Admin').controller 'AdminFilesController', ($scope, $http, $rout
   $scope.isActive = (route) ->
     $location.path() == route
 
-  FileService.getList().success((data) ->
-    $scope.fileList = data
-    console.log 'success'
-  ).error (status, data) ->
-    err status, data
-    console.log status
-    console.log data
+  $scope.removeFile = (id) ->
+    FileService.remove(id).success((data) ->
+      console.log 'success'
+      FileService.getList().success((data) ->
+        $scope.fileList = data
+        console.log 'success'
+      ).error (status, data) ->
+        err status, data
+    ).error (status, data) ->
+      err status, data

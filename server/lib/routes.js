@@ -1,4 +1,4 @@
-var Category, File, Menu, Page, Post, Setting, User, crypto, expressJwt, fs, jwt, markdown, nodemailer, path, secret, utils;
+var File, Hashids, Menu, Page, Post, Setting, User, crypto, expressJwt, fs, hash, jwt, markdown, nodemailer, path, secret, utils;
 
 path = require('path');
 
@@ -11,6 +11,10 @@ jwt = require('jsonwebtoken');
 nodemailer = require('nodemailer');
 
 crypto = require('crypto');
+
+Hashids = require('hashids');
+
+hash = new Hashids('this is my salt');
 
 markdown = require('markdown').markdown;
 
@@ -28,8 +32,6 @@ Setting = require('./models/setting').Setting;
 
 File = require('./models/file').File;
 
-Category = require('./models/category').Category;
-
 secret = 'this is my secret for jwt';
 
 module.exports = function(app, passport) {
@@ -42,9 +44,9 @@ module.exports = function(app, passport) {
     }, '-_id -__v', function(err, data) {
       delete data.password;
       if (err) {
-        return res.send(500).end();
+        return res.sendStatus(500).end();
       } else if (data === undefined) {
-        return res.send(404).end();
+        return res.sendStatus(404).end();
       } else {
         return res.json(data);
       }
@@ -60,11 +62,11 @@ module.exports = function(app, passport) {
       "new": true
     }, function(err, data) {
       if (err) {
-        return res.send(500).end();
+        return res.sendStatus(500).end();
       } else if (data === undefined) {
-        return res.send(404).end();
+        return res.sendStatus(404).end();
       } else {
-        return res.send(200).end();
+        return res.sendStatus(200).end();
       }
     });
   });
@@ -76,11 +78,11 @@ module.exports = function(app, passport) {
       'username': req.user.username
     }, function(err, data) {
       if (err) {
-        return res.send(500).end();
+        return res.sendStatus(500).end();
       } else if (data.length < 1) {
-        return res.send(404).end();
+        return res.sendStatus(404).end();
       } else {
-        return res.send(200).end();
+        return res.sendStatus(200).end();
       }
     });
   });
@@ -95,7 +97,7 @@ module.exports = function(app, passport) {
       if (!err) {
         return res.json(data);
       } else {
-        return res.send(404).end();
+        return res.sendStatus(404).end();
       }
     });
   });
@@ -107,7 +109,7 @@ module.exports = function(app, passport) {
       creationDate: 'desc'
     }).exec(function(err, data) {
       if (err) {
-        return res.send(500).end();
+        return res.sendStatus(500).end();
       } else {
         return res.json(data);
       }
@@ -118,7 +120,7 @@ module.exports = function(app, passport) {
       'id': req.params.id
     }, '-_id -__v', function(err, data) {
       if (err) {
-        return res.send(500).end();
+        return res.sendStatus(500).end();
       } else {
         return res.json(data);
       }
@@ -145,9 +147,9 @@ module.exports = function(app, passport) {
     return newPost.save(function(err) {
       if (err) {
         console.log(err);
-        return res.send(500).end();
+        return res.sendStatus(500).end();
       } else {
-        return res.send(200).end();
+        return res.sendStatus(200).end();
       }
     });
   });
@@ -164,11 +166,11 @@ module.exports = function(app, passport) {
       "new": true
     }, function(err, data) {
       if (err) {
-        return res.send(500).end();
+        return res.sendStatus(500).end();
       } else if (data === undefined) {
-        return res.send(404).end();
+        return res.sendStatus(404).end();
       } else {
-        return res.send(200).end();
+        return res.sendStatus(200).end();
       }
     });
   });
@@ -179,11 +181,11 @@ module.exports = function(app, passport) {
       'id': req.params.id
     }, function(err, data) {
       if (err) {
-        return res.send(500).end();
+        return res.sendStatus(500).end();
       } else if (data.length < 1) {
-        return res.send(404).end();
+        return res.sendStatus(404).end();
       } else {
-        return res.send(200).end();
+        return res.sendStatus(200).end();
       }
     });
   });
@@ -192,7 +194,7 @@ module.exports = function(app, passport) {
       'tags.name': req.params.name
     }, '-_id -__v', function(err, data) {
       if (err) {
-        return res.send(500).end();
+        return res.sendStatus(500).end();
       } else {
         return res.json(data);
       }
@@ -203,90 +205,25 @@ module.exports = function(app, passport) {
       'category': req.params.name
     }, '-_id -__v', function(err, data) {
       if (err) {
-        return res.send(500).end();
+        return res.sendStatus(500).end();
       } else {
         return res.json(data);
       }
     });
   });
   app.get('/data/blog/categories.json', function(req, res) {
-    return Category.find({}, '-_id -__v', function(err, data) {
+    return Post.find({}).distinct('category', function(err, data) {
       if (err) {
-        return res.send(500).end();
+        return res.sendStatus(500).end();
       } else {
         return res.json(data);
-      }
-    });
-  });
-  app.get('/data/blog/category/:id.json', function(req, res) {
-    return Category.findOne({
-      id: req.params.id
-    }, '-_id -__v', function(err, data) {
-      if (err) {
-        return res.send(500).end();
-      } else if (data === undefined) {
-        return res.send(404).end();
-      } else {
-        return res.json(data);
-      }
-    });
-  });
-  app.post('/data/blog/category/', expressJwt({
-    secret: secret
-  }), function(req, res) {
-    var newCategory;
-    newCategory = new Category({
-      id: utils.slugify(req.body.name),
-      name: req.body.name,
-      description: req.body.description
-    });
-    return newCategory.save(function(err) {
-      if (err) {
-        return res.send(500).end();
-      } else {
-        return res.send(200).end();
-      }
-    });
-  });
-  app.put('/data/blog/category/:id.json', expressJwt({
-    secret: secret
-  }), function(req, res) {
-    var data;
-    data = req.body;
-    data.id = utils.slugify(data.name);
-    return Category.findOneAndUpdate({
-      id: req.params.id
-    }, data, {
-      "new": true
-    }, function(err, data) {
-      if (err) {
-        return res.send(500).end();
-      } else if (data === undefined) {
-        return res.send(404).end();
-      } else {
-        return res.send(200).end();
-      }
-    });
-  });
-  app["delete"]('/data/blog/category/:id.json', expressJwt({
-    secret: secret
-  }), function(req, res) {
-    return Category.remove({
-      id: req.params.id
-    }, function(err, data) {
-      if (err) {
-        return res.send(500).end();
-      } else if (data.length < 1) {
-        return res.send(404).end();
-      } else {
-        return res.send(200).end();
       }
     });
   });
   app.get('/data/menu.json', function(req, res) {
     return Menu.find({}, '-_id -__v', function(err, data) {
       if (err) {
-        return res.send(500).end();
+        return res.sendStatus(500).end();
       } else {
         return res.json(data);
       }
@@ -297,7 +234,7 @@ module.exports = function(app, passport) {
       id: req.params.id
     }, '-_id -__v', function(err, data) {
       if (err) {
-        return res.send(500).end();
+        return res.sendStatus(500).end();
       } else {
         return res.json(data);
       }
@@ -314,9 +251,9 @@ module.exports = function(app, passport) {
     });
     return newMenu.save(function(err) {
       if (err) {
-        return res.send(500).end();
+        return res.sendStatus(500).end();
       } else {
-        return res.send(200).end();
+        return res.sendStatus(200).end();
       }
     });
   });
@@ -327,9 +264,9 @@ module.exports = function(app, passport) {
       "new": true
     }, function(err, data) {
       if (err) {
-        return res.send(500).end();
+        return res.sendStatus(500).end();
       } else {
-        return res.send(200).end();
+        return res.sendStatus(200).end();
       }
     });
   });
@@ -338,18 +275,79 @@ module.exports = function(app, passport) {
       id: req.params.id
     }, function(err, data) {
       if (err) {
-        return res.send(500).end();
+        return res.sendStatus(500).end();
       } else if (data.length < 1) {
-        return res.send(404).end();
+        return res.sendStatus(404).end();
       } else {
-        return res.send(200).end();
+        return res.sendStatus(200).end();
+      }
+    });
+  });
+  app.get('/data/settings.json', function(req, res) {
+    return Menu.find({}, '-_id -__v', function(err, data) {
+      if (err) {
+        return res.sendStatus(500).end();
+      } else {
+        return res.json(data);
+      }
+    });
+  });
+  app.get('/data/settings/:id.json', function(req, res) {
+    return Menu.findOne({
+      id: req.params.id
+    }, '-_id -__v', function(err, data) {
+      if (err) {
+        return res.sendStatus(500).end();
+      } else {
+        return res.json(data);
+      }
+    });
+  });
+  app.post('/data/settings/', function(req, res) {
+    var newSetting;
+    newSetting = new Setting({
+      id: utils.slugify(req.body.name),
+      name: req.body.name,
+      value: req.body.value
+    });
+    return newSetting.save(function(err) {
+      if (err) {
+        return res.sendStatus(500).end();
+      } else {
+        return res.sendStatus(200).end();
+      }
+    });
+  });
+  app.put('/data/settings/:id.json', function(req, res) {
+    return Setting.findOneAndUpdate({
+      id: req.params.id
+    }, req.body, {
+      "new": true
+    }, function(err, data) {
+      if (err) {
+        return res.sendStatus(500).end();
+      } else {
+        return res.sendStatus(200).end();
+      }
+    });
+  });
+  app["delete"]('/data/settings/:id.json', function(req, res) {
+    return Setting.remove({
+      id: req.params.id
+    }, function(err, data) {
+      if (err) {
+        return res.sendStatus(500).end();
+      } else if (data.length < 1) {
+        return res.sendStatus(404).end();
+      } else {
+        return res.sendStatus(200).end();
       }
     });
   });
   app.get('/data/pages.json', function(req, res) {
     return Page.find({}, 'route title', function(err, data) {
       if (err) {
-        return res.send(500).end();
+        return res.sendStatus(500).end();
       } else {
         return res.json(data);
       }
@@ -360,7 +358,7 @@ module.exports = function(app, passport) {
       route: req.params.route
     }, '-_id -__v', function(err, data) {
       if (err) {
-        return res.send(500).end();
+        return res.sendStatus(500).end();
       } else {
         return res.json(data);
       }
@@ -382,9 +380,9 @@ module.exports = function(app, passport) {
     });
     return newPage.save(function(err, data) {
       if (err) {
-        return res.send(500).end();
+        return res.sendStatus(500).end();
       } else {
-        return res.send(200).end();
+        return res.sendStatus(200).end();
       }
     });
   });
@@ -401,11 +399,11 @@ module.exports = function(app, passport) {
       "new": true
     }, function(err, data) {
       if (err) {
-        return res.send(500).end();
+        return res.sendStatus(500).end();
       } else if (data === undefined) {
-        return res.send(404).end();
+        return res.sendStatus(404).end();
       } else {
-        return res.send(200).end();
+        return res.sendStatus(200).end();
       }
     });
   });
@@ -416,11 +414,11 @@ module.exports = function(app, passport) {
       route: req.params.route
     }, function(err, data) {
       if (err) {
-        return res.send(500).end();
+        return res.sendStatus(500).end();
       } else if (data.length < 1) {
-        return res.send(404).end();
+        return res.sendStatus(404).end();
       } else {
-        return res.send(200).end();
+        return res.sendStatus(200).end();
       }
     });
   });
@@ -429,25 +427,26 @@ module.exports = function(app, passport) {
   }), function(req, res) {
     return File.find({}, 'name path', function(err, data) {
       if (err) {
-        return res.send(500).end();
+        return res.sendStatus(500).end();
       } else {
         return res.json(data);
       }
     });
   });
-  app.post('/data/files', expressJwt({
-    secret: secret
-  }), function(req, res) {
+  app.post('/data/files', function(req, res) {
     req.pipe(req.busboy);
     return req.busboy.on("file", function(fieldname, file, filename) {
       var fstream;
       console.log("Uploading: " + filename);
-      fstream = fs.createWriteStream(("" + __dirname + "/../files/") + filename);
+      fstream = fs.createWriteStream(("" + __dirname + "/../../client/public/media/") + filename);
       file.pipe(fstream);
       return fstream.on("close", function() {
-        var name;
-        file = File(name = filename, path = "files/" + filename);
+        file = File({
+          id: filename,
+          path: filename
+        });
         file.save();
+        console.log('REDIRECT');
         return res.redirect('/admin/files');
       });
     });
@@ -464,13 +463,13 @@ module.exports = function(app, passport) {
         return next(err);
       }
       if (!user) {
-        return res.send(409).end();
+        return res.sendStatus(409).end();
       }
       return req.logIn(user, function(err) {
         if (err) {
           return next(err);
         }
-        return res.send(201).end();
+        return res.sendStatus(201).end();
       });
     })(req, res, next);
   });
@@ -481,7 +480,7 @@ module.exports = function(app, passport) {
         return next(err);
       }
       if (!user) {
-        return res.send(401).end();
+        return res.sendStatus(401).end();
       }
       return req.logIn(user, function(err) {
         var profile, token;
@@ -510,9 +509,9 @@ module.exports = function(app, passport) {
     }, function(err, user) {
       var mailOptions, smtpTransport, token;
       if (err) {
-        return res.send(500).end();
+        return res.sendStatus(500).end();
       } else if (user.length < 1) {
-        return res.send(404).end();
+        return res.sendStatus(404).end();
       } else {
         crypto.randomBytes(20, function(err, buf) {});
         token = buf.toString("hex");
@@ -525,9 +524,9 @@ module.exports = function(app, passport) {
         };
         return smtpTransport.sendMail(mailOptions, function(err) {
           if (!err) {
-            return res.send(200).end();
+            return res.sendStatus(200).end();
           } else {
-            return res.send(500).end();
+            return res.sendStatus(500).end();
           }
         });
       }
@@ -540,7 +539,7 @@ module.exports = function(app, passport) {
         return next(err);
       }
       if (!user) {
-        return res.send(401).end();
+        return res.sendStatus(401).end();
       }
       return req.logIn(user, function(err) {
         var profile, token;

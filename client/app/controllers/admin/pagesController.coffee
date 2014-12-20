@@ -1,4 +1,4 @@
-angular.module('Admin').controller 'AdminPagesController', ($scope, $http, $routeParams, $location, $window, PostService, PageService, CategoryService) ->
+angular.module('Admin').controller 'AdminPagesController', ($scope, $http, $routeParams, $location, $window, PostService, PageService) ->
 
   err = (status, data) ->
     if status >= 400 and data.message == 'jwt expired'

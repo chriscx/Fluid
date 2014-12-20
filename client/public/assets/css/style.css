@@ -83,3 +83,11 @@
 .content .flip.ng-leave-active {
 	-webkit-transform: rotateY(180deg);
 }
+
+h1 a {
+    color: rgba(51, 51, 51, 0.83)
+}
+
+h1 a:hover {
+    color: rgba(51, 51, 51, 0.83)
+}

@@ -1,4 +1,4 @@
-angular.module('Admin').controller('AdminPostsController', function($scope, $http, $routeParams, $location, $window, UserService, PostService, PageService, CategoryService) {
+angular.module('Admin').controller('AdminPostsController', function($scope, $http, $routeParams, $location, $window, UserService, PostService, PageService) {
   var err;
   err = function(status, data) {
     if (status >= 400 && data.message === 'jwt expired') {
@@ -32,21 +32,17 @@ angular.module('Admin').controller('AdminPostsController', function($scope, $htt
   } else if ($location.path().lastIndexOf('/admin/blog/posts/edit', 0) === 0) {
     PostService.get($location.path().slice(23)).success(function(data) {
       $scope.post = data;
-      return $scope.post.ident = $scope.post.id;
-    }).error(function(data, status, headers, config) {
-      err(status, data);
-      console.log(status);
-      return console.log(data);
-    });
-    CategoryService.getList().success(function(data) {
-      console.log(data);
-      return $scope.categories = data;
+      $scope.post.ident = $scope.post.id;
+      return $scope.post.tags = $scope.post.tags.join(", ");
     }).error(function(data, status, headers, config) {
       err(status, data);
       console.log(status);
       return console.log(data);
     });
     $scope.savePost = function(post) {
+      console.log('post save');
+      post.tags = post.tags.split(", ");
+      console.log(post);
       return PostService.save(post.ident, post).success(function(data) {
         console.log('success');
         return $location.path('/admin/blog/posts');

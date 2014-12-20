@@ -1,4 +1,4 @@
-angular.module('Admin').controller 'AdminPostsController', ($scope, $http, $routeParams, $location, $window, UserService, PostService, PageService, CategoryService) ->
+angular.module('Admin').controller 'AdminPostsController', ($scope, $http, $routeParams, $location, $window, UserService, PostService, PageService) ->
 
   err = (status, data) ->
     if status >= 400 and data.message == 'jwt expired'
@@ -34,20 +34,16 @@ angular.module('Admin').controller 'AdminPostsController', ($scope, $http, $rout
     PostService.get($location.path().slice(23)).success((data) ->
       $scope.post = data
       $scope.post.ident = $scope.post.id
-    ).error (data, status, headers, config) ->
-      err status, data
-      console.log status
-      console.log data
-
-    CategoryService.getList().success((data) ->
-      console.log data
-      $scope.categories = data
+      $scope.post.tags = $scope.post.tags.join(", ")
     ).error (data, status, headers, config) ->
       err status, data
       console.log status
       console.log data
 
     $scope.savePost = (post) ->
+      console.log 'post save'
+      post.tags = post.tags.split(", ")
+      console.log post
       PostService.save(post.ident, post).success((data) ->
         console.log 'success'
         $location.path '/admin/blog/posts'

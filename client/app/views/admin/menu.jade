@@ -6,14 +6,11 @@
         ul.nav.nav-tabs(role='navigation')
           li(ng-class="{active: isActive('/')}")
             a(href='/#/')
-              | Fluid
+              | Public
           li(ng-class="{active: isActive('/admin')}")
             a(href='/#/admin')
               | Settings
               //- span.sr-only (current)
-          li(ng-class="{active: isActive('/admin/blog')}")
-            a(href='/#/admin/blog')
-              | Blog
           li(ng-class="{active: isActive('/admin/blog/posts')}")
             a(href='/#/admin/blog/posts')
               | Posts
