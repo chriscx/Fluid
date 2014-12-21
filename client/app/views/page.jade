@@ -1,6 +1,6 @@
 include menu
 .container
+  //- .row
+  //-   div(marked='page.content')
   .row
-    //- .page-header
-    //-   h3 {{page.title}}
-    div(marked='page.content')
+    div(ng-bind-html='page.htmlSafe')
