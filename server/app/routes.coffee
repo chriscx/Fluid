@@ -300,7 +300,7 @@ module.exports = (app, passport) ->
         res.sendStatus(200).end()
 
   app.get '/data/files.json', expressJwt({secret: secret}), (req, res) ->
-    File.find {}, 'name path', (err, data) ->
+    File.find {}, 'id path', (err, data) ->
       if err
        res.sendStatus(500).end()
       else
@@ -318,11 +318,20 @@ module.exports = (app, passport) ->
           path: filename
         )
         file.save()
-        console.log 'REDIRECT'
         res.redirect('/admin/files')
 
-  app.delete '/data/files/:name', expressJwt({secret: secret}), (req, res) ->
-    console.log "not supported yet"
+  app.delete '/data/files/:id', expressJwt({secret: secret}), (req, res) ->
+    console.log req.params.id
+    File.findOne {id: req.params.id}, (err, data) ->
+      console.log data
+      fs.unlink "#{__dirname}/../../client/public/media/" + data.path, (err) ->
+        if err
+          res.sendStatus(500).end()
+        File.remove {id: req.params.id}, (err, data) ->
+          if err
+            res.sendStatus(500).end()
+          else
+            res.sendStatus(200).end()
 
   app.post '/signup', (req, res, next) ->
     console.log('POST signup')

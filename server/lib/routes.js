@@ -425,7 +425,7 @@ module.exports = function(app, passport) {
   app.get('/data/files.json', expressJwt({
     secret: secret
   }), function(req, res) {
-    return File.find({}, 'name path', function(err, data) {
+    return File.find({}, 'id path', function(err, data) {
       if (err) {
         return res.sendStatus(500).end();
       } else {
@@ -446,15 +446,33 @@ module.exports = function(app, passport) {
           path: filename
         });
         file.save();
-        console.log('REDIRECT');
         return res.redirect('/admin/files');
       });
     });
   });
-  app["delete"]('/data/files/:name', expressJwt({
+  app["delete"]('/data/files/:id', expressJwt({
     secret: secret
   }), function(req, res) {
-    return console.log("not supported yet");
+    console.log(req.params.id);
+    return File.findOne({
+      id: req.params.id
+    }, function(err, data) {
+      console.log(data);
+      return fs.unlink(("" + __dirname + "/../../client/public/media/") + data.path, function(err) {
+        if (err) {
+          res.sendStatus(500).end();
+        }
+        return File.remove({
+          id: req.params.id
+        }, function(err, data) {
+          if (err) {
+            return res.sendStatus(500).end();
+          } else {
+            return res.sendStatus(200).end();
+          }
+        });
+      });
+    });
   });
   app.post('/signup', function(req, res, next) {
     console.log('POST signup');

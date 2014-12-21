@@ -3,9 +3,9 @@ require('load-grunt-tasks')(grunt)
 
 module.exports = (grunt) ->
 
-  grunt.loadNpmTasks 'grunt-contrib-jade'
-  grunt.loadNpmTasks 'grunt-contrib-coffee'
-  grunt.loadNpmTasks 'grunt-mocha-test'
+  # grunt.loadNpmTasks 'grunt-contrib-jade'
+  # grunt.loadNpmTasks 'grunt-contrib-coffee'
+  # grunt.loadNpmTasks 'grunt-mocha-test'
 
   # Project configuration.
   grunt.initConfig
@@ -25,7 +25,7 @@ module.exports = (grunt) ->
                   './node_modules/.bin/jade client/app/views/admin/pages/*.jade -o client/public/views/admin/pages',
                   './node_modules/.bin/jade client/app/views/admin/users/*.jade -o client/public/views/admin/users',
                   './node_modules/.bin/jade client/app/views/admin/files/*.jade -o client/public/views/admin/files',
-                  './node_modules/.bin/bower install'].join('&&')
+                  './node_modules/.bin/bower --allow-root install'].join('&&')
 
     # jade:
     #   compile:

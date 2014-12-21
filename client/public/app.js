@@ -89,7 +89,7 @@ FluidApp.config([
       }
     }).when('/admin/files/upload', {
       templateUrl: 'views/admin/files/uploadFile.html',
-      controller: 'UserController',
+      controller: 'AdminFilesController',
       access: {
         requiredLogin: true
       }

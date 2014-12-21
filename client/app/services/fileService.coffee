@@ -1,4 +1,4 @@
-angular.module('User').factory 'FileService', ($http, $location, $window, AuthenticationService) ->
+angular.module('User').factory 'FileService', ($http, $location, $window) ->
 
   getList: () ->
     $http.get '/data/files.json'
