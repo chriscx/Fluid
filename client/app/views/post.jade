@@ -6,4 +6,4 @@ include menu
         h1 {{post.title}}
         h5 by {{post.author}} - {{post.creationDate | date:'MM/dd/yyyy @ h:mma'}} - 
           a(href='') {{post.category}}
-        div(marked='post.body')
+        div(marked='post.content')
