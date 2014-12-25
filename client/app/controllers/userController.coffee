@@ -58,9 +58,3 @@ angular.module('User').controller 'UserController', ($scope, $http, $routeParams
       ).error (status, data) ->
         console.log status
         console.log data
-
-  MenuService.getList().success((data) ->
-    $scope.menu = data
-  ).error (status, data) ->
-    console.log status
-    console.log data

@@ -18,7 +18,8 @@ include ../menu
               label Create Post
               textarea.form-control(rows='15' ng-model='post.content')
             .form-group
-                  div(marked="page.content")
+              label Preview :
+              div(marked="post.content")
             .form-group
               .btn-toolbar
                 button.btn.btn-success(type='button' ng-click='savePost(post)') Publish

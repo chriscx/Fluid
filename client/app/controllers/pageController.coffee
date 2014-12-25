@@ -19,14 +19,3 @@ angular.module('Page').controller 'PageController', ($scope, $http, $routeParams
     ).error (status, data) ->
       console.log status
       console.log data
-
-  MenuService.getList().success((data) ->
-    $scope.menu = data
-  ).error (status, data) ->
-    console.log status
-    console.log data
-
-
-  $scope.isActive = (route) ->
-    route = '/' if route == '//'
-    $location.path() == route

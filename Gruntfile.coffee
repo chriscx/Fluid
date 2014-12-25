@@ -18,7 +18,7 @@ module.exports = (grunt) ->
         command: ['rm -rf server/lib/ client/public/*.js client/public/controllers/ client/public/services/ client/public/views client/public/*.html && mkdir server/lib',
                   './node_modules/.bin/coffee -b -o server/lib/ --no-header -c server/app/',
                   './node_modules/.bin/coffee -b -o client/public/ --no-header -c client/app/',
-                  './node_modules/.bin/jade client/app/*.jade -o client/public/',
+                  './node_modules/.bin/jade -P client/app/*.jade -o client/public/',
                   './node_modules/.bin/jade client/app/views/*.jade -o client/public/views/',
                   './node_modules/.bin/jade client/app/views/admin/*.jade -o client/public/views/admin',
                   './node_modules/.bin/jade client/app/views/admin/blog/*.jade -o client/public/views/admin/blog',

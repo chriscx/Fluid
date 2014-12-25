@@ -11,15 +11,6 @@ angular.module('Blog').controller 'BlogController', ($scope, $http, $routeParams
     console.log data
   )
 
-  MenuService.getList().success((data) ->
-    $scope.menu = data
-  ).error (status, data) ->
-    console.log status
-    console.log data
-
-  $scope.isActive = (route) ->
-    $location.path() == route
-
   $scope.getNext = () ->
     $scope.skip += 5
     $scope.limit += 5
@@ -41,6 +32,9 @@ angular.module('Blog').controller 'BlogController', ($scope, $http, $routeParams
       console.log status
       console.log data
     )
+
+  $scope.sanatizeHtml = (html) ->
+    $sce.trustAsHtml(html)
 
   $scope.navIsActive = () ->
     if $scope.skip == 0

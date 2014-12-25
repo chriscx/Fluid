@@ -10,15 +10,6 @@ angular.module('Blog').controller('BlogController', function($scope, $http, $rou
     console.log(status);
     return console.log(data);
   });
-  MenuService.getList().success(function(data) {
-    return $scope.menu = data;
-  }).error(function(status, data) {
-    console.log(status);
-    return console.log(data);
-  });
-  $scope.isActive = function(route) {
-    return $location.path() === route;
-  };
   $scope.getNext = function() {
     $scope.skip += 5;
     $scope.limit += 5;
@@ -44,6 +35,9 @@ angular.module('Blog').controller('BlogController', function($scope, $http, $rou
       console.log(status);
       return console.log(data);
     });
+  };
+  $scope.sanatizeHtml = function(html) {
+    return $sce.trustAsHtml(html);
   };
   return $scope.navIsActive = function() {
     if ($scope.skip === 0) {

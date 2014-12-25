@@ -61,7 +61,7 @@ angular.module('User').controller('UserController', function($scope, $http, $rou
       });
     }
   };
-  $scope.resetPassword = function(password) {
+  return $scope.resetPassword = function(password) {
     if (password !== undefined) {
       return UserService.resetPassword(password).success(function(data) {
         return console.log('success');
@@ -71,10 +71,4 @@ angular.module('User').controller('UserController', function($scope, $http, $rou
       });
     }
   };
-  return MenuService.getList().success(function(data) {
-    return $scope.menu = data;
-  }).error(function(status, data) {
-    console.log(status);
-    return console.log(data);
-  });
 });
