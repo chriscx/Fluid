@@ -18,6 +18,9 @@ angular.module('Index').controller 'IndexController', ($scope, $routeParams, $lo
   SettingService.get().success((data) ->
     console.log data
     $scope.title = data.title
+    $scope.description = data.description
+    $scope.keywords = data.keywords
+    $scope.author = data.author
     $scope.header = data.header
     $scope.header.htmlSafe = $sce.trustAsHtml($scope.header.body)
     $scope.footer = data.footer

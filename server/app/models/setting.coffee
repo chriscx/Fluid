@@ -8,12 +8,17 @@ SettingSchema = new Schema
     required: true
     index:
       unique: true
+  description: String
+  keywords: String
+  author: String
   header:
     content: String
     body: String
   footer:
     content: String
     body: String
+  accountCreation: Boolean
+
 
 Setting = mongoose.model "Setting", SettingSchema
 

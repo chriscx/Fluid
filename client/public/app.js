@@ -39,6 +39,18 @@ FluidApp.config([
       access: {
         requiredLogin: false
       }
+    }).when('/forgot', {
+      templateUrl: 'views/forgot.html',
+      controller: 'UserController',
+      access: {
+        requiredLogin: false
+      }
+    }).when('/reset', {
+      templateUrl: 'views/reset.html',
+      controller: 'UserController',
+      access: {
+        requiredLogin: false
+      }
     }).when('/admin', {
       templateUrl: 'views/admin/settings.html',
       controller: 'AdminSettingsController',

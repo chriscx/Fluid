@@ -1,4 +1,4 @@
-var LocalStrategy, User, app, bcrypt, bodyParser, busboy, cluster, cookieParser, express, expressJwt, expressSession, fs, i, jwt, methodOverride, mongoose, numCPUs, passport, path, server;
+var LocalStrategy, Setting, User, app, bcrypt, bodyParser, busboy, cluster, cookieParser, express, expressJwt, expressSession, fs, i, jwt, methodOverride, mongoose, numCPUs, passport, path, server;
 
 fs = require('fs');
 
@@ -33,6 +33,8 @@ bcrypt = require('bcrypt-nodejs');
 busboy = require('connect-busboy');
 
 User = require('./models/user').User;
+
+Setting = require('./models/setting').Setting;
 
 app = express();
 
@@ -86,33 +88,41 @@ passport.use('signup', new LocalStrategy({
 }, function(req, username, password, done) {
   var findOrCreateUser;
   findOrCreateUser = function() {
-    return User.findOne({
-      'username': username
-    }, function(err, user) {
-      var newUser;
-      if (err) {
-        console.log('Error in SignUp: ' + err);
-        done(err);
+    return Setting.findOne({}, '-_id -__v', function(err, data) {
+      var settings;
+      settings = data;
+      if (!data.accountCreation) {
+        console.log('Account creation has been disabled');
+        return 'Account creation has been disabled';
       }
-      if (user) {
-        console.log('User already exists');
-        return done(null, false);
-      } else {
-        newUser = new User();
-        newUser.username = username;
-        newUser.password = bcrypt.hashSync(password);
-        newUser.firstname = req.param('firstname');
-        newUser.lastname = req.param('lastname');
-        newUser.email = req.param('email');
-        return newUser.save(function(err) {
-          if (err) {
-            console.log('Error in Saving user: ' + err);
-            throw err;
-          }
-          console.log('User Registration succesful');
-          return done(null, newUser);
-        });
-      }
+      return User.findOne({
+        'username': username
+      }, function(err, user) {
+        var newUser;
+        if (err) {
+          console.log('Error in SignUp: ' + err);
+          done(err);
+        }
+        if (user) {
+          console.log('User already exists');
+          return done(null, false);
+        } else {
+          newUser = new User();
+          newUser.username = username;
+          newUser.password = bcrypt.hashSync(password);
+          newUser.firstname = req.param('firstname');
+          newUser.lastname = req.param('lastname');
+          newUser.email = req.param('email');
+          return newUser.save(function(err) {
+            if (err) {
+              console.log('Error in Saving user: ' + err);
+              throw err;
+            }
+            console.log('User Registration succesful');
+            return done(null, newUser);
+          });
+        }
+      });
     });
   };
   return process.nextTick(findOrCreateUser);

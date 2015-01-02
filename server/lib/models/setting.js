@@ -12,6 +12,9 @@ SettingSchema = new Schema({
       unique: true
     }
   },
+  description: String,
+  keywords: String,
+  author: String,
   header: {
     content: String,
     body: String
@@ -19,7 +22,8 @@ SettingSchema = new Schema({
   footer: {
     content: String,
     body: String
-  }
+  },
+  accountCreation: Boolean
 });
 
 Setting = mongoose.model("Setting", SettingSchema);

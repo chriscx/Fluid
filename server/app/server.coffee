@@ -15,6 +15,7 @@ jwt = require 'jsonwebtoken'
 bcrypt = require 'bcrypt-nodejs'
 busboy = require 'connect-busboy'
 User = require('./models/user').User
+Setting = require('./models/setting').Setting
 
 app = express()
 
@@ -69,34 +70,39 @@ passport.use 'signup', new LocalStrategy(
 , (req, username, password, done) ->
     findOrCreateUser = () ->
       # find a user in Mongo with provided username
-      User.findOne 'username': username, (err, user) ->
-        # In case of any error return
-        if err
-          console.log 'Error in SignUp: ' + err
-          done err
+      Setting.findOne {}, '-_id -__v', (err, data) ->
+        settings = data
+        if not data.accountCreation
+          console.log 'Account creation has been disabled'
+          return 'Account creation has been disabled'
+        User.findOne 'username': username, (err, user) ->
+          # In case of any error return
+          if err
+            console.log 'Error in SignUp: ' + err
+            done err
 
-        # already exists
-        if user
-          console.log 'User already exists'
-          done null, false
-        else
-          # if there is no user with that email
-          # create the user
-          newUser = new User()
-          # set the user's local credentials
-          newUser.username = username
-          newUser.password = bcrypt.hashSync password
-          newUser.firstname = req.param 'firstname'
-          newUser.lastname = req.param 'lastname'
-          newUser.email = req.param 'email'
+          # already exists
+          if user
+            console.log 'User already exists'
+            done null, false
+          else
+            # if there is no user with that email
+            # create the user
+            newUser = new User()
+            # set the user's local credentials
+            newUser.username = username
+            newUser.password = bcrypt.hashSync password
+            newUser.firstname = req.param 'firstname'
+            newUser.lastname = req.param 'lastname'
+            newUser.email = req.param 'email'
 
-          # save the user
-          newUser.save (err) ->
-            if err
-              console.log 'Error in Saving user: ' + err
-              throw err
-            console.log('User Registration succesful');
-            done null, newUser
+            # save the user
+            newUser.save (err) ->
+              if err
+                console.log 'Error in Saving user: ' + err
+                throw err
+              console.log('User Registration succesful');
+              done null, newUser
 
     # Delay the execution of findOrCreateUser and execute
     # the method in the next tick of the event loop
