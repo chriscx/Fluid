@@ -284,7 +284,7 @@ module.exports = function(app, passport) {
     });
   });
   app.get('/data/settings.json', function(req, res) {
-    return Menu.find({}, '-_id -__v', function(err, data) {
+    return Setting.findOne({}, '-_id -__v', function(err, data) {
       if (err) {
         return res.sendStatus(500).end();
       } else {
@@ -292,24 +292,12 @@ module.exports = function(app, passport) {
       }
     });
   });
-  app.get('/data/settings/:id.json', function(req, res) {
-    return Menu.findOne({
-      id: req.params.id
-    }, '-_id -__v', function(err, data) {
-      if (err) {
-        return res.sendStatus(500).end();
-      } else {
-        return res.json(data);
-      }
-    });
-  });
-  app.post('/data/settings/', function(req, res) {
-    var newSetting;
-    newSetting = new Setting({
-      id: utils.slugify(req.body.name),
-      name: req.body.name,
-      value: req.body.value
-    });
+  app.post('/data/settings.json', function(req, res) {
+    var newSetting, set;
+    set = req.body;
+    set.header.body = markdown.toHTML(set.header.content);
+    set.footer.body = markdown.toHTML(set.footer.content);
+    newSetting = new Setting(set);
     return newSetting.save(function(err) {
       if (err) {
         return res.sendStatus(500).end();
@@ -318,10 +306,12 @@ module.exports = function(app, passport) {
       }
     });
   });
-  app.put('/data/settings/:id.json', function(req, res) {
-    return Setting.findOneAndUpdate({
-      id: req.params.id
-    }, req.body, {
+  app.put('/data/settings.json', function(req, res) {
+    var set;
+    set = req.body;
+    set.header.body = markdown.toHTML(set.header.content);
+    set.footer.body = markdown.toHTML(set.footer.content);
+    return Setting.findOneAndUpdate({}, set, {
       "new": true
     }, function(err, data) {
       if (err) {
@@ -331,10 +321,8 @@ module.exports = function(app, passport) {
       }
     });
   });
-  app["delete"]('/data/settings/:id.json', function(req, res) {
-    return Setting.remove({
-      id: req.params.id
-    }, function(err, data) {
+  app["delete"]('/data/settings.json', function(req, res) {
+    return Setting.remove({}, function(err, data) {
       if (err) {
         return res.sendStatus(500).end();
       } else if (data.length < 1) {

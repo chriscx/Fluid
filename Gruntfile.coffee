@@ -2,11 +2,6 @@ grunt = require 'grunt'
 require('load-grunt-tasks')(grunt)
 
 module.exports = (grunt) ->
-
-  # grunt.loadNpmTasks 'grunt-contrib-jade'
-  # grunt.loadNpmTasks 'grunt-contrib-coffee'
-  # grunt.loadNpmTasks 'grunt-mocha-test'
-
   # Project configuration.
   grunt.initConfig
     pkg: grunt.file.readJSON 'package.json'
@@ -26,36 +21,5 @@ module.exports = (grunt) ->
                   './node_modules/.bin/jade client/app/views/admin/users/*.jade -o client/public/views/admin/users',
                   './node_modules/.bin/jade client/app/views/admin/files/*.jade -o client/public/views/admin/files',
                   './node_modules/.bin/bower --allow-root install'].join('&&')
-
-    # jade:
-    #   compile:
-    #     options:
-    #
-    #       data:
-    #         debug: false
-    #     files:
-    #       'client/public/': ['client/app/*.jade']
-    #       'client/public/views/': ['client/app/views/*.jade']
-    #       'client/public/views/admin': ['client/app/views/admin/*.jade']
-    #       'client/public/views/admin/blog': ['client/app/views/admin/blog/*.jade']
-    #       'client/public/views/admin/pages': ['client/app/views/admin/pages/*.jade']
-    #       'client/public/views/admin/users': ['client/app/views/admin/users/*.jade']
-    #
-    # coffee:
-    #   app:
-    #     src: ['server/app/']
-    #     dest: 'server/lib/'
-    #   client:
-    #       src: ['client/app/']
-    #       dest: 'client/public/'
-    #
-    #
-    # mochaTest:
-    #   test:
-    #     options:
-    #       reporter: 'spec'
-    #       require: 'coffee-script/register'
-    #       quiet: false
-    #     src: [ 'server/test*.js' ]
 
   grunt.registerTask 'default', ['shell']

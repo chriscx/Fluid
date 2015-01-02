@@ -3,7 +3,7 @@ html(ng-app='FluidApp' ng-controller='IndexController')
   head
     base(href='/')
     meta(http-equiv='X-UA-Compatible' content='IE=edge')
-    title {{site.title}}
+    title {{title}}
     link(rel='icon' type='image/png' href='/public/icon.ico')
     meta(name='viewport' content='width=device-width, initial-scale=1.0')
     link(href='//fonts.googleapis.com/css?family=Open+Sans:300italic,300,400italic,400,600italic,600,700italic,700,800italic,800' rel='stylesheet' type='text/css')
@@ -14,7 +14,8 @@ html(ng-app='FluidApp' ng-controller='IndexController')
   body(data-spy='scroll' data-target='#nav-scrollspy')
     .container
       header.row
-        div(ng-include src="'views/header.html'")
+        //- div(ng-include src="'views/header.html'")
+        div(ng-bind-html='header.htmlSafe')
         .col-md-12
           ul.nav.nav-tabs
               li(role="{{item.name}}" ng-repeat="item in menu | orderBy:'order'" ng-class="{active: isActive('{{item.route}}')}")
@@ -24,7 +25,8 @@ html(ng-app='FluidApp' ng-controller='IndexController')
     .container
       br
       footer.row
-        div(ng-include src="'views/footer.html'")
+        //- div(ng-include src="'views/footer.html'")
+        div(ng-bind-html='footer.htmlSafe')
         
 script(src='/components/jquery/dist/jquery.min.js')
 script(src='/components/bootstrap/dist/js/bootstrap.min.js')
@@ -48,6 +50,7 @@ script(type='text/javascript' src='services/pageService.js')
 script(type='text/javascript' src='services/postService.js')
 script(type='text/javascript' src='services/menuService.js')
 script(type='text/javascript' src='services/fileService.js')
+script(type='text/javascript' src='services/settingService.js')
 script(type='text/javascript' src='controllers/indexController.js')
 script(type='text/javascript' src='controllers/logoutController.js')
 script(type='text/javascript' src='controllers/userController.js')

@@ -2,12 +2,34 @@ include menu
 .container
   .row
     .col-md-8.col-md-offset-2
-      //- .row
-      //-   .col-md-12
-      //-     form.form
-      //-       .form-group
-      //-         label Website name
-      //-         input.form-control(ng-model='site.name' type='text')
+      .row
+        .col-md-12
+          form.form
+            .form-group
+              label Website title
+              input.form-control(ng-model='settings.title' type='text')
+      .row
+        .col-md-12
+          form.form
+            .form-group
+              label header
+              textarea.form-control(rows='10' ng-model='settings.header.content')
+            .form-group
+              label header preview
+              div(marked='settings.header.content')
+      .row
+        .col-md-12
+          form.form
+            .form-group
+              label footer
+              textarea.form-control(rows='10' ng-model='settings.footer.content')
+            .form-group
+              label footer preview
+              div(marked='settings.footer.content')
+              
+            .form-group
+              .btn-toolbar
+                button.btn.btn-success(type='button' ng-click='saveSettings(settings)') Save
       //-     form.form
       //-       .form-group
       //-         label Keywords

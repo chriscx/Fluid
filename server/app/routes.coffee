@@ -198,36 +198,29 @@ module.exports = (app, passport) ->
         res.sendStatus(200).end()
 
   app.get '/data/settings.json', (req, res) ->
-    Menu.find {}, '-_id -__v', (err, data) ->
+    Setting.findOne {}, '-_id -__v', (err, data) ->
       if err
        res.sendStatus(500).end()
       else
         res.json data
 
-  app.get '/data/settings/:id.json', (req, res) ->
-    Menu.findOne {id: req.params.id}, '-_id -__v', (err, data) ->
-      if err
-       res.sendStatus(500).end()
-      else
-        res.json data
-
-  app.post '/data/settings/', (req, res) ->
-    # if route is updated, the settings link will be void
-    newSetting = new Setting(
-      id: utils.slugify req.body.name
-      name: req.body.name
-      value: req.body.value
-    )
-
+  app.post '/data/settings.json', (req, res) ->
+    set = req.body
+    set.header.body = markdown.toHTML set.header.content
+    set.footer.body = markdown.toHTML set.footer.content
+    newSetting = new Setting(set)
     newSetting.save (err) ->
       if err
        res.sendStatus(500).end()
       else
         res.sendStatus(200).end()
 
-  app.put '/data/settings/:id.json', (req, res) ->
-    Setting.findOneAndUpdate {id: req.params.id},
-    req.body,
+  app.put '/data/settings.json', (req, res) ->
+    set = req.body
+    set.header.body = markdown.toHTML set.header.content
+    set.footer.body = markdown.toHTML set.footer.content
+    Setting.findOneAndUpdate {},
+    set,
     new: true,
       (err, data) ->
         if err
@@ -235,8 +228,8 @@ module.exports = (app, passport) ->
         else
           res.sendStatus(200).end()
 
-  app.delete '/data/settings/:id.json', (req, res) ->
-    Setting.remove {id: req.params.id}, (err, data) ->
+  app.delete '/data/settings.json', (req, res) ->
+    Setting.remove {}, (err, data) ->
       if err
        res.sendStatus(500).end()
       else if data.length < 1

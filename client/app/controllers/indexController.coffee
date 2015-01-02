@@ -1,4 +1,4 @@
-angular.module('Index').controller 'IndexController', ($scope, $routeParams, $location, $window, UserService, AuthenticationService, MenuService, PageService) ->
+angular.module('Index').controller 'IndexController', ($scope, $routeParams, $location, $window, $sce, UserService, AuthenticationService, MenuService, PageService, SettingService) ->
 
   $scope.site =
     title: 'Fluid'
@@ -14,6 +14,22 @@ angular.module('Index').controller 'IndexController', ($scope, $routeParams, $lo
   ).error (status, data) ->
     console.log status
     console.log data
+
+  SettingService.get().success((data) ->
+    console.log data
+    $scope.title = data.title
+    $scope.header = data.header
+    $scope.header.htmlSafe = $sce.trustAsHtml($scope.header.body)
+    $scope.footer = data.footer
+    $scope.footer.htmlSafe = $sce.trustAsHtml($scope.footer.body)
+    console.log $scope.header.htmlSafe
+    console.log $scope.footer.htmlSafe
+  ).error (status, data) ->
+    console.log status
+    console.log data
+
+    $scope.page.htmlSafe =
+       $sce.trustAsHtml($scope.page.body)
 
   $scope.adminMenu = [
     {id: 'public', name: 'Public', order: 0, route: '/'},

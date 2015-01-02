@@ -3,11 +3,17 @@ mongoose = require 'mongoose'
 Schema = mongoose.Schema
 
 SettingSchema = new Schema
-  name:
+  title:
     type: String
     required: true
-  value: String
-
+    index:
+      unique: true
+  header:
+    content: String
+    body: String
+  footer:
+    content: String
+    body: String
 
 Setting = mongoose.model "Setting", SettingSchema
 

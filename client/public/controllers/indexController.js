@@ -1,4 +1,4 @@
-angular.module('Index').controller('IndexController', function($scope, $routeParams, $location, $window, UserService, AuthenticationService, MenuService, PageService) {
+angular.module('Index').controller('IndexController', function($scope, $routeParams, $location, $window, $sce, UserService, AuthenticationService, MenuService, PageService, SettingService) {
   $scope.site = {
     title: 'Fluid',
     header: '',
@@ -15,6 +15,20 @@ angular.module('Index').controller('IndexController', function($scope, $routePar
   }).error(function(status, data) {
     console.log(status);
     return console.log(data);
+  });
+  SettingService.get().success(function(data) {
+    console.log(data);
+    $scope.title = data.title;
+    $scope.header = data.header;
+    $scope.header.htmlSafe = $sce.trustAsHtml($scope.header.body);
+    $scope.footer = data.footer;
+    $scope.footer.htmlSafe = $sce.trustAsHtml($scope.footer.body);
+    console.log($scope.header.htmlSafe);
+    return console.log($scope.footer.htmlSafe);
+  }).error(function(status, data) {
+    console.log(status);
+    console.log(data);
+    return $scope.page.htmlSafe = $sce.trustAsHtml($scope.page.body);
   });
   return $scope.adminMenu = [
     {

@@ -1,8 +1,16 @@
-angular.module('Admin').controller 'AdminSettingsController', ($scope, $http, $routeParams, $location, $window, PostService, PageService, MenuService) ->
+angular.module('Admin').controller 'AdminSettingsController', ($scope, $http, $routeParams, $location, $window, MenuService, SettingService) ->
 
   $scope.categoryList = []
   $scope.menuList = []
   $scope.newMenu = {id: '', name: '', route: ''}
+  $scope.settings =
+    title: 'Fluid'
+    header:
+      content: 'Fluid\n======='
+      body: ''
+    footer:
+      content: ''
+      body: ''
 
   err = (status, data) ->
     if status >= 400 and data.message == 'jwt expired'
@@ -11,9 +19,22 @@ angular.module('Admin').controller 'AdminSettingsController', ($scope, $http, $r
   $scope.isActive = (route) ->
     $location.path() == route
 
+  SettingService.get().success((data) ->
+    $scope.settings = data
+  ).error (status, data) ->
+    console.log status
+    console.log data
+
+  $scope.saveSettings = (data) ->
+    SettingService.save(data).success((res) ->
+      console.log 'success'
+    ).error (status, data) ->
+      err status, data
+      console.log status
+      console.log data
+
   MenuService.getList().success((data) ->
     $scope.menuList = data
-    console.log 'success'
   ).error (status, data) ->
     err status, data
     console.log status
@@ -36,7 +57,6 @@ angular.module('Admin').controller 'AdminSettingsController', ($scope, $http, $r
 
   $scope.saveMenuItem = (data) ->
     MenuService.save(data.id, data).success((data) ->
-      console.log 'success'
     ).error (status, data) ->
       err status, data
       console.log status

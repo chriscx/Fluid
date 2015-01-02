@@ -1,4 +1,4 @@
-angular.module('Admin').controller('AdminSettingsController', function($scope, $http, $routeParams, $location, $window, PostService, PageService, MenuService) {
+angular.module('Admin').controller('AdminSettingsController', function($scope, $http, $routeParams, $location, $window, MenuService, SettingService) {
   var err;
   $scope.categoryList = [];
   $scope.menuList = [];
@@ -6,6 +6,17 @@ angular.module('Admin').controller('AdminSettingsController', function($scope, $
     id: '',
     name: '',
     route: ''
+  };
+  $scope.settings = {
+    title: 'Fluid',
+    header: {
+      content: 'Fluid\n=======',
+      body: ''
+    },
+    footer: {
+      content: '',
+      body: ''
+    }
   };
   err = function(status, data) {
     if (status >= 400 && data.message === 'jwt expired') {
@@ -15,9 +26,23 @@ angular.module('Admin').controller('AdminSettingsController', function($scope, $
   $scope.isActive = function(route) {
     return $location.path() === route;
   };
+  SettingService.get().success(function(data) {
+    return $scope.settings = data;
+  }).error(function(status, data) {
+    console.log(status);
+    return console.log(data);
+  });
+  $scope.saveSettings = function(data) {
+    return SettingService.save(data).success(function(res) {
+      return console.log('success');
+    }).error(function(status, data) {
+      err(status, data);
+      console.log(status);
+      return console.log(data);
+    });
+  };
   MenuService.getList().success(function(data) {
-    $scope.menuList = data;
-    return console.log('success');
+    return $scope.menuList = data;
   }).error(function(status, data) {
     err(status, data);
     console.log(status);
@@ -41,9 +66,7 @@ angular.module('Admin').controller('AdminSettingsController', function($scope, $
     });
   };
   $scope.saveMenuItem = function(data) {
-    return MenuService.save(data.id, data).success(function(data) {
-      return console.log('success');
-    }).error(function(status, data) {
+    return MenuService.save(data.id, data).success(function(data) {}).error(function(status, data) {
       err(status, data);
       console.log(status);
       return console.log(data);

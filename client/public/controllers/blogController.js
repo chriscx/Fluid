@@ -36,9 +36,6 @@ angular.module('Blog').controller('BlogController', function($scope, $http, $rou
       return console.log(data);
     });
   };
-  $scope.sanatizeHtml = function(html) {
-    return $sce.trustAsHtml(html);
-  };
   return $scope.navIsActive = function() {
     if ($scope.skip === 0) {
       return true;

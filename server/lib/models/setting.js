@@ -5,11 +5,21 @@ mongoose = require('mongoose');
 Schema = mongoose.Schema;
 
 SettingSchema = new Schema({
-  name: {
+  title: {
     type: String,
-    required: true
+    required: true,
+    index: {
+      unique: true
+    }
   },
-  value: String
+  header: {
+    content: String,
+    body: String
+  },
+  footer: {
+    content: String,
+    body: String
+  }
 });
 
 Setting = mongoose.model("Setting", SettingSchema);

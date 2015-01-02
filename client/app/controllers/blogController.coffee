@@ -33,9 +33,6 @@ angular.module('Blog').controller 'BlogController', ($scope, $http, $routeParams
       console.log data
     )
 
-  $scope.sanatizeHtml = (html) ->
-    $sce.trustAsHtml(html)
-
   $scope.navIsActive = () ->
     if $scope.skip == 0
       return true
