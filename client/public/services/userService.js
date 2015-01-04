@@ -15,9 +15,9 @@ angular.module('User').factory('UserService', function($http, $location, $window
         email: email
       });
     },
-    resetPassword: function(hash, password) {
+    resetPassword: function(token, password) {
       return $http.post('/reset', {
-        hash: hash,
+        token: token,
         password: password
       });
     },

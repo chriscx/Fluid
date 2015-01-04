@@ -12,9 +12,9 @@ angular.module('User').factory 'UserService', ($http, $location, $window, Authen
   forgotPassword: (email) ->
     $http.post '/forgot', email: email
 
-  resetPassword: (hash, password) ->
+  resetPassword: (token, password) ->
     $http.post '/reset',
-      hash: hash,
+      token: token,
       password: password
 
   resetAuth :() ->

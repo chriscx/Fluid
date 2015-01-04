@@ -1,6 +1,15 @@
 angular.module('User').controller('UserController', function($scope, $http, $routeParams, $location, $window, UserService, AuthenticationService, MenuService) {
   $scope.alerts = [];
   $scope.user = {};
+  if ($location.path().lastIndexOf('/admin/user', 0) === 0) {
+    UserService.getUserData($window.sessionStorage.username).success(function(data) {
+      $scope.user = data;
+      return console.log($scope.user);
+    }).error(function(status, data) {
+      console.log(status);
+      return console.log(data);
+    });
+  }
   $scope.logIn = function(username, password) {
     console.log('login attempt: ' + username + ' ' + password);
     if (username !== undefined && password !== undefined) {
@@ -36,14 +45,12 @@ angular.module('User').controller('UserController', function($scope, $http, $rou
       });
     }
   };
-  $scope.update = function(username, email, firstname, lastname, country) {
-    if (username !== undefined && email !== undefined && firstname !== undefined && lastname !== undefined && country !== undefined) {
-      return UserService.updateUserData(username, {
-        email: email,
-        firstname: firstname,
-        lastname: lastname,
-        country: country
-      }).success(function(data) {
+  $scope.update = function(user) {
+    if (user.username !== undefined && user.username !== '' && user.email !== undefined && user.email !== '') {
+      if (user.password === '') {
+        del(user.password);
+      }
+      return UserService.updateUserData(user.username, user).success(function(data) {
         return console.log('success');
       }).error(function(status, data) {
         console.log(status);
@@ -63,8 +70,9 @@ angular.module('User').controller('UserController', function($scope, $http, $rou
   };
   return $scope.resetPassword = function(password) {
     if (password !== undefined) {
-      return UserService.resetPassword(password).success(function(data) {
-        return console.log('success');
+      return UserService.resetPassword($routeParams.token, password).success(function(data) {
+        console.log('success');
+        return $location.path('/login');
       }).error(function(status, data) {
         console.log(status);
         return console.log(data);

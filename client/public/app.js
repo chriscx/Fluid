@@ -45,7 +45,7 @@ FluidApp.config([
       access: {
         requiredLogin: false
       }
-    }).when('/reset', {
+    }).when('/reset/:token', {
       templateUrl: 'views/reset.html',
       controller: 'UserController',
       access: {
@@ -105,14 +105,8 @@ FluidApp.config([
       access: {
         requiredLogin: true
       }
-    }).when('/admin/:user', {
+    }).when('/admin/user', {
       templateUrl: 'views/admin/users/user.html',
-      controller: 'UserController',
-      access: {
-        requiredLogin: true
-      }
-    }).when('/admin/:user/edit', {
-      templateUrl: 'views/admin/users/userEdit.html',
       controller: 'UserController',
       access: {
         requiredLogin: true

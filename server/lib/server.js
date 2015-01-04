@@ -1,4 +1,4 @@
-var LocalStrategy, Setting, User, app, bcrypt, bodyParser, busboy, cluster, cookieParser, express, expressJwt, expressSession, fs, i, jwt, methodOverride, mongoose, numCPUs, passport, path, server;
+var LocalStrategy, Setting, User, app, bcrypt, bodyParser, busboy, cluster, cookieParser, express, expressJwt, expressSession, fs, i, jwt, methodOverride, mongoose, numCPUs, passport, path, resetTokens, server;
 
 fs = require('fs');
 
@@ -132,6 +132,7 @@ passport.use('reset', new LocalStrategy({
   passReqToCallback: true
 }, function(req, username, password, done) {
   var updatedPassword;
+  console.log('new password ' + password);
   updatedPassword = {
     password: bcrypt.hashSync(password)
   };
@@ -165,7 +166,12 @@ app.use(function(err, req, res, next) {
 
 app.use(busboy());
 
-require('./routes')(app, passport);
+resetTokens = {};
+
+require('./routes')(app, passport, resetTokens, {
+  account: process.env.SMTP_ACCOUNT,
+  password: process.env.SMTP_PASSWORD
+});
 
 app.use(function(err, req, res, next) {
   console.log('error');

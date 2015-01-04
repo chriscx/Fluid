@@ -6,8 +6,7 @@
       .form-group
           input.form-control(type='email', name="email", placeholder='Enter Email', ng-model='forgot.email')
       button.btn.btn-default(type='submit', ng-click='forgotPassword(forgot.email)') Submit
-      a(href='/')
-        button.btn.btn-primary(type="button") Cancel
+      a.btn.btn-primary(href='/') Cancel
 
     .alert.alert-info.hide An email with instructions as been sent.
     .alert.alert-danger.hide Email doesn't match any users.

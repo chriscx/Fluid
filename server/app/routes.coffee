@@ -7,6 +7,7 @@ crypto = require 'crypto'
 Hashids = require 'hashids'
 hash = new Hashids('this is my salt')
 markdown = require('markdown').markdown
+bcrypt = require 'bcrypt-nodejs'
 utils = require './utils'
 User = require('./models/user').User
 Page = require('./models/page').Page
@@ -17,11 +18,11 @@ File = require('./models/file').File
 
 secret = 'this is my secret for jwt'
 
-module.exports = (app, passport) ->
+module.exports = (app, passport, resetTokens, smpt) ->
 
   app.get '/data/user/:user.json', expressJwt({secret: secret}), (req, res) ->
     console.log('GET user \'' + req.user.username + '\' JSON object')
-    User.findOne {username: req.user.username}, '-_id -__v', (err, data) ->
+    User.findOne {username: req.user.username}, '-_id -__v -password', (err, data) ->
       delete data.password
       if err
        res.sendStatus(500).end()
@@ -32,6 +33,7 @@ module.exports = (app, passport) ->
 
   app.put '/data/user/:user.json', expressJwt({secret: secret}), (req, res) ->
     console.log('PUT user \'' + req.user.username + '\' JSON object')
+    req.body.password = bcrypt.hashSync req.body.password
     User.findOneAndUpdate username: req.user.username,
       req.body,
       new: true,
@@ -349,39 +351,47 @@ module.exports = (app, passport) ->
     ) req, res, next
 
   app.post '/forgot', (req, res, next) ->
-    User.findOne username: req.user.username, (err, user) ->
+    User.findOne email: req.body.email, (err, user) ->
       if err
        res.sendStatus(500).end()
       else if user.length < 1
        res.sendStatus(404).end()
       else
-        crypto.randomBytes 20, (err, buf) ->
-        token = buf.toString("hex")
-        smtpTransport = nodemailer.createTransport()
-        mailOptions =
-          to: user.email
-          from: 'passwordreset@demo.com'
-          subject: 'Fluid Password Reset'
-          text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' + 'Please click on the following link, or paste this into your browser to complete the process:\n\n' + 'http://' + req.headers.host + '/reset/' + token + '\n\n' + 'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+        crypto.randomBytes 30, (err, buf) ->
+          ts = (new Date()).getTime()
+          token = buf.toString('hex')
+          smtpTransport = nodemailer.createTransport(
+            service: 'gmail'
+            auth:
+                user: smtp.account
+                pass: smtp.password
+          )
+          mailOptions =
+            to: user.email
+            from: ''
+            subject: 'Fluid Password Reset'
+            text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' + 'Please click on the following link, or paste this into your browser to complete the process:\n\n' + 'http://' + req.headers.host + '/reset/' + token + '\n\n' + 'If you did not request this, please ignore this email and your password will remain unchanged.\n'
 
-        smtpTransport.sendMail mailOptions, (err) ->
-          unless err
-            res.sendStatus(200).end()
-          else
-            res.sendStatus(500).end()
+          smtpTransport.sendMail mailOptions, (err) ->
+            unless err
+              resetTokens[token] = {username: user.username, email: user.email, expirationDate: ts + (24 * 60 * 60 * 100)}
+              res.sendStatus(200).end()
+            else
+              console.log err
+              res.sendStatus(500).end()
 
   app.post '/reset', (req, res, next) ->
-    console.log('POST reset')
+    token = req.body.token
+    return res.sendStatus(498).end() if resetTokens[token].expirationDate < (new Date()).getTime()
+    req.body.username = resetTokens[token].username
     passport.authenticate('reset', (err, user, info) ->
       return next(err) if err
       return res.sendStatus(401).end() unless user
       req.logIn user, (err) ->
         return next(err) if err
-        console.log 'user' + user
-        profile = username: user.username, email: user.email, firstname: user.firstname, lastname: user.lastname
-        console.log 'profile:'
-        console.log profile
+        profile = username: user.username, email: user.email
         token = jwt.sign(profile, 'this is my secret for jwt', { expiresInMinutes: 60*5 })
+        delete resetTokens[token]
         res.json token: token, user: profile
     ) req, res, next
 

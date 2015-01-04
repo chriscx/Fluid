@@ -113,6 +113,7 @@ passport.use 'reset', new LocalStrategy(
   passReqToCallback: true
 , (req, username, password, done) ->
 
+  console.log 'new password ' + password
   updatedPassword = {password: bcrypt.hashSync password}
 
   # check in mongo if a user with username exists or not
@@ -141,8 +142,9 @@ app.use (err, req, res, next) ->
   res.send 401, "invalid token..."  if err.name is "UnauthorizedError"
 
 app.use busboy()
+resetTokens = {}
 
-require('./routes') app, passport
+require('./routes') app, passport, resetTokens, {account: process.env.SMTP_ACCOUNT, password: process.env.SMTP_PASSWORD}
 
 app.use (err, req, res, next) ->
   console.log 'error'

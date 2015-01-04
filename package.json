@@ -28,7 +28,8 @@
     "speakingurl": "*",
     "underscore": "1.7.*",
     "sha1": "^1.1.0",
-    "hashids": "^1.0.1"
+    "hashids": "^1.0.1",
+    "nodemailer-smtp-transport": "^0.1.13"
   },
   "devDependencies": {
     "coffee-script": "1.8.*",

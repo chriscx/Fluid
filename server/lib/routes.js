@@ -1,4 +1,4 @@
-var File, Hashids, Menu, Page, Post, Setting, User, crypto, expressJwt, fs, hash, jwt, markdown, nodemailer, path, secret, utils;
+var File, Hashids, Menu, Page, Post, Setting, User, bcrypt, crypto, expressJwt, fs, hash, jwt, markdown, nodemailer, path, secret, utils;
 
 path = require('path');
 
@@ -18,6 +18,8 @@ hash = new Hashids('this is my salt');
 
 markdown = require('markdown').markdown;
 
+bcrypt = require('bcrypt-nodejs');
+
 utils = require('./utils');
 
 User = require('./models/user').User;
@@ -34,14 +36,14 @@ File = require('./models/file').File;
 
 secret = 'this is my secret for jwt';
 
-module.exports = function(app, passport) {
+module.exports = function(app, passport, resetTokens, smpt) {
   app.get('/data/user/:user.json', expressJwt({
     secret: secret
   }), function(req, res) {
     console.log('GET user \'' + req.user.username + '\' JSON object');
     return User.findOne({
       username: req.user.username
-    }, '-_id -__v', function(err, data) {
+    }, '-_id -__v -password', function(err, data) {
       delete data.password;
       if (err) {
         return res.sendStatus(500).end();
@@ -56,6 +58,7 @@ module.exports = function(app, passport) {
     secret: secret
   }), function(req, res) {
     console.log('PUT user \'' + req.user.username + '\' JSON object');
+    req.body.password = bcrypt.hashSync(req.body.password);
     return User.findOneAndUpdate({
       username: req.user.username
     }, req.body, {
@@ -511,35 +514,54 @@ module.exports = function(app, passport) {
   });
   app.post('/forgot', function(req, res, next) {
     return User.findOne({
-      username: req.user.username
+      email: req.body.email
     }, function(err, user) {
-      var mailOptions, smtpTransport, token;
       if (err) {
         return res.sendStatus(500).end();
       } else if (user.length < 1) {
         return res.sendStatus(404).end();
       } else {
-        crypto.randomBytes(20, function(err, buf) {});
-        token = buf.toString("hex");
-        smtpTransport = nodemailer.createTransport();
-        mailOptions = {
-          to: user.email,
-          from: 'passwordreset@demo.com',
-          subject: 'Fluid Password Reset',
-          text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' + 'Please click on the following link, or paste this into your browser to complete the process:\n\n' + 'http://' + req.headers.host + '/reset/' + token + '\n\n' + 'If you did not request this, please ignore this email and your password will remain unchanged.\n'
-        };
-        return smtpTransport.sendMail(mailOptions, function(err) {
-          if (!err) {
-            return res.sendStatus(200).end();
-          } else {
-            return res.sendStatus(500).end();
-          }
+        return crypto.randomBytes(30, function(err, buf) {
+          var mailOptions, smtpTransport, token, ts;
+          ts = (new Date()).getTime();
+          token = buf.toString('hex');
+          smtpTransport = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+              user: smtp.account,
+              pass: smtp.password
+            }
+          });
+          mailOptions = {
+            to: user.email,
+            from: '',
+            subject: 'Fluid Password Reset',
+            text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' + 'Please click on the following link, or paste this into your browser to complete the process:\n\n' + 'http://' + req.headers.host + '/reset/' + token + '\n\n' + 'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+          };
+          return smtpTransport.sendMail(mailOptions, function(err) {
+            if (!err) {
+              resetTokens[token] = {
+                username: user.username,
+                email: user.email,
+                expirationDate: ts + (24 * 60 * 60 * 100)
+              };
+              return res.sendStatus(200).end();
+            } else {
+              console.log(err);
+              return res.sendStatus(500).end();
+            }
+          });
         });
       }
     });
   });
   app.post('/reset', function(req, res, next) {
-    console.log('POST reset');
+    var token;
+    token = req.body.token;
+    if (resetTokens[token].expirationDate < (new Date()).getTime()) {
+      return res.sendStatus(498).end();
+    }
+    req.body.username = resetTokens[token].username;
     return passport.authenticate('reset', function(err, user, info) {
       if (err) {
         return next(err);
@@ -548,22 +570,18 @@ module.exports = function(app, passport) {
         return res.sendStatus(401).end();
       }
       return req.logIn(user, function(err) {
-        var profile, token;
+        var profile;
         if (err) {
           return next(err);
         }
-        console.log('user' + user);
         profile = {
           username: user.username,
-          email: user.email,
-          firstname: user.firstname,
-          lastname: user.lastname
+          email: user.email
         };
-        console.log('profile:');
-        console.log(profile);
         token = jwt.sign(profile, 'this is my secret for jwt', {
           expiresInMinutes: 60 * 5
         });
+        delete resetTokens[token];
         return res.json({
           token: token,
           user: profile

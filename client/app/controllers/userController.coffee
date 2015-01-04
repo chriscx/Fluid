@@ -3,6 +3,14 @@ angular.module('User').controller 'UserController', ($scope, $http, $routeParams
   $scope.alerts = []
   $scope.user = {}
 
+  if $location.path().lastIndexOf('/admin/user', 0) == 0
+    UserService.getUserData($window.sessionStorage.username).success((data) ->
+      $scope.user = data
+      console.log $scope.user
+    ).error (status, data) ->
+      console.log status
+      console.log data
+
   $scope.logIn = (username, password) ->
     console.log 'login attempt: ' + username + ' ' + password
     if username isnt `undefined` and password isnt `undefined`
@@ -31,13 +39,11 @@ angular.module('User').controller 'UserController', ($scope, $http, $routeParams
           console.log status
           console.log data
 
-  $scope.update = (username, email, firstname, lastname, country) ->
-    if username isnt `undefined` and
-      email isnt `undefined` and
-      firstname isnt `undefined` and
-      lastname isnt `undefined` and
-      country isnt `undefined`
-        UserService.updateUserData(username, {email: email, firstname: firstname, lastname: lastname, country: country}).success((data) ->
+  $scope.update = (user) ->
+    if user.username isnt `undefined` and user.username isnt '' and
+      user.email isnt `undefined` and user.email isnt ''
+        del user.password if user.password is ''
+        UserService.updateUserData(user.username, user).success((data) ->
           console.log 'success'
         ).error (status, data) ->
           console.log status
@@ -53,8 +59,9 @@ angular.module('User').controller 'UserController', ($scope, $http, $routeParams
 
   $scope.resetPassword = (password) ->
     if password isnt `undefined`
-      UserService.resetPassword(password).success((data) ->
+      UserService.resetPassword($routeParams.token, password).success((data) ->
         console.log 'success'
+        $location.path '/login'
       ).error (status, data) ->
         console.log status
         console.log data
