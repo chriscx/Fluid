@@ -169,8 +169,12 @@ app.use(busboy());
 resetTokens = {};
 
 require('./routes')(app, passport, resetTokens, {
+  service: process.env.SMTP_ACCOUNT || 'smtp',
   account: process.env.SMTP_ACCOUNT,
-  password: process.env.SMTP_PASSWORD
+  password: process.env.SMTP_PASSWORD,
+  host: process.env.SMTP_HOST || 'localhost',
+  port: process.env.SMTP_PORT || 25,
+  ssl: process.env.SMTP_SSL || false
 });
 
 app.use(function(err, req, res, next) {

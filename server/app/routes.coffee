@@ -3,6 +3,7 @@ fs = require 'fs'
 expressJwt = require 'express-jwt'
 jwt = require 'jsonwebtoken'
 nodemailer = require 'nodemailer'
+smtpTransport = require 'nodemailer-smtp-transport'
 crypto = require 'crypto'
 Hashids = require 'hashids'
 hash = new Hashids('this is my salt')
@@ -18,7 +19,7 @@ File = require('./models/file').File
 
 secret = 'this is my secret for jwt'
 
-module.exports = (app, passport, resetTokens, smpt) ->
+module.exports = (app, passport, resetTokens, smtp) ->
 
   app.get '/data/user/:user.json', expressJwt({secret: secret}), (req, res) ->
     console.log('GET user \'' + req.user.username + '\' JSON object')
@@ -360,15 +361,26 @@ module.exports = (app, passport, resetTokens, smpt) ->
         crypto.randomBytes 30, (err, buf) ->
           ts = (new Date()).getTime()
           token = buf.toString('hex')
-          smtpTransport = nodemailer.createTransport(
-            service: 'gmail'
-            auth:
+          smtpTransport = null
+          if smtp.service is 'smtp'
+            smtpTransport = nodemailer.createTransport(smtpTransport({
+              host: smtp.host,
+              port: smtp.port,
+              secure: smtp.ssl,
+              auth:
+                user: smtp.account,
+                pass: smtp.password
+            }))
+          else
+            smtpTransport = nodemailer.createTransport(
+              service: smtp.service
+              auth:
                 user: smtp.account
                 pass: smtp.password
-          )
+            )
           mailOptions =
             to: user.email
-            from: ''
+            from: user.email
             subject: 'Fluid Password Reset'
             text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' + 'Please click on the following link, or paste this into your browser to complete the process:\n\n' + 'http://' + req.headers.host + '/reset/' + token + '\n\n' + 'If you did not request this, please ignore this email and your password will remain unchanged.\n'
 

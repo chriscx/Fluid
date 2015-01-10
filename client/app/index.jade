@@ -14,7 +14,7 @@ html(ng-app='FluidApp' ng-controller='IndexController')
     link(href='assets/css/bootstrap.min.css', rel='stylesheet')
     link(type='text/css' rel='stylesheet' href='assets/css/style.css')
     
-  body(data-spy='scroll' data-target='#nav-scrollspy')
+  body.fadein(data-spy='scroll' data-target='#nav-scrollspy')
     .container
       header.row
         //- div(ng-include src="'views/header.html'")

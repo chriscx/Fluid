@@ -1,4 +1,4 @@
-var File, Hashids, Menu, Page, Post, Setting, User, bcrypt, crypto, expressJwt, fs, hash, jwt, markdown, nodemailer, path, secret, utils;
+var File, Hashids, Menu, Page, Post, Setting, User, bcrypt, crypto, expressJwt, fs, hash, jwt, markdown, nodemailer, path, secret, smtpTransport, utils;
 
 path = require('path');
 
@@ -9,6 +9,8 @@ expressJwt = require('express-jwt');
 jwt = require('jsonwebtoken');
 
 nodemailer = require('nodemailer');
+
+smtpTransport = require('nodemailer-smtp-transport');
 
 crypto = require('crypto');
 
@@ -36,7 +38,7 @@ File = require('./models/file').File;
 
 secret = 'this is my secret for jwt';
 
-module.exports = function(app, passport, resetTokens, smpt) {
+module.exports = function(app, passport, resetTokens, smtp) {
   app.get('/data/user/:user.json', expressJwt({
     secret: secret
   }), function(req, res) {
@@ -522,19 +524,32 @@ module.exports = function(app, passport, resetTokens, smpt) {
         return res.sendStatus(404).end();
       } else {
         return crypto.randomBytes(30, function(err, buf) {
-          var mailOptions, smtpTransport, token, ts;
+          var mailOptions, token, ts;
           ts = (new Date()).getTime();
           token = buf.toString('hex');
-          smtpTransport = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-              user: smtp.account,
-              pass: smtp.password
-            }
-          });
+          smtpTransport = null;
+          if (smtp.service === 'smtp') {
+            smtpTransport = nodemailer.createTransport(smtpTransport({
+              host: smtp.host,
+              port: smtp.port,
+              secure: smtp.ssl,
+              auth: {
+                user: smtp.account,
+                pass: smtp.password
+              }
+            }));
+          } else {
+            smtpTransport = nodemailer.createTransport({
+              service: smtp.service,
+              auth: {
+                user: smtp.account,
+                pass: smtp.password
+              }
+            });
+          }
           mailOptions = {
             to: user.email,
-            from: '',
+            from: user.email,
             subject: 'Fluid Password Reset',
             text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' + 'Please click on the following link, or paste this into your browser to complete the process:\n\n' + 'http://' + req.headers.host + '/reset/' + token + '\n\n' + 'If you did not request this, please ignore this email and your password will remain unchanged.\n'
           };

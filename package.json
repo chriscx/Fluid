@@ -29,7 +29,8 @@
     "underscore": "1.7.*",
     "sha1": "^1.1.0",
     "hashids": "^1.0.1",
-    "nodemailer-smtp-transport": "^0.1.13"
+    "nodemailer-smtp-transport": "^0.1.13",
+    "nodemailer-wellknown": "^0.1.4"
   },
   "devDependencies": {
     "coffee-script": "1.8.*",
