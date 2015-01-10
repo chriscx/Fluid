@@ -1,6 +1,6 @@
 .container
   .row(ng-repeat='post in posts')
-    .col-md-8
+    .col-md-8.col-md-offset-2
       .page-header
         h2
           a(href='/blog/{{post.id}}') {{post.title}}
@@ -9,7 +9,7 @@
           br
           div.text-justify(ng-bind-html='sanatizeHtml(post.body)')
   .row
-    nav
+    nav.col-md-8.col-md-offset-2
       ul.pager
         li.previous(ng-class="{disabled: navIsActive()}")
           a(ng-click='getPrevious()')

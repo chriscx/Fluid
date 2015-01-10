@@ -16,8 +16,8 @@
   <body data-spy="scroll" data-target="#nav-scrollspy" class="fadein">
     <div class="container">
       <header class="row">
-        <div ng-bind-html="header.htmlSafe"></div>
-        <div class="col-md-12">
+        <div ng-bind-html="header.htmlSafe" class="col-md-8 col-md-offset-2"></div>
+        <div class="col-md-8 col-md-offset-2">
           <ul class="nav nav-tabs">
             <li role="{{item.name}}" ng-repeat="item in menu | orderBy:'order'" ng-class="{active: isActive('{{item.route}}')}"><a href="/#{{item.route}}">{{item.name}}</a></li>
           </ul>
@@ -27,7 +27,7 @@
     <div ng-view="" class="fade"></div>
     <div class="container"><br>
       <footer class="row">
-        <div ng-bind-html="footer.htmlSafe"></div>
+        <div ng-bind-html="footer.htmlSafe" class="col-md-8 col-md-offset-2"></div>
       </footer>
     </div>
   </body>
