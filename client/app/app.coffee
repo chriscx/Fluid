@@ -1,4 +1,4 @@
-FluidApp = angular.module('FluidApp', ['ngRoute', 'ngAnimate', 'hc.marked', 'ui.bootstrap', 'Index', 'User', 'Blog', 'Page', 'Admin'])
+FluidApp = angular.module('FluidApp', ['ngRoute', 'ngAnimate', 'hc.marked', 'Index', 'User', 'Blog', 'Page', 'Admin'])
 
 angular.module('Index', [])
 angular.module('User', [])

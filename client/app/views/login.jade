@@ -12,4 +12,5 @@
             button.btn.btn-default(type='button', ng-click='logIn(login.username, login.password)') Submit
             a.btn.btn-primary(type="submit", href='/') Cancel
   .row
-    alert(ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)") {{alert.msg}}
+    .col-md-8.col-md-offset-2
+      div.alert.alert-danger(ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)") {{alert.msg}}

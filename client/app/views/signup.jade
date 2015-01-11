@@ -4,20 +4,17 @@
       h1 Sign up
       form(role='form', method="post", style='max-width: 300px;')
         .form-group
-            input.form-control(type='text', name="username", placeholder='Enter Username', ng-model='user.username')
+          input.form-control(type='text', name="username", placeholder='Enter Username', ng-model='user.username')
         .form-group
-            input.form-control(type='email', name="email", placeholder='Enter Email', ng-model='user.email')
+          input.form-control(type='email', name="email", placeholder='Enter Email', ng-model='user.email')
         .form-group
           input.form-control(type='password', name="password", placeholder='Password', ng-model='user.password')
         .form-group
           input.form-control(type='password', name="passwordCheck", placeholder='Password', ng-model='user.passwordCheck')
-        //- .form-group
-        //-   input.form-control(type='text', name="firstname", placeholder='Firstname', ng-model='signup.firstname')
-        //- .form-group
-        //-   input.form-control(type='text', name="lastname", placeholder='Lastname', ng-model='signup.lastname')
         .form-group
           .btn-toolbar
             button.btn.btn-default(type='button', ng-click='signUp(user)') Submit
             a.btn.btn-primary(type="submit", href='/') Cancel
   .row
-    alert(ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)") {{alert.msg}}
+    .col-md-8.col-md-offset-2
+      div.alert.alert-danger(ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)") {{alert.msg}}
