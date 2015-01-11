@@ -8,12 +8,12 @@ cookieParser = require 'cookie-parser'
 methodOverride = require 'method-override'
 mongoose = require 'mongoose'
 passport = require 'passport'
-LocalStrategy = require('passport-local').Strategy
 expressSession = require 'express-session'
 expressJwt = require 'express-jwt'
 jwt = require 'jsonwebtoken'
 bcrypt = require 'bcrypt-nodejs'
 busboy = require 'connect-busboy'
+toobusy = require 'toobusy'
 User = require('./models/user').User
 Setting = require('./models/setting').Setting
 
@@ -36,107 +36,15 @@ passport.deserializeUser (id, done) ->
   User.findById id, (err, user) ->
     done err, user
 
-passport.use "login", new LocalStrategy(
-  passReqToCallback: true
-, (req, username, password, done) ->
-
-  # check in mongo if a user with username exists or not
-  User.findOne
-    username: username
-  , (err, user) ->
-
-    # In case of any error, return using the done method
-    return done err if err
-
-    # Username does not exist, log error & redirect back
-    unless user
-      console.log "User Not Found with username " + username
-      return done null, false
-
-    # User exists but wrong password, log the error
-    unless bcrypt.compareSync password, user.password
-      console.log "Invalid Password"
-      return done null, false
-
-    # User and password both match, return user from
-    # done method which will be treated like success
-    console.log 'user:'
-    console.log user
-    done null, user
-)
-
-passport.use 'signup', new LocalStrategy(
-    passReqToCallback : true
-, (req, username, password, done) ->
-    findOrCreateUser = () ->
-      # find a user in Mongo with provided username
-      Setting.findOne {}, '-_id -__v', (err, data) ->
-        settings = data
-        if not data.accountCreation
-          console.log 'Account creation has been disabled'
-          return 'Account creation has been disabled'
-        User.findOne 'username': username, (err, user) ->
-          # In case of any error return
-          if err
-            console.log 'Error in SignUp: ' + err
-            done err
-
-          # already exists
-          if user
-            console.log 'User already exists'
-            done null, false
-          else
-            # if there is no user with that email
-            # create the user
-            newUser = new User()
-            # set the user's local credentials
-            newUser.username = username
-            newUser.password = bcrypt.hashSync password
-            newUser.firstname = req.param 'firstname'
-            newUser.lastname = req.param 'lastname'
-            newUser.email = req.param 'email'
-
-            # save the user
-            newUser.save (err) ->
-              if err
-                console.log 'Error in Saving user: ' + err
-                throw err
-              console.log('User Registration succesful');
-              done null, newUser
-
-    # Delay the execution of findOrCreateUser and execute
-    # the method in the next tick of the event loop
-    process.nextTick findOrCreateUser
-)
-
-passport.use 'reset', new LocalStrategy(
-  passReqToCallback: true
-, (req, username, password, done) ->
-
-  console.log 'new password ' + password
-  updatedPassword = {password: bcrypt.hashSync password}
-
-  # check in mongo if a user with username exists or not
-  User.findOneAndUpdate
-    username: username,
-    updatedPassword
-  , (err, user) ->
-
-    # In case of any error, return using the done method
-    return done err if err
-
-    # Username does not exist, log error & redirect back
-    unless user
-      console.log "User Not Found with username " + username
-      return done null, false
-
-    done null, user
-)
-
 app.use bodyParser.json()
 app.use bodyParser.urlencoded(extended: true)
 
 app.use express.static "#{__dirname}/../../client/public"
+
+app.use (req, res, next) ->
+  if toobusy()
+    res.send 503, "I'm busy right now, sorry."
+  else next()
 
 app.use (err, req, res, next) ->
   res.send 401, "invalid token..."  if err.name is "UnauthorizedError"

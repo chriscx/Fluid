@@ -35,6 +35,7 @@
 .Trashes
 ehthumbs.pdb
 Thumbs.db
+*.out
 
 *.sublime-project
 *.sublime-workspace

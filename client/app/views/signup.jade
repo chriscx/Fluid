@@ -18,6 +18,6 @@
         .form-group
           .btn-toolbar
             button.btn.btn-default(type='button', ng-click='signUp(user)') Submit
-            a.btn.btn-primary(type="button", href='/') Cancel
+            a.btn.btn-primary(type="submit", href='/') Cancel
   .row
     alert(ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)") {{alert.msg}}

@@ -32,13 +32,6 @@ Start
 Stop
 > npm stop
 
-Version History
-===============
-
-- v0.0.3 admin settings
-- v0.0.2 basic functionalities working
-- v0.0.1 quick and dirty base
-
 Roadmap
 =======
 

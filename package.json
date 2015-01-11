@@ -30,7 +30,8 @@
     "sha1": "^1.1.0",
     "hashids": "^1.0.1",
     "nodemailer-smtp-transport": "^0.1.13",
-    "nodemailer-wellknown": "^0.1.4"
+    "nodemailer-wellknown": "^0.1.4",
+    "toobusy": "^0.2.4"
   },
   "devDependencies": {
     "coffee-script": "1.8.*",
@@ -48,11 +49,9 @@
     "grunt-contrib-jade": "^0.13.0"
   },
   "scripts": {
-    "clean": "rm -rf server/lib/ client/public/*.js client/public/controllers/ client/public/services/ client/public/views client/public/*.html",
     "test": "./node_modules/.bin/mocha --compilers coffee:coffee-script/register server/test/*",
-    "build": "./node_modules/.bin/coffee -b -o server/lib/ --no-header -c server/app/ && ./node_modules/.bin/coffee -b -o client/public/ --no-header -c client/app/ && ./node_modules/.bin/jade client/app/*.jade -o client/public/ && ./node_modules/.bin/jade client/app/views/ -o client/public/views/ && ./node_modules/.bin/bower install",
-    "run": "node server/lib/server.js",
-    "start": "./node_modules/.bin/forever start server/lib/server.js",
+    "run": "coffee server/app/server.coffee",
+    "start": "./node_modules/.bin/forever -c coffee server/app/server.coffee",
     "stop": "./node_modules/.bin/forever stopall"
   }
 }

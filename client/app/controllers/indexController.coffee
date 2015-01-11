@@ -16,17 +16,10 @@ angular.module('Index').controller 'IndexController', ($scope, $routeParams, $lo
     console.log data
 
   SettingService.get().success((data) ->
-    console.log data
-    $scope.title = data.title
-    $scope.description = data.description
-    $scope.keywords = data.keywords
-    $scope.author = data.author
     $scope.header = data.header
     $scope.header.htmlSafe = $sce.trustAsHtml($scope.header.body)
     $scope.footer = data.footer
     $scope.footer.htmlSafe = $sce.trustAsHtml($scope.footer.body)
-    console.log $scope.header.htmlSafe
-    console.log $scope.footer.htmlSafe
   ).error (status, data) ->
     console.log status
     console.log data

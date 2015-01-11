@@ -9,6 +9,8 @@ Hashids = require 'hashids'
 hash = new Hashids('this is my salt')
 markdown = require('markdown').markdown
 bcrypt = require 'bcrypt-nodejs'
+jade = require 'jade'
+LocalStrategy = require('passport-local').Strategy
 utils = require './utils'
 User = require('./models/user').User
 Page = require('./models/page').Page
@@ -21,14 +23,120 @@ secret = 'this is my secret for jwt'
 
 module.exports = (app, passport, resetTokens, smtp) ->
 
+  Setting.findOne {}, '-_id -__v', (err, data) ->
+    if err
+      throw err
+    options = data
+    html = jade.renderFile "#{__dirname}/../../client/app/index.jade", options
+    fs.writeFile "#{__dirname}/../../client/public/index.html", html, (err) ->
+      if err
+        throw err
+
+  passport.use "login", new LocalStrategy(
+    passReqToCallback: true
+  , (req, username, password, done) ->
+
+    # check in mongo if a user with username exists or not
+    User.findOne
+      username: username
+    , (err, user) ->
+
+      # In case of any error, return using the done method
+      return done err if err
+
+      # Username does not exist, log error & redirect back
+      unless user
+        console.log "User Not Found with username " + username
+        return done null, false
+
+      # User exists but wrong password, log the error
+      unless bcrypt.compareSync password, user.password
+        console.log "Invalid Password"
+        return done null, false
+
+      # User and password both match, return user from
+      # done method which will be treated like success
+      console.log 'user:'
+      console.log user
+      done null, user
+  )
+
+  passport.use 'signup', new LocalStrategy(
+    passReqToCallback : true
+  , (req, username, password, done) ->
+      findOrCreateUser = () ->
+        # find a user in Mongo with provided username
+        Setting.findOne {}, '-_id -__v', (err, data) ->
+          settings = data
+          if not data.accountCreation
+            console.log 'Account creation has been disabled'
+            return 'Account creation has been disabled'
+          User.findOne 'username': username, (err, user) ->
+            # In case of any error return
+            if err
+              console.log 'Error in SignUp: ' + err
+              done err
+
+            # already exists
+            if user
+              console.log 'User already exists'
+              done null, false
+            else
+              # if there is no user with that email
+              # create the user
+              newUser = new User()
+              # set the user's local credentials
+              newUser.username = username
+              newUser.password = bcrypt.hashSync password
+              newUser.firstname = req.param 'firstname'
+              newUser.lastname = req.param 'lastname'
+              newUser.email = req.param 'email'
+
+              # save the user
+              newUser.save (err) ->
+                if err
+                  console.log 'Error in Saving user: ' + err
+                  throw err
+                console.log('User Registration succesful');
+                done null, newUser
+
+      # Delay the execution of findOrCreateUser and execute
+      # the method in the next tick of the event loop
+      process.nextTick findOrCreateUser
+  )
+
+  passport.use 'reset', new LocalStrategy(
+    passReqToCallback: true
+  , (req, username, password, done) ->
+
+    console.log 'new password ' + password
+    updatedPassword = {password: bcrypt.hashSync password}
+
+    # check in mongo if a user with username exists or not
+    User.findOneAndUpdate
+      username: username,
+      updatedPassword
+    , (err, user) ->
+
+      # In case of any error, return using the done method
+      return done err if err
+
+      # Username does not exist, log error & redirect back
+      unless user
+        console.log "User Not Found with username " + username
+        return done null, false
+
+      done null, user
+  )
+
   app.get '/data/user/:user.json', expressJwt({secret: secret}), (req, res) ->
     console.log('GET user \'' + req.user.username + '\' JSON object')
     User.findOne {username: req.user.username}, '-_id -__v -password', (err, data) ->
       delete data.password
       if err
-       res.sendStatus(500).end()
+        res.sendStatus(500).end()
       else if data is `undefined`
-       res.sendStatus(404).end()
+        res.sendStatus(404).end()
       else
         res.json data
 
@@ -40,9 +148,9 @@ module.exports = (app, passport, resetTokens, smtp) ->
       new: true,
         (err, data) ->
           if err
-           res.sendStatus(500).end()
+            res.sendStatus(500).end()
           else if data is `undefined`
-           res.sendStatus(404).end()
+            res.sendStatus(404).end()
           else
             res.sendStatus(200).end()
 
@@ -50,9 +158,9 @@ module.exports = (app, passport, resetTokens, smtp) ->
     console.log('DEL user \'' + req.user.username + '\' JSON object')
     User.remove {'username': req.user.username}, (err, data) ->
       if err
-       res.sendStatus(500).end()
+        res.sendStatus(500).end()
       else if data.length < 1
-       res.sendStatus(404).end()
+        res.sendStatus(404).end()
       else
         res.sendStatus(200).end()
 
@@ -71,14 +179,14 @@ module.exports = (app, passport, resetTokens, smtp) ->
         creationDate: 'desc'
       .exec (err, data) ->
         if err
-         res.sendStatus(500).end()
+          res.sendStatus(500).end()
         else
           res.json data
 
   app.get '/data/blog/post/:id.json', (req, res) ->
     Post.findOne {'id': req.params.id}, '-_id -__v', (err, data) ->
       if err
-       res.sendStatus(500).end()
+        res.sendStatus(500).end()
       else
         res.json data
 
@@ -115,53 +223,53 @@ module.exports = (app, passport, resetTokens, smtp) ->
       new: true,
         (err, data) ->
           if err
-           res.sendStatus(500).end()
+            res.sendStatus(500).end()
           else if data is `undefined`
-           res.sendStatus(404).end()
+            res.sendStatus(404).end()
           else
             res.sendStatus(200).end()
 
   app.delete '/data/blog/post/:id.json', expressJwt({secret: secret}), (req, res) ->
     Post.remove 'id': req.params.id, (err, data) ->
       if err
-       res.sendStatus(500).end()
+        res.sendStatus(500).end()
       else if data.length < 1
-       res.sendStatus(404).end()
+        res.sendStatus(404).end()
       else
         res.sendStatus(200).end()
 
   app.get '/data/blog/tag/:name/posts.json', (req, res) ->
     Post.find {'tags.name': req.params.name}, '-_id -__v', (err, data) ->
       if err
-       res.sendStatus(500).end()
+        res.sendStatus(500).end()
       else
         res.json data
 
   app.get '/data/blog/category/:name/posts.json', (req, res) ->
     Post.find {'category': req.params.name}, '-_id -__v', (err, data) ->
       if err
-       res.sendStatus(500).end()
+        res.sendStatus(500).end()
       else
         res.json data
 
   app.get '/data/blog/categories.json', (req, res) ->
     Post.find({}).distinct 'category', (err, data) ->
       if err
-       res.sendStatus(500).end()
+        res.sendStatus(500).end()
       else
         res.json data
 
   app.get '/data/menu.json', (req, res) ->
     Menu.find {}, '-_id -__v', (err, data) ->
       if err
-       res.sendStatus(500).end()
+        res.sendStatus(500).end()
       else
         res.json data
 
   app.get '/data/menu/:id.json', (req, res) ->
     Menu.findOne {id: req.params.id}, '-_id -__v', (err, data) ->
       if err
-       res.sendStatus(500).end()
+        res.sendStatus(500).end()
       else
         res.json data
 
@@ -177,7 +285,7 @@ module.exports = (app, passport, resetTokens, smtp) ->
 
     newMenu.save (err) ->
       if err
-       res.sendStatus(500).end()
+        res.sendStatus(500).end()
       else
         res.sendStatus(200).end()
 
@@ -187,23 +295,23 @@ module.exports = (app, passport, resetTokens, smtp) ->
     new: true,
       (err, data) ->
         if err
-         res.sendStatus(500).end()
+          res.sendStatus(500).end()
         else
           res.sendStatus(200).end()
 
   app.delete '/data/menu/:id.json', (req, res) ->
     Menu.remove {id: req.params.id}, (err, data) ->
       if err
-       res.sendStatus(500).end()
+        res.sendStatus(500).end()
       else if data.length < 1
-       res.sendStatus(404).end()
+        res.sendStatus(404).end()
       else
         res.sendStatus(200).end()
 
   app.get '/data/settings.json', (req, res) ->
     Setting.findOne {}, '-_id -__v', (err, data) ->
       if err
-       res.sendStatus(500).end()
+        res.sendStatus(500).end()
       else
         res.json data
 
@@ -214,7 +322,7 @@ module.exports = (app, passport, resetTokens, smtp) ->
     newSetting = new Setting(set)
     newSetting.save (err) ->
       if err
-       res.sendStatus(500).end()
+        res.sendStatus(500).end()
       else
         res.sendStatus(200).end()
 
@@ -227,14 +335,24 @@ module.exports = (app, passport, resetTokens, smtp) ->
     new: true,
       (err, data) ->
         if err
-         res.sendStatus(500).end()
+          res.sendStatus(500).end()
         else
-          res.sendStatus(200).end()
+          Setting.findOne {}, '-_id -__v', (err, data) ->
+            if err
+              res.sendStatus(500).end()
+            else
+              options = data
+              html = jade.renderFile "#{__dirname}/../../client/app/index.jade", options
+              fs.writeFile "#{__dirname}/../../client/public/index.html", html, (err) ->
+                if err
+                  res.sendStatus(500).end()
+                else
+                  res.sendStatus(200).end()
 
   app.delete '/data/settings.json', (req, res) ->
     Setting.remove {}, (err, data) ->
       if err
-       res.sendStatus(500).end()
+        res.sendStatus(500).end()
       else if data.length < 1
        res.sendStatus(404).end()
       else
@@ -243,14 +361,14 @@ module.exports = (app, passport, resetTokens, smtp) ->
   app.get '/data/pages.json', (req, res) ->
     Page.find {}, 'route title', (err, data) ->
       if err
-       res.sendStatus(500).end()
+        res.sendStatus(500).end()
       else
         res.json data
 
   app.get '/data/page/:route.json', (req, res) ->
     Page.findOne {route: req.params.route}, '-_id -__v', (err, data) ->
       if err
-       res.sendStatus(500).end()
+        res.sendStatus(500).end()
       else
         res.json data
 
@@ -267,7 +385,7 @@ module.exports = (app, passport, resetTokens, smtp) ->
     )
     newPage.save (err, data) ->
       if err
-       res.sendStatus(500).end()
+        res.sendStatus(500).end()
       else
         res.sendStatus(200).end()
 
@@ -280,25 +398,25 @@ module.exports = (app, passport, resetTokens, smtp) ->
     new: true,
       (err, data) ->
         if err
-         res.sendStatus(500).end()
+          res.sendStatus(500).end()
         else if data is `undefined`
-         res.sendStatus(404).end()
+          res.sendStatus(404).end()
         else
           res.sendStatus(200).end()
 
   app.delete '/data/page/:route.json', expressJwt({secret: secret}), (req, res) ->
     Page.remove {route: req.params.route}, (err, data) ->
       if err
-       res.sendStatus(500).end()
+        res.sendStatus(500).end()
       else if data.length < 1
-       res.sendStatus(404).end()
+        res.sendStatus(404).end()
       else
         res.sendStatus(200).end()
 
   app.get '/data/files.json', expressJwt({secret: secret}), (req, res) ->
     File.find {}, 'id path', (err, data) ->
       if err
-       res.sendStatus(500).end()
+        res.sendStatus(500).end()
       else
         res.json data
 

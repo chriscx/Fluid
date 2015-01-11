@@ -2,4 +2,4 @@ angular.module('User').controller 'LogoutController', ($scope, $routeParams, $lo
   if AuthenticationService.isLogged
     AuthenticationService.isLogged = false
     delete $window.sessionStorage.token
-    $location.path '/'
+  $location.path '/'

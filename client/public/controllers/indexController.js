@@ -17,17 +17,10 @@ angular.module('Index').controller('IndexController', function($scope, $routePar
     return console.log(data);
   });
   SettingService.get().success(function(data) {
-    console.log(data);
-    $scope.title = data.title;
-    $scope.description = data.description;
-    $scope.keywords = data.keywords;
-    $scope.author = data.author;
     $scope.header = data.header;
     $scope.header.htmlSafe = $sce.trustAsHtml($scope.header.body);
     $scope.footer = data.footer;
-    $scope.footer.htmlSafe = $sce.trustAsHtml($scope.footer.body);
-    console.log($scope.header.htmlSafe);
-    return console.log($scope.footer.htmlSafe);
+    return $scope.footer.htmlSafe = $sce.trustAsHtml($scope.footer.body);
   }).error(function(status, data) {
     console.log(status);
     console.log(data);

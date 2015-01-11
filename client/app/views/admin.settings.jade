@@ -1,0 +1,61 @@
+include admin.menu.jade
+.container
+  .row
+    .col-md-8.col-md-offset-2
+      .row
+        .col-md-12
+        form.form
+          .form-group
+            label Account creation:
+              input.form-control(ng-model='settings.accountCreation' type='checkbox')
+          .form-group
+            label Website title :
+            input.form-control(ng-model='settings.title' type='text')
+          .form-group
+            label Keywords :
+            input.form-control(ng-model='settings.keywords' type='text')
+          .form-group
+            label Author :
+            input.form-control(ng-model='settings.author' type='text')
+          .form-group
+            label Description :
+            textarea.form-control(rows='5' ng-model='settings.description')
+          .form-group
+            label Header :
+            textarea.form-control(rows='10' ng-model='settings.header.content')
+          .form-group
+            label Header preview :
+            div(marked='settings.header.content')
+          .form-group
+            label Footer :
+            textarea.form-control(rows='10' ng-model='settings.footer.content')
+          .form-group
+            label Footer preview :
+            div(marked='settings.footer.content')
+          .form-group
+            .btn-toolbar
+              button.btn.btn-success(type='button' ng-click='saveSettings(settings)') Save
+          .form-group
+            label New menu item :
+            input.form-control(ng-model='newItem.name' type='text')
+          .form-group
+            label Route :
+            input.form-control(ng-model='newItem.route' type='text')
+          .form-group
+            button.btn.btn-default(type='button' ng-click='createMenuItem(newItem)') Create
+          .form-group
+            label Select menu item
+            select.form-control(ng-model='selectedItem' ng-options="item.name for item in menuList track by item.id | orderBy:'order'")
+          .form-group
+            label Edit name :
+            input.form-control(ng-model='selectedItem.name' type='text')
+          .form-group
+            label Edit order :
+            input.form-control(ng-model='selectedItem.order' type='text')
+          .form-group
+            label Edit route :
+            input.form-control(ng-model='selectedItem.route' type='text')
+          .form-group
+            .btn-toolbar
+              button.btn.btn-success(type='button' ng-click='saveMenuItem(selectedItem)') Save
+              button.btn.btn-danger(type='button' ng-click='deleteMenuItem(selectedItem)') Delete

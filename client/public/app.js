@@ -52,61 +52,61 @@ FluidApp.config([
         requiredLogin: false
       }
     }).when('/admin', {
-      templateUrl: 'views/admin/settings.html',
+      templateUrl: 'views/admin.settings.html',
       controller: 'AdminSettingsController',
       access: {
         requiredLogin: true
       }
     }).when('/admin/blog/posts', {
-      templateUrl: 'views/admin/blog/posts.html',
+      templateUrl: 'views/admin.posts.html',
       controller: 'AdminPostsController',
       access: {
         requiredLogin: true
       }
     }).when('/admin/blog/posts/create', {
-      templateUrl: 'views/admin/blog/createPost.html',
+      templateUrl: 'views/admin.createPost.html',
       controller: 'AdminPostsController',
       access: {
         requiredLogin: true
       }
     }).when('/admin/blog/posts/edit/:id', {
-      templateUrl: 'views/admin/blog/editPost.html',
+      templateUrl: 'views/admin.editPost.html',
       controller: 'AdminPostsController',
       access: {
         requiredLogin: true
       }
     }).when('/admin/pages', {
-      templateUrl: 'views/admin/pages/pages.html',
+      templateUrl: 'views/admin.pages.html',
       controller: 'AdminPagesController',
       access: {
         requiredLogin: true
       }
     }).when('/admin/pages/create', {
-      templateUrl: 'views/admin/pages/createPage.html',
+      templateUrl: 'views/admin.createPage.html',
       controller: 'AdminPagesController',
       access: {
         requiredLogin: true
       }
     }).when('/admin/pages/edit/:route', {
-      templateUrl: 'views/admin/pages/editPage.html',
+      templateUrl: 'views/admin.editPage.html',
       controller: 'AdminPagesController',
       access: {
         requiredLogin: true
       }
     }).when('/admin/files', {
-      templateUrl: 'views/admin/files/files.html',
+      templateUrl: 'views/admin.files.html',
       controller: 'AdminFilesController',
       access: {
         requiredLogin: true
       }
     }).when('/admin/files/upload', {
-      templateUrl: 'views/admin/files/uploadFile.html',
+      templateUrl: 'views/admin.uploadFile.html',
       controller: 'AdminFilesController',
       access: {
         requiredLogin: true
       }
     }).when('/admin/user', {
-      templateUrl: 'views/admin/users/user.html',
+      templateUrl: 'views/admin.user.html',
       controller: 'UserController',
       access: {
         requiredLogin: true
