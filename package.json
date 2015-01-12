@@ -51,7 +51,7 @@
   "scripts": {
     "test": "./node_modules/.bin/mocha --compilers coffee:coffee-script/register server/test/*",
     "run": "./node_modules/.bin/coffee -j client/public/app.coffee -b --no-header -c client/app/ && ./node_modules/.bin/coffee server/app/server.coffee",
-    "start": "./node_modules/.bin/forever -c coffee server/app/server.coffee &",
-    "stop": "./node_modules/.bin/forever stopall"
+    "start": "./node_modules/.bin/coffee -j client/public/app.coffee -b --no-header -c client/app/ && ./node_modules/.bin/forever start -s -c coffee server/app/server.coffee",
+    "stop": "./node_modules/.bin/forever stop -s `./node_modules/.bin/forever list | grep 'server/app/server.coffee' | awk '{ print $2 }' | cut -c2- | rev | cut -c2-`"
   }
 }
