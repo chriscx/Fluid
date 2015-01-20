@@ -345,6 +345,7 @@ angular.module('Admin').controller('AdminSettingsController', function($scope, $
     route: ''
   };
   $scope.settings = {
+    accountCreation: true,
     title: 'Fluid',
     header: {
       content: 'Fluid\n========',
@@ -364,7 +365,13 @@ angular.module('Admin').controller('AdminSettingsController', function($scope, $
     return $location.path() === route;
   };
   SettingService.get().success(function(data) {
-    return $scope.settings = data;
+    console.log('Settings');
+    console.log(data);
+    if (data === !null) {
+      console.log('not null');
+      $scope.settings = data;
+    }
+    return console.log($scope.settings);
   }).error(function(status, data) {
     console.log(status);
     return console.log(data);

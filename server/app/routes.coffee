@@ -336,6 +336,13 @@ module.exports = (app, passport, resetTokens, smtp) ->
       (err, data) ->
         if err
           res.sendStatus(500).end()
+        else if data is null
+          newSetting = new Setting(set)
+          newSetting.save (err) ->
+            if err
+              res.sendStatus(500).end()
+            else
+              res.sendStatus(200).end()
         else
           Setting.findOne {}, '-_id -__v', (err, data) ->
             if err

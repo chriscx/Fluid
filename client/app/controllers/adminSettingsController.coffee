@@ -4,6 +4,7 @@ angular.module('Admin').controller 'AdminSettingsController', ($scope, $http, $r
   $scope.menuList = []
   $scope.newMenu = {id: '', name: '', route: ''}
   $scope.settings =
+    accountCreation: true
     title: 'Fluid'
     header:
       content: 'Fluid\n========'
@@ -20,7 +21,12 @@ angular.module('Admin').controller 'AdminSettingsController', ($scope, $http, $r
     $location.path() == route
 
   SettingService.get().success((data) ->
-    $scope.settings = data
+    console.log 'Settings'
+    console.log data
+    if data != null
+      console.log 'not null'
+      $scope.settings = data
+    console.log $scope.settings
   ).error (status, data) ->
     console.log status
     console.log data
