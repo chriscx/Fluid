@@ -14,15 +14,15 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "~1.2.26",
-    "jquery": "~2.1.1",
-    "bootstrap": "~3.2.0",
-    "angular-route": "~1.2.26",
-    "angular-animate": "~1.2.26",
-    "angular-resource": "~1.2.26",
-    "angular-cookies": "~1.2.26",
-    "angular-strap": "~2.1.2",
-    "angular-marked": "~0.0.12",
-    "angular-bootstrap": "~0.12.0"
+    "angular": "latest",
+    "jquery": "latest",
+    "bootstrap": "latest",
+    "angular-route": "latest",
+    "angular-animate": "latest",
+    "angular-resource": "latest",
+    "angular-cookies": "latest",
+    "angular-strap": "latest",
+    "angular-marked": "latest",
+    "angular-bootstrap": "latest"
   }
 }

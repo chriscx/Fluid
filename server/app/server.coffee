@@ -23,6 +23,7 @@ app = express()
 
 mongoose.connect process.env.DB, (err) ->
   log.fatal err
+  process.exit 1
 
 app.use expressSession(
   secret: process.env.SECRET || 'This is my secret for express session'
