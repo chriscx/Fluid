@@ -16,13 +16,17 @@ busboy = require 'connect-busboy'
 toobusy = require 'toobusy'
 User = require('./models/user').User
 Setting = require('./models/setting').Setting
+bunyan = require 'bunyan'
+log = bunyan.createLogger {name: "fluid"}
 
 app = express()
 
 mongoose.connect process.env.DB
+# , (err) ->
+#   log.fatal {info: "Can't connect to DB"}, err
 
 app.use expressSession(
-  secret: 'This is my secret for express session'
+  secret: process.env.SECRET || 'This is my secret for express session'
   saveUninitialized: true,
   resave: true
 )
@@ -43,6 +47,7 @@ app.use express.static "#{__dirname}/../../client/public"
 
 app.use (req, res, next) ->
   if toobusy()
+    log.error 'Unable to serve all requests.'
     res.send 503, "I'm busy right now, sorry."
   else next()
 
@@ -52,7 +57,7 @@ app.use (err, req, res, next) ->
 app.use busboy()
 resetTokens = {}
 
-require('./routes') app, passport, resetTokens,
+conf =
   service: process.env.SMTP_ACCOUNT || 'smtp',
   account: process.env.SMTP_ACCOUNT,
   password: process.env.SMTP_PASSWORD,
@@ -60,9 +65,11 @@ require('./routes') app, passport, resetTokens,
   port: process.env.SMTP_PORT || 25,
   ssl: process.env.SMTP_SSL || false
 
+require('./routes') app, passport, resetTokens, conf, log
+
+
 app.use (err, req, res, next) ->
-  console.log 'error'
-  console.error err
+  log.error 'Ressources not found.'
   res.send 500,
     message: err.message
 
@@ -73,9 +80,12 @@ if cluster.isMaster
     cluster.fork()
     i++
   cluster.on "exit", (worker, code, signal) ->
-    console.log "worker " + worker.process.pid + " died"
+
+    log.error {code: code, signal: signal}, "worker " + worker.process.pid + " died"
     return
 
 else
   server = require('http').Server(app)
-  server.listen process.env.PORT || 5000
+  port = process.env.PORT || 5000
+  server.listen port
+  log.info 'Server is running on port ' + port + '.'

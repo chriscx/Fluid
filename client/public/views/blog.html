@@ -3,10 +3,10 @@
   <div ng-repeat="post in posts" class="row">
     <div class="col-md-8 col-md-offset-2">
       <div class="page-header">
-        <h2><a href="/blog/{{post.id}}">{{post.title}}</a>
+        <h3><a href="/blog/{{post.id}}">{{post.title}}</a>
           <h5>by {{post.author}} - {{post.creationDate | date:'MM/dd/yyyy @ h:mma'}} - <a href="">{{post.category}}</a></h5><br/>
           <div ng-bind-html="sanatizeHtml(post.body)" class="text-justify"></div>
-        </h2>
+        </h3>
       </div>
     </div>
   </div>

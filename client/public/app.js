@@ -367,7 +367,7 @@ angular.module('Admin').controller('AdminSettingsController', function($scope, $
   SettingService.get().success(function(data) {
     console.log('Settings');
     console.log(data);
-    if (data === !null) {
+    if (data !== null) {
       console.log('not null');
       $scope.settings = data;
     }

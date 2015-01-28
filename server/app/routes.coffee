@@ -19,9 +19,9 @@ Post = require('./models/blog').Post
 Setting = require('./models/setting').Setting
 File = require('./models/file').File
 
-secret = 'this is my secret for jwt'
+secret = process.env.SECRET || 'this is my secret for jwt'
 
-module.exports = (app, passport, resetTokens, smtp) ->
+module.exports = (app, passport, resetTokens, config, log) ->
 
   Setting.findOne {}, '-_id -__v', (err, data) ->
     if err
