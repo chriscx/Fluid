@@ -1,23 +1,20 @@
 include admin.menu.jade
-.container
-  .row
-    .col-md-8.col-md-offset-2
-      .row
-        .col-md-12
-          form.form
-            .form-group
-              label Edit Title
-              input.form-control(type='title' ng-model='page.title')
-            .form-group
-              label Edit Route
-              input.form-control(type='route' ng-model='page.route')
-            .form-group
-              label Edit Page
-              textarea.form-control(rows='15' ng-model='page.content')
-            .form-group
-              label Preview :
-              div(marked="page.content")
-            .form-group
-              .btn-toolbar
-                button.btn.btn-success(type='button' ng-click='savePage(page)') Publish
-                button.btn.btn-danger(type='button' ng-click='deletePage(page)') Delete
+.row
+  .col-md-12
+    form.form
+      .form-group
+        label Edit Title
+        input.form-control(type='title' ng-model='page.title')
+      .form-group
+        label Edit Route
+        input.form-control(type='route' ng-model='page.route')
+      .form-group
+        label Edit Page
+        textarea.form-control(rows='15' ng-model='page.content')
+      .form-group
+        label Preview :
+        div(marked="page.content")
+      .form-group
+        .btn-toolbar
+          button.btn.btn-success(type='button' ng-click='savePage(page)') Publish
+          button.btn.btn-danger(type='button' ng-click='deletePage(page)') Delete

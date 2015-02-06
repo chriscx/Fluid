@@ -1,26 +1,24 @@
 include admin.menu.jade
-.container
-  .row
-    .col-md-8.col-md-offset-2
-      .row
-        .col-md-12
-          form.form
-            .form-group
-              label Edit Title
-              input.form-control(ng-model='post.title' type='text')
-            .form-group
-              label Edit Tags (split by a comma)
-              input.form-control(type='tags' placeholder='Tags' id='input_post_tags' ng-model='post.tags')
-            .form-group
-              label Edit Category
-              input.form-control(type='category' placeholder='Category' ng-model='post.category')
-            .form-group
-              label Create Post
-              textarea.form-control(rows='15' ng-model='post.content')
-            .form-group
-              label Preview :
-              div(marked="post.content")
-            .form-group
-              .btn-toolbar
-                button.btn.btn-success(type='button' ng-click='savePost(post)') Publish
-                button.btn.btn-danger(type='button' ng-click='deletePost(post)') Delete
+
+.row
+  .col-md-12
+    form.form
+      .form-group
+        label Edit Title
+        input.form-control(ng-model='post.title' type='text')
+      .form-group
+        label Edit Tags (split by a comma)
+        input.form-control(type='tags' placeholder='Tags' id='input_post_tags' ng-model='post.tags')
+      .form-group
+        label Edit Category
+        input.form-control(type='category' placeholder='Category' ng-model='post.category')
+      .form-group
+        label Create Post
+        textarea.form-control(rows='15' ng-model='post.content')
+      .form-group
+        label Preview :
+        div(marked="post.content")
+      .form-group
+        .btn-toolbar
+          button.btn.btn-success(type='button' ng-click='savePost(post)') Publish
+          button.btn.btn-danger(type='button' ng-click='deletePost(post)') Delete

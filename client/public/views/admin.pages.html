@@ -1,32 +1,28 @@
-
-<div class="container"><br/>
-  <div class="row">
-    <div class="col-md-8 col-md-offset-2">
-      <div class="row">
-        <ul role="navigation" class="nav nav-pills">
-          <li ng-class="{active: isActive('/')}"><a href="/#/">Public</a></li>
-          <li ng-class="{active: isActive('/admin')}"><a href="/#/admin">Settings</a></li>
-          <li ng-class="{active: isActive('/admin/blog/posts')}"><a href="/#/admin/blog/posts">Posts</a></li>
-          <li ng-class="{active: isActive('/admin/pages')}"><a href="/#/admin/pages">Pages</a></li>
-          <li ng-class="{active: isActive('/admin/files')}"><a href="/#/admin/files">Files</a></li>
-          <li ng-class="{active: isActive('/admin/user')}"><a href="/#/admin/user">My info</a></li>
-        </ul>
-      </div>
-      <div class="row"><br/></div>
-    </div>
-  </div>
-</div>
-<div class="container">
-  <div class="row">
-    <div class="col-md-8 col-md-offset-2">
-      <legend>Pages</legend><a href="/admin/pages/create" class="btn btn-success">New Page</a>
-    </div>
-  </div><br/>
-  <div class="row">
-    <div class="col-md-8 col-md-offset-2">
-      <ul class="list-group">
-        <li ng-repeat="page in pageList" class="list-group-item"> <a href="/admin/pages/edit/{{page.route}}">{{page.title}}</a></li>
+<br/>
+<div class="row">
+  <div class="col-md-12">
+    <div class="row">
+      <ul role="navigation" class="nav nav-pills">
+        <li ng-class="{active: isActive('/')}"><a href="/#/">Public</a></li>
+        <li ng-class="{active: isActive('/admin')}"><a href="/#/admin">Settings</a></li>
+        <li ng-class="{active: isActive('/admin/blog/posts')}"><a href="/#/admin/blog/posts">Posts</a></li>
+        <li ng-class="{active: isActive('/admin/pages')}"><a href="/#/admin/pages">Pages</a></li>
+        <li ng-class="{active: isActive('/admin/files')}"><a href="/#/admin/files">Files</a></li>
+        <li ng-class="{active: isActive('/admin/user')}"><a href="/#/admin/user">My info</a></li>
       </ul>
     </div>
+    <div class="row"><br/></div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <legend>Pages</legend><a href="/admin/pages/create" class="btn btn-success">New Page</a>
+  </div>
+</div><br/>
+<div class="row">
+  <div class="col-md-12">
+    <ul class="list-group">
+      <li ng-repeat="page in pageList" class="list-group-item"> <a href="/admin/pages/edit/{{page.route}}">{{page.title}}</a></li>
+    </ul>
   </div>
 </div>

@@ -1,20 +1,19 @@
-.container
-  .row
-    .col-md-8.col-md-offset-2
-      h1 Sign up
-      form(role='form', method="post", style='max-width: 300px;')
-        .form-group
-          input.form-control(type='text', name="username", placeholder='Enter Username', ng-model='user.username')
-        .form-group
-          input.form-control(type='email', name="email", placeholder='Enter Email', ng-model='user.email')
-        .form-group
-          input.form-control(type='password', name="password", placeholder='Password', ng-model='user.password')
-        .form-group
-          input.form-control(type='password', name="passwordCheck", placeholder='Password', ng-model='user.passwordCheck')
-        .form-group
-          .btn-toolbar
-            button.btn.btn-default(type='button', ng-click='signUp(user)') Submit
-            a.btn.btn-primary(type="submit", href='/') Cancel
-  .row
-    .col-md-8.col-md-offset-2
-      div.alert.alert-danger(ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)") {{alert.msg}}
+.row
+  .col-md-12
+    h1 Sign up
+    form(role='form', method="post", style='max-width: 300px;')
+      .form-group
+        input.form-control(type='text', name="username", placeholder='Enter Username', ng-model='user.username')
+      .form-group
+        input.form-control(type='email', name="email", placeholder='Enter Email', ng-model='user.email')
+      .form-group
+        input.form-control(type='password', name="password", placeholder='Password', ng-model='user.password')
+      .form-group
+        input.form-control(type='password', name="passwordCheck", placeholder='Password', ng-model='user.passwordCheck')
+      .form-group
+        .btn-toolbar
+          button.btn.btn-default(type='button', ng-click='signUp(user)') Submit
+          a.btn.btn-primary(type="submit", href='/') Cancel
+.row
+  .col-md-12
+    div.alert.alert-danger(ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)") {{alert.msg}}

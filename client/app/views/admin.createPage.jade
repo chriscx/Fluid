@@ -1,18 +1,15 @@
 include admin.menu.jade
-.container
-  .row
-    .col-md-8.col-md-offset-2
-      .row
-        .col-md-12
-          form.form
-            .form-group
-              label Edit Title
-              input.form-control(type='text' ng-model='page.title')
-            //- .form-group
-            //-   label Edit Route
-            //-   input.form-control(type='route' ng-model='page.route')
-            //- .form-group
-            //-   label Edit Page
-            //-   textarea.form-control(rows='15' ng-model='page.body')
-            .form-group
-              button.btn.btn-success(type='button' ng-click='createPage(page)') Create
+.row
+  .col-md-12
+    form.form
+      .form-group
+        label Edit Title
+        input.form-control(type='text' ng-model='page.title')
+      //- .form-group
+      //-   label Edit Route
+      //-   input.form-control(type='route' ng-model='page.route')
+      //- .form-group
+      //-   label Edit Page
+      //-   textarea.form-control(rows='15' ng-model='page.body')
+      .form-group
+        button.btn.btn-success(type='button' ng-click='createPage(page)') Create

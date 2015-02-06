@@ -1,14 +1,13 @@
 include admin.menu.jade
-.container
-  .row
-    .col-md-8.col-md-offset-2
-      legend Posts
-      a.btn.btn-success(href="#/admin/files/upload") Upload file
-  br
-  .row
-    .col-md-8.col-md-offset-2
-      ul.list-group
-        li.list-group-item(ng-repeat='file in fileList')
-          button.btn-xs.btn-danger(type='button' ng-click='removeFile(file.id)')
-            span.glyphicon.glyphicon-remove(aria-hidden='true') 
-          span {{file.path}} 
+.row
+  .col-md-12
+    legend Posts
+    a.btn.btn-success(href="#/admin/files/upload") Upload file
+br
+.row
+  .col-md-12
+    ul.list-group
+      li.list-group-item(ng-repeat='file in fileList')
+        button.btn-xs.btn-danger(type='button' ng-click='removeFile(file.id)')
+          span.glyphicon.glyphicon-remove(aria-hidden='true') 
+        span {{file.path}} 

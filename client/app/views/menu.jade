@@ -1,8 +1,7 @@
-.container
-  br
-  .row
-    .col-md-12
-      .row
-          ul.nav.nav-tabs
-              li(role="{{item.name}}" ng-repeat="item in menu | orderBy:'order'" ng-class="{active: isActive('{{item.route}}')}")
-                a(href="/#{{item.route}}") {{item.name}}
+br
+.row
+  .col-md-12
+    .row
+        ul.nav.nav-tabs
+            li(role="{{item.name}}" ng-repeat="item in menu | orderBy:'order'" ng-class="{active: isActive('{{item.route}}')}")
+              a(href="/#{{item.route}}") {{item.name}}

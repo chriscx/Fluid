@@ -1,21 +1,18 @@
 include admin.menu.jade
-.container
-  .row
-    .col-md-8.col-md-offset-2
-      .row
-        .col-md-12
-          form.form
-            .form-group
-              label Edit Title
-              input.form-control(ng-model='post.title' type='text')
-            //- .form-group
-            //-   label Edit Tags
-            //-   input.form-control(type='tags' ng-model='SelectedPost.tags[0].name')
-            //- .form-group
-            //-   label Select Category
-            //-   select.form-control(ng-model='post.category' ng-options='category.name for category in categories track by category.name')
-            //- .form-group
-            //-   label Create Post
-            //-   textarea.form-control(rows='15' ng-model='post.body')
-            .form-group
-              button.btn.btn-success(type='button' ng-click='createPost(post)') Create
+.row
+  .col-md-12
+    form.form
+      .form-group
+        label Edit Title
+        input.form-control(ng-model='post.title' type='text')
+      //- .form-group
+      //-   label Edit Tags
+      //-   input.form-control(type='tags' ng-model='SelectedPost.tags[0].name')
+      //- .form-group
+      //-   label Select Category
+      //-   select.form-control(ng-model='post.category' ng-options='category.name for category in categories track by category.name')
+      //- .form-group
+      //-   label Create Post
+      //-   textarea.form-control(rows='15' ng-model='post.body')
+      .form-group
+        button.btn.btn-success(type='button' ng-click='createPost(post)') Create

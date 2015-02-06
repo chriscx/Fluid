@@ -32,17 +32,19 @@ html(ng-app='FluidApp' ng-controller='IndexController')
 
   body.fadein(data-spy='scroll' data-target='#nav-scrollspy')
     .container
-      header.row
-        //- div(ng-include src="'views/header.html'")
-        .col-md-8.col-md-offset-2(ng-bind-html='header.htmlSafe')
-        .col-md-8.col-md-offset-2
-          ul.nav.nav-tabs
-              li(role="{{item.name}}" ng-repeat="item in menu | orderBy:'order'" ng-class="{active: isActive('{{item.route}}')}")
-                a(href="/#{{item.route}}") {{item.name}}
+      .col-md-4
+        .col-md-12(ng-incluse src="'views/sider.html'")
+      .col-md-8
+        header.row
+          //- div(ng-include src="'views/header.html'")
+          .col-md-12(ng-bind-html='header.htmlSafe')
+          .col-md-12
+            ul.nav.nav-tabs
+                li(role="{{item.name}}" ng-repeat="item in menu | orderBy:'order'" ng-class="{active: isActive('{{item.route}}')}")
+                  a(href="/#{{item.route}}") {{item.name}}
     
-    div.fade(ng-view='')
-    .container
-      br
-      footer.row
-        //- div(ng-include src="'views/footer.html'")
-        .col-md-8.col-md-offset-2(ng-bind-html='footer.htmlSafe')
+        div.fade(ng-view='')
+        br
+        footer.row
+          //- div(ng-include src="'views/footer.html'")
+          .col-md-12(ng-bind-html='footer.htmlSafe')
