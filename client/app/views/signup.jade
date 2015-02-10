@@ -12,8 +12,8 @@
         input.form-control(type='password', name="passwordCheck", placeholder='Password', ng-model='user.passwordCheck')
       .form-group
         .btn-toolbar
-          button.btn.btn-default(type='button', ng-click='signUp(user)') Submit
-          a.btn.btn-primary(type="submit", href='/') Cancel
+          button.btn.btn-default(type='submit', ng-click='signUp(user)') Submit
+          a.btn.btn-primary(type="button", href='/') Cancel
 .row
   .col-md-12
     div.alert.alert-danger(ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)") {{alert.msg}}

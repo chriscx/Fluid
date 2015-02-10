@@ -433,7 +433,7 @@ angular.module('Admin').controller('AdminSettingsController', function($scope, $
   };
 });
 
-angular.module('Blog').controller('BlogController', function($scope, $http, $routeParams, $location, $window, PostService, MenuService) {
+angular.module('Blog').controller('BlogController', function($scope, $http, $sce, $routeParams, $location, $window, PostService, MenuService) {
   $scope.skip = 0;
   $scope.limit = 5;
   PostService.getBySlice($scope.skip, $scope.limit).success(function(data) {
@@ -470,6 +470,9 @@ angular.module('Blog').controller('BlogController', function($scope, $http, $rou
       console.log(status);
       return console.log(data);
     });
+  };
+  $scope.sanatizeHtml = function(html) {
+    return $sce.trustAsHtml(html);
   };
   return $scope.navIsActive = function() {
     if ($scope.skip === 0) {

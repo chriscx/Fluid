@@ -8,8 +8,8 @@
         input.form-control(type='password', name='password', placeholder='Password', ng-model='login.password')
       .form-group
         .btn-toolbar
-          button.btn.btn-default(type='button', ng-click='logIn(login.username, login.password)') Submit
-          a.btn.btn-primary(type="submit", href='/') Cancel
+          button.btn.btn-default(type='submit', ng-click='logIn(login.username, login.password)') Submit
+          a.btn.btn-primary(type="button", href='/') Cancel
 .row
   .col-md-12
     div.alert.alert-danger(ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)") {{alert.msg}}

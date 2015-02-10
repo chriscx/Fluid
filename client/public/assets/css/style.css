@@ -1,19 +1,7 @@
-/*.full-width {
-	width: 100%;
-}
-.form-inline .form-control{
-    width: 100%;
-}*/
-
-/* Fade effect for NgView */
 .fade {
-    /*position: absolute;*/
-    /*top: 0;
-    left: 0;
-    right: 0;*/
-    /*height: 100%;*/
     opacity: 1;
 }
+
 .fade.ng-enter {
     -webkit-transition: all 0.4s 0.4s;
     -moz-transition: all 0.4s 0.4s;
@@ -101,10 +89,11 @@ h1 a:hover {
 
 .fadein {
     animation: fadein 2s;
-    -moz-animation: fadein 2s; /* Firefox */
-    -webkit-animation: fadein 2s; /* Safari and Chrome */
-    -o-animation: fadein 2s; /* Opera */
+    -moz-animation: fadein 2s;
+    -webkit-animation: fadein 2s;
+    -o-animation: fadein 2s;
 }
+
 @keyframes fadein {
     from {
         opacity:0;
@@ -113,6 +102,7 @@ h1 a:hover {
         opacity:1;
     }
 }
+
 @-moz-keyframes fadein { /* Firefox */
     from {
         opacity:0;
@@ -121,6 +111,7 @@ h1 a:hover {
         opacity:1;
     }
 }
+
 @-webkit-keyframes fadein { /* Safari and Chrome */
     from {
         opacity:0;
@@ -129,6 +120,7 @@ h1 a:hover {
         opacity:1;
     }
 }
+
 @-o-keyframes fadein { /* Opera */
     from {
         opacity:0;
@@ -136,4 +128,47 @@ h1 a:hover {
     to {
         opacity: 1;
     }
+}
+
+.container-fluid {
+    padding-left: 0px;
+}
+
+.block {
+  text-align: center;
+  height: 100%;
+}
+
+.block:before {
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  width:inherit;
+ }
+
+.centered {
+  display: inline-block;
+  vertical-align: middle;
+  height:inherit;
+  width:inherit;
+ }
+
+@media (max-width: 767px) {
+    .affix_container {
+        display: none;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991px){
+    .affix_container {
+        display: none;
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1199px){
+
+}
+
+@media (min-width: 1200px){
+
 }

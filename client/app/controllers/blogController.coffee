@@ -1,4 +1,4 @@
-angular.module('Blog').controller 'BlogController', ($scope, $http, $routeParams, $location, $window, PostService, MenuService) ->
+angular.module('Blog').controller 'BlogController', ($scope, $http, $sce, $routeParams, $location, $window, PostService, MenuService) ->
 
   $scope.skip = 0
   $scope.limit = 5
@@ -32,6 +32,9 @@ angular.module('Blog').controller 'BlogController', ($scope, $http, $routeParams
       console.log status
       console.log data
     )
+
+  $scope.sanatizeHtml = (html) ->
+    $sce.trustAsHtml(html)
 
   $scope.navIsActive = () ->
     if $scope.skip == 0

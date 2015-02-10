@@ -29,11 +29,26 @@ html(ng-app='FluidApp' ng-controller='IndexController')
     //- script(src='/components/angular-bootstrap/ui-bootstrap-tpls.min.js' defer)
     
     script(type='text/javascript' src='app.js' defer)
+    script.
+      $('#sider_affix').affix({
+        offset: {
+          top: 100,
+          bottom: function () {
+            return (this.bottom = $('.footer').outerHeight(true))
+          }
+        }
+      })
 
   body.fadein(data-spy='scroll' data-target='#nav-scrollspy')
-    .container
-      .col-md-4
-        .col-md-12(ng-incluse src="'views/sider.html'")
+    .container-fluid(style="height: 100%;")
+      .col-md-4.affix_container(style="padding-left: 0px;")
+        div.affix.block(id='sider_affix' /*ng-include src="'views/sider.html'"*/ style=" width:inherit; background: url('media/03838_pelicanislandsunset_1440x900.jpg')")
+          .centered
+            div
+              p this is a presentation element
+              p this can only be edited in
+              p the jade template 
+
       .col-md-8
         header.row
           //- div(ng-include src="'views/header.html'")
