@@ -15,14 +15,14 @@
   </div>
 </div>
 <div class="row">
-  <div class="col-md-8 col-md-offset-2">
+  <div class="col-md-12">
     <legend>Posts</legend><a href="/admin/blog/posts/create" class="btn btn-success">New Post</a>
   </div>
 </div><br/>
 <div class="row">
-  <div class="col-md-8 col-md-offset-2">
+  <div class="col-md-12">
     <ul class="list-group">
-      <li ng-repeat="post in postList" class="list-group-item"> <a href="#/admin/blog/posts/edit/{{post.id}}">{{post.title}}</a></li>
+      <li ng-repeat="post in postList" class="list-group-item"> <a href="/admin/blog/posts/edit/{{post.id}}">{{post.title}}</a></li>
     </ul>
   </div>
 </div>

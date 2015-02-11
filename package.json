@@ -32,7 +32,8 @@
     "sha1": "^1.1.0",
     "speakingurl": "*",
     "toobusy": "^0.2.4",
-    "underscore": "1.7.*"
+    "underscore": "1.7.*",
+    "ln": "^0.2.1"
   },
   "devDependencies": {
     "coffee-script": "1.8.*",
@@ -45,7 +46,7 @@
   "scripts": {
     "test": "./node_modules/.bin/mocha --compilers coffee:coffee-script/register server/test/*",
     "run": "cat `find client/app -type f -name '*.coffee'` | coffee -b --no-header --compile --stdio > client/public/app.js && jade -P client/app/index.jade -o client/public/ && jade -P client/app/views/ -o client/public/views/ && ./node_modules/.bin/coffee server/app/server.coffee",
-    "start": "cat `find client/app -type f -name '*.coffee'` | coffee -b --no-header --compile --stdio > client/public/app.js && jade -P client/app/index.jade -o client/public/ && jade -P client/app/views/ -o client/public/views/ && ./node_modules/.bin/forever -c coffee server/app/server.coffee & >> fluid.log",
+    "start": "cat `find client/app -type f -name '*.coffee'` | coffee -b --no-header --compile --stdio > client/public/app.js && jade -P client/app/index.jade -o client/public/ && jade -P client/app/views/ -o client/public/views/ && ./node_modules/.bin/forever -c coffee server/app/server.coffee & ",
     "stop": "./node_modules/.bin/forever stop -s `./node_modules/.bin/forever list | grep 'server/app/server.coffee' | awk '{ print $2 }' | cut -c2- | rev | cut -c2-`"
   }
 }

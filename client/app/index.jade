@@ -10,8 +10,7 @@ html(ng-app='FluidApp' ng-controller='IndexController')
     meta(name='keywords' content= keywords)
     meta(name='author' content= author)
     link(href='//fonts.googleapis.com/css?family=Open+Sans:300italic,300,400italic,400,600italic,600,700italic,700,800italic,800' rel='stylesheet' type='text/css')
-    //- link(href='/components/bootstrap/dist/css/bootstrap.min.css', rel='stylesheet')
-    link(href='assets/css/bootstrap.min.css', rel='stylesheet')
+    link(type='text/css' href='assets/css/bootstrap.min.css' rel='stylesheet')
     link(type='text/css' rel='stylesheet' href='assets/css/style.css')
     
     script(src='/components/jquery/dist/jquery.min.js' defer)
@@ -21,13 +20,8 @@ html(ng-app='FluidApp' ng-controller='IndexController')
     script(src='/components/angular-cookies/angular-cookies.min.js' defer)
     script(src='/components/angular-resource/angular-resource.min.js' defer)
     script(src='/components/angular-animate/angular-animate.min.js' defer)
-    //- script(src='/components/angular-strap/angular-strap.min.js' defer)
-    //- script(src='/components/angular-strap/angular-strap.tpl.min.js' defer)
-    script(src='/components/marked/lib/marked.js')
+    script(src='/components/marked/lib/marked.js' defer)
     script(src='/components/angular-marked/angular-marked.min.js' defer)
-    //- script(src='/components/angular-bootstrap/ui-bootstrap.min.js' defer)
-    //- script(src='/components/angular-bootstrap/ui-bootstrap-tpls.min.js' defer)
-    
     script(type='text/javascript' src='app.js' defer)
     script.
       $('#sider_affix').affix({
@@ -42,19 +36,19 @@ html(ng-app='FluidApp' ng-controller='IndexController')
   body.fadein(data-spy='scroll' data-target='#nav-scrollspy')
     .container-fluid(style="height: 100%;")
       .col-md-4.affix_container(style="padding-left: 0px;")
-        div.affix.block(id='sider_affix' /*ng-include src="'views/sider.html'"*/ style=" width:inherit; background: url('media/03838_pelicanislandsunset_1440x900.jpg')")
-          .centered
+        div.affix.block(id='sider_affix' style=" width:inherit; background: url('media/02428_theintersection_2560x1440.jpg')")
+          .centered(style="padding-top:40%;")
             div
               p this is a presentation element
               p this can only be edited in
               p the jade template 
 
-      .col-md-8
+      .col-md-8(style="padding-left:30px;")
         header.row
           //- div(ng-include src="'views/header.html'")
           .col-md-12(ng-bind-html='header.htmlSafe')
           .col-md-12
-            ul.nav.nav-tabs
+            ul.nav.nav-pills
                 li(role="{{item.name}}" ng-repeat="item in menu | orderBy:'order'" ng-class="{active: isActive('{{item.route}}')}")
                   a(href="/#{{item.route}}") {{item.name}}
     

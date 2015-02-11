@@ -1,12 +1,12 @@
 include admin.menu.jade
 .row
-  .col-md-8.col-md-offset-2
+  .col-md-12
     legend Posts
     a.btn.btn-success(href="/admin/blog/posts/create") New Post
 br
 .row
-  .col-md-8.col-md-offset-2
+  .col-md-12
     ul.list-group
       li.list-group-item(ng-repeat='post in postList') 
-        a(href="#/admin/blog/posts/edit/{{post.id}}") {{post.title}}
+        a(href="/admin/blog/posts/edit/{{post.id}}") {{post.title}}
           

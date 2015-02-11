@@ -16,14 +16,45 @@ busboy = require 'connect-busboy'
 toobusy = require 'toobusy'
 User = require('./models/user').User
 Setting = require('./models/setting').Setting
-bunyan = require 'bunyan'
-log = bunyan.createLogger {name: "fluid"}
+
+ln = require('ln')
+ln.PIPE_BUFF = 512
+appenders = [
+  {
+    'level': 'info'
+    'type': 'file'
+    'path': '[./fluid.log]'
+    'isUTC': true
+  }
+  {
+    'level': 'info'
+    'type': 'console'
+  }
+]
+logger = new ln('fluid', appenders)
+# logger.e 'ln'
+#Android-like logging signature:
+#log.trace = log.t
+#log.debug = log.d
+#log.info  = log.i
+#log.warn  = log.w
+#log.error = log.e
+#log.fatal = log.f
+
+# logger.error new Error('ln')
+# logger.e 'ln', new Error('ln'), a: true
+#you can call it with numbers of argument
+#only the last json and string will used
 
 app = express()
 
-mongoose.connect process.env.DB
-# , (err) ->
-#   log.fatal {info: "Can't connect to DB"}, err
+mongoose.connect process.env.DB, (err) ->
+  if(err)
+    logger.fatal new Error(err), {msg: "Can't connect to MongoDB"}
+    for id in cluster.workers
+      cluster.workers[id].kill()
+      logger.fatal {msg: 'worker ' + id + ' killed.'}
+    process.exit 0
 
 app.use expressSession(
   secret: process.env.SECRET || 'This is my secret for express session'
@@ -65,27 +96,27 @@ conf =
   port: process.env.SMTP_PORT || 25,
   ssl: process.env.SMTP_SSL || false
 
-require('./routes') app, passport, resetTokens, conf, log
-
+require('./routes') app, passport, resetTokens, conf, logger
 
 app.use (err, req, res, next) ->
-  log.error 'Ressources not found.'
+  logger.error 'Ressources not found.'
   res.send 500,
     message: err.message
 
+port = process.env.PORT || 5000
 if cluster.isMaster
   # Fork workers.
   i = 0
+  logger.info 'Server starting with ' + numCPUs + ' workers'
   while i < numCPUs
     cluster.fork()
     i++
   cluster.on "exit", (worker, code, signal) ->
 
-    log.error {code: code, signal: signal}, "worker " + worker.process.pid + " died"
+    logger.error {code: code, signal: signal msg: "worker " + worker.process.pid + " died"}
     return
-
+  logger.info 'Server is running on port ' + port + '.'
 else
   server = require('http').Server(app)
-  port = process.env.PORT || 5000
   server.listen port
-  log.info 'Server is running on port ' + port + '.'
+  logger.info 'Starting workers...'

@@ -21,7 +21,7 @@ File = require('./models/file').File
 
 secret = process.env.SECRET || 'this is my secret for jwt'
 
-module.exports = (app, passport, resetTokens, config, log) ->
+module.exports = (app, passport, resetTokens, config, logger) ->
 
   Setting.findOne {}, '-_id -__v', (err, data) ->
     if err
@@ -46,18 +46,16 @@ module.exports = (app, passport, resetTokens, config, log) ->
 
       # Username does not exist, log error & redirect back
       unless user
-        console.log "User Not Found with username " + username
+        logger.info "User Not Found with username " + username
         return done null, false
 
       # User exists but wrong password, log the error
       unless bcrypt.compareSync password, user.password
-        console.log "Invalid Password"
+        logger.info "Invalid Password"
         return done null, false
 
       # User and password both match, return user from
       # done method which will be treated like success
-      console.log 'user:'
-      console.log user
       done null, user
   )
 
@@ -69,17 +67,17 @@ module.exports = (app, passport, resetTokens, config, log) ->
         Setting.findOne {}, '-_id -__v', (err, data) ->
           settings = data
           if not data.accountCreation
-            console.log 'Account creation has been disabled'
+            logger.info 'Account creation has been disabled'
             return 'Account creation has been disabled'
           User.findOne 'username': username, (err, user) ->
             # In case of any error return
             if err
-              console.log 'Error in SignUp: ' + err
+              logger.error new Error(err)
               done err
 
             # already exists
             if user
-              console.log 'User already exists'
+              logger.warn 'User ' + username + ' already exists'
               done null, false
             else
               # if there is no user with that email
@@ -95,9 +93,8 @@ module.exports = (app, passport, resetTokens, config, log) ->
               # save the user
               newUser.save (err) ->
                 if err
-                  console.log 'Error in Saving user: ' + err
+                  logger.error new Error(err)
                   throw err
-                console.log('User Registration succesful');
                 done null, newUser
 
       # Delay the execution of findOrCreateUser and execute
@@ -109,7 +106,7 @@ module.exports = (app, passport, resetTokens, config, log) ->
     passReqToCallback: true
   , (req, username, password, done) ->
 
-    console.log 'new password ' + password
+    logger.info 'new password ' + password
     updatedPassword = {password: bcrypt.hashSync password}
 
     # check in mongo if a user with username exists or not
@@ -119,59 +116,68 @@ module.exports = (app, passport, resetTokens, config, log) ->
     , (err, user) ->
 
       # In case of any error, return using the done method
-      return done err if err
+      if err
+        logger.error new Error(err)
+        return done err
 
       # Username does not exist, log error & redirect back
       unless user
-        console.log "User Not Found with username " + username
+        logger.warn 'User ' + username + ' doesn\'t exist'
         return done null, false
 
       done null, user
   )
 
   app.get '/data/user/:user.json', expressJwt({secret: secret}), (req, res) ->
-    console.log('GET user \'' + req.user.username + '\' JSON object')
+    logger.info 'GET user \'' + req.user.username + '\' JSON object'
     User.findOne {username: req.user.username}, '-_id -__v -password', (err, data) ->
       delete data.password
       if err
+        logger.error new Error(err), {msg: 'HTTP 500'}
         res.sendStatus(500).end()
       else if data is `undefined`
+        logger.error new Error(err), {msg: 'HTTP 404'}
         res.sendStatus(404).end()
       else
         res.json data
 
   app.put '/data/user/:user.json', expressJwt({secret: secret}), (req, res) ->
-    console.log('PUT user \'' + req.user.username + '\' JSON object')
+    logger.info 'PUT user \'' + req.user.username + '\' JSON object'
     req.body.password = bcrypt.hashSync req.body.password
     User.findOneAndUpdate username: req.user.username,
       req.body,
       new: true,
         (err, data) ->
           if err
+            logger.error new Error(err), {msg: 'HTTP 500'}
             res.sendStatus(500).end()
           else if data is `undefined`
+            logger.error new Error(err), {msg: 'HTTP 404'}
             res.sendStatus(404).end()
           else
             res.sendStatus(200).end()
 
   app.delete '/data/user/:user.json', expressJwt({secret: secret}), (req, res) ->
-    console.log('DEL user \'' + req.user.username + '\' JSON object')
+    logger.info 'DEL user \'' + req.user.username + '\' JSON object'
     User.remove {'username': req.user.username}, (err, data) ->
       if err
+        logger.error new Error(err), {msg: 'HTTP 500'}
         res.sendStatus(500).end()
       else if data.length < 1
+        logger.error new Error(err), {msg: 'HTTP 404'}
         res.sendStatus(404).end()
       else
         res.sendStatus(200).end()
 
   app.get '/data/blog/posts.json', expressJwt({secret: secret}), (req, res) ->
-    console.log('GET playlist list of \'' + req.user.username + '\' JSON object')
+    logger.info('GET playlist list of \'' + req.user.username + '\' JSON object')
     Post.find {author: req.user.username}, 'id title category', (err, data) ->
-      console.log data
+      logger.info data
       unless err
         res.json data
       else
-       res.sendStatus(404).end()
+        logger.error new Error(err), {msg: 'HTTP 404'}
+        res.sendStatus(404).end()
 
   app.get '/data/blog/post/:s/:l/posts.json', (req, res) ->
     Post.find {}, '-_id -__v', {'skip': req.params.s, 'limit': req.params.l}
@@ -179,6 +185,7 @@ module.exports = (app, passport, resetTokens, config, log) ->
         creationDate: 'desc'
       .exec (err, data) ->
         if err
+          logger.error new Error(err), {msg: 'HTTP 500'}
           res.sendStatus(500).end()
         else
           res.json data
@@ -186,13 +193,14 @@ module.exports = (app, passport, resetTokens, config, log) ->
   app.get '/data/blog/post/:id.json', (req, res) ->
     Post.findOne {'id': req.params.id}, '-_id -__v', (err, data) ->
       if err
+        logger.error new Error(err), {msg: 'HTTP 500'}
         res.sendStatus(500).end()
       else
         res.json data
 
   app.post '/data/blog/post/', expressJwt({secret: secret}), (req, res) ->
 
-    console.log req.body
+    logger.info req.body
 
     newPost = new Post(
       title: req.body.title
@@ -209,7 +217,7 @@ module.exports = (app, passport, resetTokens, config, log) ->
     )
     newPost.save (err) ->
       if err
-        console.log err
+        logger.error new Error(err), {msg: 'HTTP 500'}
         res.sendStatus(500).end()
       else
         res.sendStatus(200).end()
@@ -223,8 +231,10 @@ module.exports = (app, passport, resetTokens, config, log) ->
       new: true,
         (err, data) ->
           if err
+            logger.error new Error(err), {msg: 'HTTP 500'}
             res.sendStatus(500).end()
           else if data is `undefined`
+            logger.error new Error(err), {msg: 'HTTP 404'}
             res.sendStatus(404).end()
           else
             res.sendStatus(200).end()
@@ -232,8 +242,10 @@ module.exports = (app, passport, resetTokens, config, log) ->
   app.delete '/data/blog/post/:id.json', expressJwt({secret: secret}), (req, res) ->
     Post.remove 'id': req.params.id, (err, data) ->
       if err
+        logger.error new Error(err), {msg: 'HTTP 500'}
         res.sendStatus(500).end()
       else if data.length < 1
+        logger.error new Error(err), {msg: 'HTTP 404'}
         res.sendStatus(404).end()
       else
         res.sendStatus(200).end()
@@ -241,6 +253,7 @@ module.exports = (app, passport, resetTokens, config, log) ->
   app.get '/data/blog/tag/:name/posts.json', (req, res) ->
     Post.find {'tags.name': req.params.name}, '-_id -__v', (err, data) ->
       if err
+        logger.error new Error(err), {msg: 'HTTP 500'}
         res.sendStatus(500).end()
       else
         res.json data
@@ -248,6 +261,7 @@ module.exports = (app, passport, resetTokens, config, log) ->
   app.get '/data/blog/category/:name/posts.json', (req, res) ->
     Post.find {'category': req.params.name}, '-_id -__v', (err, data) ->
       if err
+        logger.error new Error(err), {msg: 'HTTP 500'}
         res.sendStatus(500).end()
       else
         res.json data
@@ -255,6 +269,7 @@ module.exports = (app, passport, resetTokens, config, log) ->
   app.get '/data/blog/categories.json', (req, res) ->
     Post.find({}).distinct 'category', (err, data) ->
       if err
+        logger.error new Error(err), {msg: 'HTTP 500'}
         res.sendStatus(500).end()
       else
         res.json data
@@ -262,6 +277,7 @@ module.exports = (app, passport, resetTokens, config, log) ->
   app.get '/data/menu.json', (req, res) ->
     Menu.find {}, '-_id -__v', (err, data) ->
       if err
+        logger.error new Error(err), {msg: 'HTTP 500'}
         res.sendStatus(500).end()
       else
         res.json data
@@ -269,6 +285,7 @@ module.exports = (app, passport, resetTokens, config, log) ->
   app.get '/data/menu/:id.json', (req, res) ->
     Menu.findOne {id: req.params.id}, '-_id -__v', (err, data) ->
       if err
+        logger.error new Error(err), {msg: 'HTTP 500'}
         res.sendStatus(500).end()
       else
         res.json data
@@ -285,6 +302,7 @@ module.exports = (app, passport, resetTokens, config, log) ->
 
     newMenu.save (err) ->
       if err
+        logger.error new Error(err), {msg: 'HTTP 500'}
         res.sendStatus(500).end()
       else
         res.sendStatus(200).end()
@@ -295,6 +313,7 @@ module.exports = (app, passport, resetTokens, config, log) ->
     new: true,
       (err, data) ->
         if err
+          logger.error new Error(err), {msg: 'HTTP 500'}
           res.sendStatus(500).end()
         else
           res.sendStatus(200).end()
@@ -302,8 +321,10 @@ module.exports = (app, passport, resetTokens, config, log) ->
   app.delete '/data/menu/:id.json', (req, res) ->
     Menu.remove {id: req.params.id}, (err, data) ->
       if err
+        logger.error new Error(err), {msg: 'HTTP 500'}
         res.sendStatus(500).end()
       else if data.length < 1
+        logger.error new Error(err), {msg: 'HTTP 404'}
         res.sendStatus(404).end()
       else
         res.sendStatus(200).end()
@@ -311,6 +332,7 @@ module.exports = (app, passport, resetTokens, config, log) ->
   app.get '/data/settings.json', (req, res) ->
     Setting.findOne {}, '-_id -__v', (err, data) ->
       if err
+        logger.error new Error(err), {msg: 'HTTP 500'}
         res.sendStatus(500).end()
       else
         res.json data
@@ -322,6 +344,7 @@ module.exports = (app, passport, resetTokens, config, log) ->
     newSetting = new Setting(set)
     newSetting.save (err) ->
       if err
+        logger.error new Error(err), {msg: 'HTTP 500'}
         res.sendStatus(500).end()
       else
         res.sendStatus(200).end()
@@ -335,23 +358,27 @@ module.exports = (app, passport, resetTokens, config, log) ->
     new: true,
       (err, data) ->
         if err
+          logger.error new Error(err), {msg: 'HTTP 500'}
           res.sendStatus(500).end()
         else if data is null
           newSetting = new Setting(set)
           newSetting.save (err) ->
             if err
+              logger.error new Error(err), {msg: 'HTTP 500'}
               res.sendStatus(500).end()
             else
               res.sendStatus(200).end()
         else
           Setting.findOne {}, '-_id -__v', (err, data) ->
             if err
+              logger.error new Error(err), {msg: 'HTTP 500'}
               res.sendStatus(500).end()
             else
               options = data
               html = jade.renderFile "#{__dirname}/../../client/app/index.jade", options
               fs.writeFile "#{__dirname}/../../client/public/index.html", html, (err) ->
                 if err
+                  logger.error new Error(err), {msg: 'HTTP 500'}
                   res.sendStatus(500).end()
                 else
                   res.sendStatus(200).end()
@@ -359,15 +386,18 @@ module.exports = (app, passport, resetTokens, config, log) ->
   app.delete '/data/settings.json', (req, res) ->
     Setting.remove {}, (err, data) ->
       if err
+        logger.error new Error(err), {msg: 'HTTP 500'}
         res.sendStatus(500).end()
       else if data.length < 1
-       res.sendStatus(404).end()
+        logger.error new Error(err), {msg: 'HTTP 404'}
+        res.sendStatus(404).end()
       else
         res.sendStatus(200).end()
 
   app.get '/data/pages.json', (req, res) ->
     Page.find {}, 'route title', (err, data) ->
       if err
+        logger.error new Error(err), {msg: 'HTTP 500'}
         res.sendStatus(500).end()
       else
         res.json data
@@ -375,6 +405,7 @@ module.exports = (app, passport, resetTokens, config, log) ->
   app.get '/data/page/:route.json', (req, res) ->
     Page.findOne {route: req.params.route}, '-_id -__v', (err, data) ->
       if err
+        logger.error new Error(err), {msg: 'HTTP 500'}
         res.sendStatus(500).end()
       else
         res.json data
@@ -392,6 +423,7 @@ module.exports = (app, passport, resetTokens, config, log) ->
     )
     newPage.save (err, data) ->
       if err
+        logger.error new Error(err), {msg: 'HTTP 500'}
         res.sendStatus(500).end()
       else
         res.sendStatus(200).end()
@@ -405,6 +437,7 @@ module.exports = (app, passport, resetTokens, config, log) ->
     new: true,
       (err, data) ->
         if err
+          logger.error new Error(err), {msg: 'HTTP 500'}
           res.sendStatus(500).end()
         else if data is `undefined`
           res.sendStatus(404).end()
@@ -414,8 +447,10 @@ module.exports = (app, passport, resetTokens, config, log) ->
   app.delete '/data/page/:route.json', expressJwt({secret: secret}), (req, res) ->
     Page.remove {route: req.params.route}, (err, data) ->
       if err
+        logger.error new Error(err), {msg: 'HTTP 500'}
         res.sendStatus(500).end()
       else if data.length < 1
+        logger.error new Error(err), {msg: 'HTTP 404'}
         res.sendStatus(404).end()
       else
         res.sendStatus(200).end()
@@ -423,6 +458,7 @@ module.exports = (app, passport, resetTokens, config, log) ->
   app.get '/data/files.json', expressJwt({secret: secret}), (req, res) ->
     File.find {}, 'id path', (err, data) ->
       if err
+        logger.error new Error(err), {msg: 'HTTP 500'}
         res.sendStatus(500).end()
       else
         res.json data
@@ -430,7 +466,7 @@ module.exports = (app, passport, resetTokens, config, log) ->
   app.post '/data/files', (req, res) ->
     req.pipe req.busboy
     req.busboy.on "file", (fieldname, file, filename) ->
-      console.log "Uploading: " + filename
+      logger.info "Uploading: " + filename
       fstream = fs.createWriteStream("#{__dirname}/../../client/public/media/" + filename)
       file.pipe fstream
       fstream.on "close", ->
@@ -442,33 +478,43 @@ module.exports = (app, passport, resetTokens, config, log) ->
         res.redirect('/admin/files')
 
   app.delete '/data/files/:id', expressJwt({secret: secret}), (req, res) ->
-    console.log req.params.id
+    logger.info req.params.id
     File.findOne {id: req.params.id}, (err, data) ->
-      console.log data
+      logger.info data
       fs.unlink "#{__dirname}/../../client/public/media/" + data.path, (err) ->
         if err
+          logger.error new Error(err), {msg: 'HTTP 500'}
           res.sendStatus(500).end()
         File.remove {id: req.params.id}, (err, data) ->
           if err
+            logger.error new Error(err), {msg: 'HTTP 500'}
             res.sendStatus(500).end()
           else
             res.sendStatus(200).end()
 
   app.post '/signup', (req, res, next) ->
-    console.log('POST signup')
+    logger.info('POST signup')
     passport.authenticate('signup', (err, user, info) ->
-      return next(err) if err
-      return res.sendStatus(409).end() unless user
+      if err
+        logger.error new Error(err), {msg: 'HTTP 500'}
+        return next(err)
+      unless user
+        logger.error new Error(err), {msg: 'HTTP 409'}
+        return res.sendStatus(409).end()
       req.logIn user, (err) ->
         return next(err) if err
         res.sendStatus(201).end()
     ) req, res, next
 
   app.post '/login', (req, res, next) ->
-    console.log('POST login')
+    logger.info('POST login')
     passport.authenticate('login', (err, user, info) ->
-      return next(err) if err
-      return res.sendStatus(401).end() unless user
+      if err
+        logger.error new Error(err), {msg: 'HTTP 500'}
+        return next(err)
+      unless user
+        logger.error new Error(err), {msg: 'HTTP 401'}
+        return res.sendStatus(401).end()
       req.logIn user, (err) ->
         return next(err) if err
         profile = username: user.username, email: user.email, firstname: user.firstname, lastname: user.lastname
@@ -479,9 +525,11 @@ module.exports = (app, passport, resetTokens, config, log) ->
   app.post '/forgot', (req, res, next) ->
     User.findOne email: req.body.email, (err, user) ->
       if err
-       res.sendStatus(500).end()
+        logger.error new Error(err), {msg: 'HTTP 500'}
+        res.sendStatus(500).end()
       else if user.length < 1
-       res.sendStatus(404).end()
+        logger.error new Error(err), {msg: 'HTTP 404'}
+        res.sendStatus(404).end()
       else
         crypto.randomBytes 30, (err, buf) ->
           ts = (new Date()).getTime()
@@ -514,18 +562,26 @@ module.exports = (app, passport, resetTokens, config, log) ->
               resetTokens[token] = {username: user.username, email: user.email, expirationDate: ts + (24 * 60 * 60 * 100)}
               res.sendStatus(200).end()
             else
-              console.log err
+              logger.error new Error(err), {msg: 'HTTP 500'}
               res.sendStatus(500).end()
 
   app.post '/reset', (req, res, next) ->
     token = req.body.token
-    return res.sendStatus(498).end() if resetTokens[token].expirationDate < (new Date()).getTime()
+    if resetTokens[token].expirationDate < (new Date()).getTime()
+      logger.error new Error(err), {msg: 'HTTP 498'}
+      return res.sendStatus(498).end()
     req.body.username = resetTokens[token].username
     passport.authenticate('reset', (err, user, info) ->
-      return next(err) if err
-      return res.sendStatus(401).end() unless user
+      if err
+        logger.error new Error(err), {msg: 'HTTP 500'}
+        return next(err)
+      unless user
+        logger.error new Error(err), {msg: 'HTTP 401'}
+        return res.sendStatus(401).end()
       req.logIn user, (err) ->
-        return next(err) if err
+        if err
+          logger.error new Error(err), {msg: 'HTTP 500'}
+          return next(err)
         profile = username: user.username, email: user.email
         token = jwt.sign(profile, 'this is my secret for jwt', { expiresInMinutes: 60*5 })
         delete resetTokens[token]
@@ -533,5 +589,5 @@ module.exports = (app, passport, resetTokens, config, log) ->
     ) req, res, next
 
   app.get '*', (req, res) ->
-    console.log 'GET ' +  req.originalUrl + ' redirect to ' + '/#' + req.originalUrl
+    logger.info 'GET ' +  req.originalUrl + ' redirect to ' + '/#' + req.originalUrl
     res.redirect '/#' + req.originalUrl
