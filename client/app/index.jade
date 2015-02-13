@@ -11,6 +11,8 @@ html(ng-app='FluidApp' ng-controller='IndexController')
     meta(name='author' content= author)
     link(href='//fonts.googleapis.com/css?family=Open+Sans:300italic,300,400italic,400,600italic,600,700italic,700,800italic,800' rel='stylesheet' type='text/css')
     link(type='text/css' href='assets/css/bootstrap.min.css' rel='stylesheet')
+    link(rel='stylesheet' href='/components/font-awesome/css/font-awesome.min.css')
+    link(rel='stylesheet' href='/components/textAngular/src/textAngular.css')
     link(type='text/css' rel='stylesheet' href='assets/css/style.css')
     
     script(src='/components/jquery/dist/jquery.min.js' defer)
@@ -22,7 +24,12 @@ html(ng-app='FluidApp' ng-controller='IndexController')
     script(src='/components/angular-animate/angular-animate.min.js' defer)
     script(src='/components/marked/lib/marked.js' defer)
     script(src='/components/angular-marked/angular-marked.min.js' defer)
+    script(src='/components/angular-redactor/angular-redactor.js' defer)
+    script(src='/components/textAngular/dist/textAngular-rangy.min.js' defer)
+    script(src='/components/textAngular/dist/textAngular-sanitize.min.js' defer)
+    script(src='/components/textAngular/dist/textAngular.min.js' defer)
     script(type='text/javascript' src='app.js' defer)
+        
     script.
       $('#sider_affix').affix({
         offset: {

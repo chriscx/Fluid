@@ -1,6 +1,6 @@
 var FluidApp;
 
-FluidApp = angular.module('FluidApp', ['ngRoute', 'ngAnimate', 'hc.marked', 'Index', 'User', 'Blog', 'Page', 'Admin']);
+FluidApp = angular.module('FluidApp', ['ngRoute', 'ngAnimate', 'hc.marked', 'textAngular', 'Index', 'User', 'Blog', 'Page', 'Admin']);
 
 angular.module('Index', []);
 

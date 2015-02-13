@@ -17,18 +17,13 @@ include admin.menu.jade
       .form-group
         label Description :
         textarea.form-control(rows='5' ng-model='settings.description')
+        
       .form-group
-        label Header :
-        textarea.form-control(rows='10' ng-model='settings.header.content')
+        text-angular(rows='15' ng-model='settings.header.content')
+
       .form-group
-        label Header preview :
-        div(marked='settings.header.content')
-      .form-group
-        label Footer :
-        textarea.form-control(rows='10' ng-model='settings.footer.content')
-      .form-group
-        label Footer preview :
-        div(marked='settings.footer.content')
+        text-angular(rows='15' ng-model='settings.footer.content')
+        
       .form-group
         .btn-toolbar
           button.btn.btn-success(type='button' ng-click='saveSettings(settings)') Save
