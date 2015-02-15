@@ -12,10 +12,8 @@ SettingSchema = new Schema
   keywords: String
   author: String
   header:
-    content: String
     body: String
   footer:
-    content: String
     body: String
   accountCreation: Boolean
 

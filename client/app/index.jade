@@ -43,16 +43,10 @@ html(ng-app='FluidApp' ng-controller='IndexController')
   body.fadein(data-spy='scroll' data-target='#nav-scrollspy')
     .container-fluid(style="height: 100%;")
       .col-md-4.affix_container(style="padding-left: 0px;")
-        div.affix.block(id='sider_affix' style=" width:inherit; background: url('media/02428_theintersection_2560x1440.jpg')")
-          .centered(style="padding-top:40%;")
-            div
-              p this is a presentation element
-              p this can only be edited in
-              p the jade template 
-
+        div.affix.block(id='sider_affix' style=" width:inherit; background: url('media/sider.jpg') no-repeat fixed center;")
+          div(style="padding-top:40%; color: white;" ng-bind-html='sider.htmlSafe')
       .col-md-8(style="padding-left:30px;")
         header.row
-          //- div(ng-include src="'views/header.html'")
           .col-md-12(ng-bind-html='header.htmlSafe')
           .col-md-12
             ul.nav.nav-pills
@@ -62,5 +56,4 @@ html(ng-app='FluidApp' ng-controller='IndexController')
         div.fade(ng-view='')
         br
         footer.row
-          //- div(ng-include src="'views/footer.html'")
           .col-md-12(ng-bind-html='footer.htmlSafe')

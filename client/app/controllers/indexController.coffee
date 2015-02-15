@@ -27,6 +27,13 @@ angular.module('Index').controller 'IndexController', ($scope, $routeParams, $lo
     $scope.page.htmlSafe =
        $sce.trustAsHtml($scope.page.body)
 
+  PageService.get('sider').success((data) ->
+    $scope.sider = data
+    $scope.sider.htmlSafe = $sce.trustAsHtml($scope.sider.body)
+  ).error (status, data) ->
+    console.log status
+    console.log data
+
   $scope.adminMenu = [
     {id: 'public', name: 'Public', order: 0, route: '/'},
     {id: 'settings', name: 'Settings', order: 1, route: '/#/admin'},

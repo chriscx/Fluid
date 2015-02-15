@@ -10,7 +10,6 @@ PageSchema = new Schema
   author: String
   route: String
   body: String      # html
-  content: String   # markdown
   creationDate:
     type: Date
     default: Date.now

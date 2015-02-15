@@ -19,10 +19,12 @@ include admin.menu.jade
         textarea.form-control(rows='5' ng-model='settings.description')
         
       .form-group
-        text-angular(rows='15' ng-model='settings.header.content')
+        label Header :
+        text-angular(rows='15' ng-model='settings.header.body')
 
       .form-group
-        text-angular(rows='15' ng-model='settings.footer.content')
+        label Footer :
+        text-angular(rows='15' ng-model='settings.footer.body')
         
       .form-group
         .btn-toolbar

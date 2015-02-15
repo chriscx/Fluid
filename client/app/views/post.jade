@@ -2,7 +2,7 @@
   .col-md-12
     .page-header
       h3 {{post.title}}
-      h5 by {{post.author}} - {{post.creationDate | date:'MM/dd/yyyy @ h:mma'}} - 
+      h5 by {{post.author}} - {{post.creationDate | date:'MM/dd/yyyy'}} - 
         a(href='') {{post.category}}
       br
       div.text-justify(ng-bind-html='post.htmlSafe')

@@ -41,5 +41,4 @@ Thumbs.db
 *.sublime-workspace
 /node_modules
 /client/public/components/
-/client/public/media
 setenv.sh

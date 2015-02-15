@@ -7,7 +7,6 @@ smtpTransport = require 'nodemailer-smtp-transport'
 crypto = require 'crypto'
 Hashids = require 'hashids'
 hash = new Hashids('this is my salt')
-markdown = require('markdown').markdown
 bcrypt = require 'bcrypt-nodejs'
 jade = require 'jade'
 LocalStrategy = require('passport-local').Strategy
@@ -206,8 +205,7 @@ module.exports = (app, passport, resetTokens, config, logger) ->
       title: req.body.title
       author: req.body.author
       id: utils.slugify req.body.title
-      body: markdown.toHTML req.body.body
-      content: req.body.body
+      body: req.body.body
       tags: req.body.tags
       Category: 'test'
       comments: []
@@ -225,7 +223,6 @@ module.exports = (app, passport, resetTokens, config, logger) ->
   app.put '/data/blog/post/:id.json', expressJwt({secret: secret}), (req, res) ->
     data = req.body
     data.id = utils.slugify data.title
-    data.body = markdown.toHTML data.content
     Post.findOneAndUpdate 'id': req.params.id,
       data,
       new: true,
@@ -339,8 +336,6 @@ module.exports = (app, passport, resetTokens, config, logger) ->
 
   app.post '/data/settings.json', (req, res) ->
     set = req.body
-    set.header.body = markdown.toHTML set.header.content
-    set.footer.body = markdown.toHTML set.footer.content
     newSetting = new Setting(set)
     newSetting.save (err) ->
       if err
@@ -351,8 +346,6 @@ module.exports = (app, passport, resetTokens, config, logger) ->
 
   app.put '/data/settings.json', (req, res) ->
     set = req.body
-    set.header.body = markdown.toHTML set.header.content
-    set.footer.body = markdown.toHTML set.footer.content
     Setting.findOneAndUpdate {},
     set,
     new: true,
@@ -415,8 +408,7 @@ module.exports = (app, passport, resetTokens, config, logger) ->
       title: req.body.title
       author: req.body.author
       route: utils.slugify req.body.title
-      body: markdown.toHTML req.body.body
-      content: req.body.body
+      body: req.body.body
       creationDate: new Date()
       updateDate: null
       published: req.body.published
@@ -431,7 +423,6 @@ module.exports = (app, passport, resetTokens, config, logger) ->
   app.put '/data/page/:route.json', expressJwt({secret: secret}), (req, res) ->
     data = req.body
     data.route = utils.slugify data.title
-    data.body = markdown.toHTML data.content
     Page.findOneAndUpdate route: req.params.route,
     data,
     new: true,
