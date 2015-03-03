@@ -9,12 +9,12 @@ angular.module('Admin', [])
 FluidApp.config ['$locationProvider', '$routeProvider', ($locationProvider, $routeProvider) ->
   $locationProvider.html5Mode true
   $routeProvider.when('/',
-    templateUrl: 'views/page.html'
+    templateUrl: 'views/public.page.html'
     controller: 'PageController'
     access:
       requiredLogin: false
   ).when('/login',
-    templateUrl: 'views/login.html'
+    templateUrl: 'views/public.login.html'
     controller: 'UserController'
     access:
       requiredLogin: false
@@ -24,32 +24,32 @@ FluidApp.config ['$locationProvider', '$routeProvider', ($locationProvider, $rou
     access:
       requiredLogin: false
   ).when('/signup',
-    templateUrl: 'views/signup.html'
+    templateUrl: 'views/public.signup.html'
     controller: 'UserController'
     access:
       requiredLogin: false
   ).when('/forgot',
-    templateUrl: 'views/forgot.html'
+    templateUrl: 'views/public.forgot.html'
     controller: 'UserController'
     access:
       requiredLogin: false
   ).when('/reset/:token',
-    templateUrl: 'views/reset.html'
+    templateUrl: 'views/public.reset.html'
     controller: 'UserController'
     access:
       requiredLogin: false
   ).when('/admin',
-    templateUrl: 'views/admin.settings.html'
+    templateUrl: 'views/admin.setting.list.html'
     controller: 'AdminSettingsController'
     access:
       requiredLogin: true
   ).when('/admin/blog/posts',
-    templateUrl: 'views/admin.posts.html'
+    templateUrl: 'views/admin.post.list.html'
     controller: 'AdminPostsController'
     access:
       requiredLogin: true
   ).when('/admin/blog/posts/create',
-    templateUrl: 'views/admin.createPost.html'
+    templateUrl: 'views/admin.post.create.html'
     controller: 'AdminPostsController'
     access:
       requiredLogin: true
@@ -59,27 +59,27 @@ FluidApp.config ['$locationProvider', '$routeProvider', ($locationProvider, $rou
     access:
       requiredLogin: true
   ).when('/admin/pages',
-    templateUrl: 'views/admin.pages.html'
+    templateUrl: 'views/admin.page.list.html'
     controller: 'AdminPagesController'
     access:
       requiredLogin: true
   ).when('/admin/pages/create',
-    templateUrl: 'views/admin.createPage.html'
+    templateUrl: 'views/admin.page.create.html'
     controller: 'AdminPagesController'
     access:
       requiredLogin: true
   ).when('/admin/pages/edit/:route',
-    templateUrl: 'views/admin.editPage.html'
+    templateUrl: 'views/admin.page.edit.html'
     controller: 'AdminPagesController'
     access:
       requiredLogin: true
   ).when('/admin/files',
-    templateUrl: 'views/admin.files.html'
+    templateUrl: 'views/admin.file.list.html'
     controller: 'AdminFilesController'
     access:
       requiredLogin: true
   ).when('/admin/files/upload',
-    templateUrl: 'views/admin.uploadFile.html'
+    templateUrl: 'views/admin.file.upload.html'
     controller: 'AdminFilesController'
     access:
       requiredLogin: true
@@ -89,17 +89,17 @@ FluidApp.config ['$locationProvider', '$routeProvider', ($locationProvider, $rou
     access:
       requiredLogin: true
   ).when('/blog',
-    templateUrl: 'views/blog.html'
+    templateUrl: 'views/public.blog.html'
     controller: 'BlogController'
     access:
       requiredLogin: false
   ).when('/blog/:id',
-    templateUrl: 'views/post.html'
+    templateUrl: 'views/public.post.html'
     controller: 'PostController'
     access:
       requiredLogin: false
   ).when('/:route',
-    templateUrl: 'views/page.html'
+    templateUrl: 'views/public.page.html'
     controller: 'PageController'
     access:
       requiredLogin: false
@@ -112,7 +112,5 @@ FluidApp.config ($httpProvider) ->
 
 FluidApp.run ($rootScope, $location, $window, AuthenticationService) ->
   $rootScope.$on '$routeChangeStart', (event, nextRoute, currentRoute) ->
-    console.log $window.sessionStorage.token
-    console.log AuthenticationService
     $location.path '/login' if nextRoute.access.requiredLogin and not AuthenticationService.isLogged
     $location.path '/admin' if nextRoute.originalPath in ['/login', '/signup'] and AuthenticationService.isLogged

@@ -42,9 +42,11 @@ html(ng-app='FluidApp' ng-controller='IndexController')
 
   body.fadein(data-spy='scroll' data-target='#nav-scrollspy')
     .container-fluid(style="height: 100%;")
+      
       .col-md-4.affix_container(style="padding-left: 0px;")
         div.affix.block(id='sider_affix' style=" width:inherit; background: url('media/sider.jpg') no-repeat fixed center;")
           div(style="padding-top:40%; color: white;" ng-bind-html='sider.htmlSafe')
+            
       .col-md-8(style="padding-left:30px;")
         header.row
           .col-md-12(ng-bind-html='header.htmlSafe')
@@ -54,6 +56,6 @@ html(ng-app='FluidApp' ng-controller='IndexController')
                   a(href="/#{{item.route}}") {{item.name}}
     
         div.fade(ng-view='')
-        br
+          
         footer.row
           .col-md-12(ng-bind-html='footer.htmlSafe')
