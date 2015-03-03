@@ -10,7 +10,7 @@ hash = new Hashids('this is my salt')
 bcrypt = require 'bcrypt-nodejs'
 jade = require 'jade'
 LocalStrategy = require('passport-local').Strategy
-utils = require './utils'
+getSlug = require 'speakingurl'
 User = require('./models/user').User
 Page = require('./models/page').Page
 Menu = require('./models/menu').Menu
@@ -204,7 +204,7 @@ module.exports = (app, passport, resetTokens, config, logger) ->
     newPost = new Post(
       title: req.body.title
       author: req.body.author
-      id: utils.slugify req.body.title
+      id: getSlug req.body.title
       body: req.body.body
       tags: req.body.tags
       Category: 'test'
@@ -222,7 +222,7 @@ module.exports = (app, passport, resetTokens, config, logger) ->
 
   app.put '/data/blog/post/:id.json', expressJwt({secret: secret}), (req, res) ->
     data = req.body
-    data.id = utils.slugify data.title
+    data.id = getSlug data.title
     Post.findOneAndUpdate 'id': req.params.id,
       data,
       new: true,
@@ -290,7 +290,7 @@ module.exports = (app, passport, resetTokens, config, logger) ->
   app.post '/data/menu/', (req, res) ->
     # if route is updated, the menu link will be void
     newMenu = new Menu(
-      id: utils.slugify req.body.name
+      id: getSlug req.body.name
       name: req.body.name
       route: req.body.route
       description: req.body.description
@@ -407,7 +407,7 @@ module.exports = (app, passport, resetTokens, config, logger) ->
     newPage = new Page(
       title: req.body.title
       author: req.body.author
-      route: utils.slugify req.body.title
+      route: getSlug req.body.title
       body: req.body.body
       creationDate: new Date()
       updateDate: null
@@ -422,7 +422,7 @@ module.exports = (app, passport, resetTokens, config, logger) ->
 
   app.put '/data/page/:route.json', expressJwt({secret: secret}), (req, res) ->
     data = req.body
-    data.route = utils.slugify data.title
+    data.route = getSlug data.title
     Page.findOneAndUpdate route: req.params.route,
     data,
     new: true,
