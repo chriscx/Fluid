@@ -1,15 +1,22 @@
-angular.module('Page').factory 'PageService', ($http) ->
-  getList: ->
-    $http.get '/data/pages.json'
+angular.module('Site').factory 'PageService', ($http, Page) ->
 
-  get: (route) ->
-    $http.get '/data/page/' + route + '.json'
+  genericErrorCallback: (response) ->
+    console.log "error", response
+    $q.reject(response)
 
-  remove: (route) ->
-    $http.delete '/data/page/' + route + '.json'
+  genericSuccessCallback = (response) -> new Page response.data
 
-  create: (data) ->
-    $http.post '/data/page/', data
+  getPageList: ->
+    $http.get('/data/pages.json')
 
-  save: (route, data) ->
-    $http.put '/data/page/' + route + '.json', data
+  getPage: (id) ->
+    $http.get("/data/page/#{id}.json")
+
+  removePage: (id) ->
+    $http.delete("/data/page/#{id}.json")
+
+  createPage: (data) ->
+    $http.post('/data/page/', data)
+
+  savePage: (id, data) ->
+    $http.put("/data/page/#{id}.json", data)

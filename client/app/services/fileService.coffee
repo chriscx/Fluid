@@ -1,7 +1,13 @@
-angular.module('User').factory 'FileService', ($http, $location, $window) ->
+angular.module('Admin').factory 'FileService', ($http, File) ->
 
-  getList: () ->
-    $http.get '/data/files.json'
+  genericErrorCallback: (response) ->
+    console.log "error", response
+    $q.reject(response)
 
-  remove: (id) ->
-    $http.delete '/data/files/' + id
+  genericSuccessCallback = (response) -> new File response.data
+
+  getFileList: () ->
+    $http.get('/data/files.json')
+
+  removeFile: (id) ->
+    $http.delete("/data/files/#{id}")

@@ -1,24 +1,31 @@
-angular.module('User').factory 'UserService', ($http, $location, $window, AuthenticationService) ->
+angular.module('Users').factory 'UserService', ($http, $q, User) ->
 
-  logIn: (username, password) ->
-    $http.post '/login',
-      username: username
-      password: password
+  genericErrorCallback: (response) ->
+    console.log "error", response
+    $q.reject(response)
 
-  signUp: (user) ->
-    console.log user
-    $http.post '/signup', user
+  genericSuccessCallback = (response) -> new User response.data
 
-  forgotPassword: (email) ->
-    $http.post '/forgot', email: email
+  # userInfo is an object with username and password
+  logInUser: (userInfo) ->
+    $http.post('/login', userInfo).then(@genericSuccessCallback, @genericErrorCallback)
 
-  resetPassword: (token, password) ->
-    $http.post '/reset',
-      token: token,
-      password: password
+  # user is an object built with User factory
+  signUpUser: (user) ->
+    $http.post('/signup', user).then(@genericSuccessCallback, @genericErrorCallback)
 
-  getUserData: (username)->
-    $http.get '/data/user/' + username + '.json'
+  # will send an email with procedure to
+  forgotUserPassword: (email) ->
+    $http.post('/forgot', {email: email})
 
-  updateUserData:(username, data) ->
-    $http.put '/data/user/' + username + '.json', data
+  # info is an object with token and new password
+  resetUserPassword: (info) ->
+    $http.post('/reset', info)
+
+  # returns an user object
+  getUser: (username) ->
+    $http.get("/data/user/#{username}.json").then(@genericSuccessCallback, @genericErrorCallback)
+
+  updateUser:(user) ->
+    username = user.get('username')
+    $http.put("/data/user/#{username}.json", user.getInfo())

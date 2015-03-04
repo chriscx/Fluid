@@ -1,10 +1,30 @@
-angular.module('Blog').factory 'SettingFactory', ($http) ->
+angular.module('Blog').factory 'Settings', ($http) ->
 
-  class Setting
-    constructor: (json) ->
-      @title = if json.hasOwnProperty('username') then json.username else null
-      @description = if json.hasOwnProperty('description') then json.description else null
-      @keywords = if json.hasOwnProperty('keywords') then json.keywords else null
-      @author = if json.hasOwnProperty('author') then json.author else null
-      @header = if json.hasOwnProperty('header') then json.header else null
-      @footer = if json.hasOwnProperty('footer') then json.footer else null
+  class Settings
+    #
+    # Constructor: if is not set by the server, it will be overwritten on save
+    #
+    constructor: (obj) ->
+      @title        = null
+      @description  = null
+      @keywords     = null
+      @author       = null
+      @header       = null
+      @footer       = null
+      for property in obj
+        @[attribute] = obj[property]
+
+    set: (obj) ->
+      for property in obj
+        @[attribute] = obj[property]
+
+    getInfo: ->
+      title:        @title
+      description:  @description
+      keywords:     @keywords
+      author:       @author
+      header:       @header
+      footer:       @footer
+
+    get: (attribute) ->
+      if @.hasOwnProperty(attribute) then @[attribute] else null

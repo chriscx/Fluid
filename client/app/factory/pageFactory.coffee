@@ -1,11 +1,34 @@
-angular.module('Page').factory 'PageFactory', ($http) ->
+angular.module('Site').factory 'Page', ($http) ->
 
   class Page
-    constructor: (json) ->
-      @title = if json.hasOwnProperty('title') then json.title else null
-      @author = if json.hasOwnProperty('author') then json.author else null
-      @route = if json.hasOwnProperty('route') then json.route else null
-      @body = if json.hasOwnProperty('body') then json.body else null
-      @creationDate = if json.hasOwnProperty('creationDate') then json.creationDate else null
-      @updateDate = if json.hasOwnProperty('updateDate') then json.updateDate else null
-      @published = if json.hasOwnProperty('published') then json.published else null
+    #
+    # Constructor: if is not set by the server, it will be overwritten on save
+    #
+    constructor: (obj) ->
+      @id           = if obj.hasOwnProperty('id') then obj.id else null
+      @title        = if obj.hasOwnProperty('title') then obj.title else null
+      @author       = if obj.hasOwnProperty('author') then obj.author else null
+      @body         = if obj.hasOwnProperty('body') then obj.body else null
+      @creationDate = if obj.hasOwnProperty('creationDate') then obj.creationDate else null
+      @updateDate   = if obj.hasOwnProperty('updateDate') then obj.updateDate else null
+      @published    = if obj.hasOwnProperty('published') then obj.published else null
+
+    set: () ->
+      @title        = if obj.hasOwnProperty('title') then obj.title else null
+      @author       = if obj.hasOwnProperty('author') then obj.author else null
+      @body         = if obj.hasOwnProperty('body') then obj.body else null
+      @creationDate = if obj.hasOwnProperty('creationDate') then obj.creationDate else null
+      @updateDate   = if obj.hasOwnProperty('updateDate') then obj.updateDate else null
+      @published    = if obj.hasOwnProperty('published') then obj.published else null
+
+    getInfo: ->
+      id:           @id
+      title:        @title
+      author:       @author
+      body:         @body
+      creationDate: @creationDate
+      updateDate:   @updateDate
+      published:    @published
+
+    get: (attribute) ->
+      if @.hasOwnProperty(attribute) then @[attribute] else null

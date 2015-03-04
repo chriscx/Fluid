@@ -1,15 +1,22 @@
-angular.module('Blog').factory 'MenuService', ($http) ->
-  getList: ->
-    $http.get '/data/menu.json'
+angular.module('Blog').factory 'MenuService', ($http, Menu) ->
 
-  get: (id) ->
-    $http.get '/data/menu/' + id + '.json'
+  genericErrorCallback: (response) ->
+    console.log "error", response
+    $q.reject(response)
 
-  remove: (id) ->
-    $http.delete '/data/menu/' + id + '.json'
+  genericSuccessCallback = (response) -> new Menu response.data
 
-  create: (id) ->
-    $http.post '/data/menu/', id
+  getMenuList: ->
+    $http.get('/data/menu.json')
 
-  save: (id, data) ->
-    $http.put '/data/menu/' + id + '.json', data
+  getMenu: (id) ->
+    $http.get("/data/menu/#{id}.json")
+
+  removeMenu: (id) ->
+    $http.delete("/data/menu/#{id}.json")
+
+  createMenu: (id) ->
+    $http.post('/data/menu/', id)
+
+  saveMenu: (id, data) ->
+    $http.put("/data/menu/#{id}.json"), data
