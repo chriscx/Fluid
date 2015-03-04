@@ -1,18 +1,27 @@
-angular.module('Blog').factory 'PostService', ($http) ->
-  getList: ->
-    $http.get '/data/blog/posts.json'
+angular.module('Blog').factory 'PostService', ($http, Post) ->
 
-  getBySlice: (s, l) ->
-    $http.get '/data/blog/post/' + s + '/' + l + '/posts.json'
+  genericErrorCallback: (response) ->
+    console.log "error", response
+    $q.reject(response)
 
-  get: (id) ->
-    $http.get '/data/blog/post/' + id + '.json'
+  getPostList: ->
+    $http.get('/data/blog/posts.json')
 
-  create: (data) ->
-    $http.post '/data/blog/post/', data
+  getPostsBySlice: (s, l) ->
+    successCallback = (response) ->
+      #loop and process array
+      new Post response.data
+    $http.get("/data/blog/post/#{s}/#{l}/posts.json")
 
-  save: (id, data) ->
-    $http.put '/data/blog/post/' + id + '.json', data
+  getPost: (id) ->
+    successCallback = (response) -> new Post response.data
+    $http.get("/data/blog/post/#{id}.json").then(@successCallback, @genericErrorCallback)
 
-  remove: (id) ->
-    $http.delete '/data/blog/post/' + id + '.json'
+  createPost: (data) ->
+    $http.post('/data/blog/post/', data)
+
+  savePost: (id, data) ->
+    $http.put("/data/blog/post/#{id}.json", data)
+
+  removePost: (id) ->
+    $http.delete("/data/blog/post/#{id}.json")

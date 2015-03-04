@@ -1,9 +1,9 @@
 FluidApp = angular.module('FluidApp', ['ngRoute', 'ngAnimate', 'textAngular', 'Index', 'User', 'Blog', 'Page', 'Admin'])
 
-angular.module('Index', [])
-angular.module('User', [])
+angular.module('Auth', [])
+angular.module('Users', [])
 angular.module('Blog', [])
-angular.module('Page', [])
+angular.module('Site', [])
 angular.module('Admin', [])
 
 FluidApp.config ['$locationProvider', '$routeProvider', ($locationProvider, $routeProvider) ->
@@ -98,7 +98,7 @@ FluidApp.config ['$locationProvider', '$routeProvider', ($locationProvider, $rou
     controller: 'PostController'
     access:
       requiredLogin: false
-  ).when('/:route',
+  ).when('/:id',
     templateUrl: 'views/public.page.html'
     controller: 'PageController'
     access:

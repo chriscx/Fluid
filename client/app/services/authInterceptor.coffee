@@ -1,4 +1,4 @@
-angular.module('User').factory "authInterceptor", ($rootScope, $q, $window, $location, AuthenticationService) ->
+angular.module('Auth').factory "authInterceptor", ($rootScope, $q, $window, $location, AuthenticationService) ->
   request: (config) ->
     config.headers = config.headers or {}
     config.headers.Authorization = "Bearer " + $window.sessionStorage.token  if $window.sessionStorage.token

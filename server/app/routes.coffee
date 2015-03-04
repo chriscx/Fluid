@@ -388,15 +388,15 @@ module.exports = (app, passport, resetTokens, config, logger) ->
         res.sendStatus(200).end()
 
   app.get '/data/pages.json', (req, res) ->
-    Page.find {}, 'route title', (err, data) ->
+    Page.find {}, 'id title', (err, data) ->
       if err
         logger.error new Error(err), {msg: 'HTTP 500'}
         res.sendStatus(500).end()
       else
         res.json data
 
-  app.get '/data/page/:route.json', (req, res) ->
-    Page.findOne {route: req.params.route}, '-_id -__v', (err, data) ->
+  app.get '/data/page/:id.json', (req, res) ->
+    Page.findOne {id: req.params.id}, '-_id -__v', (err, data) ->
       if err
         logger.error new Error(err), {msg: 'HTTP 500'}
         res.sendStatus(500).end()
@@ -407,7 +407,7 @@ module.exports = (app, passport, resetTokens, config, logger) ->
     newPage = new Page(
       title: req.body.title
       author: req.body.author
-      route: getSlug req.body.title
+      id: getSlug req.body.title
       body: req.body.body
       creationDate: new Date()
       updateDate: null
@@ -420,10 +420,10 @@ module.exports = (app, passport, resetTokens, config, logger) ->
       else
         res.sendStatus(200).end()
 
-  app.put '/data/page/:route.json', expressJwt({secret: secret}), (req, res) ->
+  app.put '/data/page/:id.json', expressJwt({secret: secret}), (req, res) ->
     data = req.body
-    data.route = getSlug data.title
-    Page.findOneAndUpdate route: req.params.route,
+    data.id = getSlug data.title
+    Page.findOneAndUpdate id: req.params.id,
     data,
     new: true,
       (err, data) ->
@@ -435,8 +435,8 @@ module.exports = (app, passport, resetTokens, config, logger) ->
         else
           res.sendStatus(200).end()
 
-  app.delete '/data/page/:route.json', expressJwt({secret: secret}), (req, res) ->
-    Page.remove {route: req.params.route}, (err, data) ->
+  app.delete '/data/page/:id.json', expressJwt({secret: secret}), (req, res) ->
+    Page.remove {id: req.params.id}, (err, data) ->
       if err
         logger.error new Error(err), {msg: 'HTTP 500'}
         res.sendStatus(500).end()
