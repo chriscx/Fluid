@@ -16,7 +16,7 @@ angular.module('Blog').factory 'Post', ($http) ->
       @updateDate   = if obj.hasOwnProperty('updateDate') then obj.updateDate else null
       @published    = if obj.hasOwnProperty('published') then obj.published else null
 
-    set: () ->
+    set: (obj) ->
       @title        = if obj.hasOwnProperty('title') then obj.title else null
       @author       = if obj.hasOwnProperty('author') then obj.author else null
       @body         = if obj.hasOwnProperty('body') then obj.body else null

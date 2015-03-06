@@ -580,5 +580,5 @@ module.exports = (app, passport, resetTokens, config, logger) ->
     ) req, res, next
 
   app.get '*', (req, res) ->
-    logger.info 'GET ' +  req.originalUrl + ' redirect to ' + '/#' + req.originalUrl
-    res.redirect '/#' + req.originalUrl
+    logger.info("GET #{req.originalUrl} redirect to /##{req.originalUrl}")
+    res.redirect("/##{req.originalUrl}")

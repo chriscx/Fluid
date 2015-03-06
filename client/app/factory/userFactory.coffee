@@ -11,7 +11,7 @@ angular.module('Users').factory 'User', ($http, $location, $window, Authenticati
       @firstname  = if obj.hasOwnProperty('firstname') then obj.firstname else null
       @lastname   = if obj.hasOwnProperty('lastname') then obj.lastname else null
 
-    set: () ->
+    set: (obj) ->
       @username   = if obj.hasOwnProperty('username') then obj.username else null
       @email      = if obj.hasOwnProperty('email') then obj.email else null
       @password   = if obj.hasOwnProperty('password') then obj.password else null
