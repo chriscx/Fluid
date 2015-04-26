@@ -2,13 +2,13 @@ var FluidApp;
 
 FluidApp = angular.module('FluidApp', ['ngRoute', 'ngAnimate', 'textAngular', 'Index', 'User', 'Blog', 'Page', 'Admin']);
 
-angular.module('Index', []);
+angular.module('Auth', []);
 
-angular.module('User', []);
+angular.module('Users', []);
 
 angular.module('Blog', []);
 
-angular.module('Page', []);
+angular.module('Site', []);
 
 angular.module('Admin', []);
 
@@ -16,13 +16,13 @@ FluidApp.config([
   '$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
     $locationProvider.html5Mode(true);
     $routeProvider.when('/', {
-      templateUrl: 'views/page.html',
+      templateUrl: 'views/public.page.html',
       controller: 'PageController',
       access: {
         requiredLogin: false
       }
     }).when('/login', {
-      templateUrl: 'views/login.html',
+      templateUrl: 'views/public.login.html',
       controller: 'UserController',
       access: {
         requiredLogin: false
@@ -34,37 +34,37 @@ FluidApp.config([
         requiredLogin: false
       }
     }).when('/signup', {
-      templateUrl: 'views/signup.html',
+      templateUrl: 'views/public.signup.html',
       controller: 'UserController',
       access: {
         requiredLogin: false
       }
     }).when('/forgot', {
-      templateUrl: 'views/forgot.html',
+      templateUrl: 'views/public.forgot.html',
       controller: 'UserController',
       access: {
         requiredLogin: false
       }
     }).when('/reset/:token', {
-      templateUrl: 'views/reset.html',
+      templateUrl: 'views/public.reset.html',
       controller: 'UserController',
       access: {
         requiredLogin: false
       }
     }).when('/admin', {
-      templateUrl: 'views/admin.settings.html',
+      templateUrl: 'views/admin.setting.list.html',
       controller: 'AdminSettingsController',
       access: {
         requiredLogin: true
       }
     }).when('/admin/blog/posts', {
-      templateUrl: 'views/admin.posts.html',
+      templateUrl: 'views/admin.post.list.html',
       controller: 'AdminPostsController',
       access: {
         requiredLogin: true
       }
     }).when('/admin/blog/posts/create', {
-      templateUrl: 'views/admin.createPost.html',
+      templateUrl: 'views/admin.post.create.html',
       controller: 'AdminPostsController',
       access: {
         requiredLogin: true
@@ -76,31 +76,31 @@ FluidApp.config([
         requiredLogin: true
       }
     }).when('/admin/pages', {
-      templateUrl: 'views/admin.pages.html',
+      templateUrl: 'views/admin.page.list.html',
       controller: 'AdminPagesController',
       access: {
         requiredLogin: true
       }
     }).when('/admin/pages/create', {
-      templateUrl: 'views/admin.createPage.html',
+      templateUrl: 'views/admin.page.create.html',
       controller: 'AdminPagesController',
       access: {
         requiredLogin: true
       }
     }).when('/admin/pages/edit/:route', {
-      templateUrl: 'views/admin.editPage.html',
+      templateUrl: 'views/admin.page.edit.html',
       controller: 'AdminPagesController',
       access: {
         requiredLogin: true
       }
     }).when('/admin/files', {
-      templateUrl: 'views/admin.files.html',
+      templateUrl: 'views/admin.file.list.html',
       controller: 'AdminFilesController',
       access: {
         requiredLogin: true
       }
     }).when('/admin/files/upload', {
-      templateUrl: 'views/admin.uploadFile.html',
+      templateUrl: 'views/admin.file.upload.html',
       controller: 'AdminFilesController',
       access: {
         requiredLogin: true
@@ -112,19 +112,19 @@ FluidApp.config([
         requiredLogin: true
       }
     }).when('/blog', {
-      templateUrl: 'views/blog.html',
+      templateUrl: 'views/public.blog.html',
       controller: 'BlogController',
       access: {
         requiredLogin: false
       }
     }).when('/blog/:id', {
-      templateUrl: 'views/post.html',
+      templateUrl: 'views/public.post.html',
       controller: 'PostController',
       access: {
         requiredLogin: false
       }
-    }).when('/:route', {
-      templateUrl: 'views/page.html',
+    }).when('/:id', {
+      templateUrl: 'views/public.page.html',
       controller: 'PageController',
       access: {
         requiredLogin: false
@@ -141,16 +141,308 @@ FluidApp.config(function($httpProvider) {
 
 FluidApp.run(function($rootScope, $location, $window, AuthenticationService) {
   return $rootScope.$on('$routeChangeStart', function(event, nextRoute, currentRoute) {
-    var _ref;
-    console.log($window.sessionStorage.token);
-    console.log(AuthenticationService);
+    var ref;
     if (nextRoute.access.requiredLogin && !AuthenticationService.isLogged) {
       $location.path('/login');
     }
-    if (((_ref = nextRoute.originalPath) === '/login' || _ref === '/signup') && AuthenticationService.isLogged) {
+    if (((ref = nextRoute.originalPath) === '/login' || ref === '/signup') && AuthenticationService.isLogged) {
       return $location.path('/admin');
     }
   });
+});
+
+angular.module('User').factory('File', function($http, $location, $window) {
+  var File;
+  return File = (function() {
+    function File(json) {
+      if (json != null) {
+        this.id = json.hasOwnProperty('id') ? json.id : null;
+        this.path = json.hasOwnProperty('path') ? json.path : null;
+      }
+    }
+
+    File.prototype.set = function(obj) {
+      if (obj != null) {
+        return this.path = json.hasOwnProperty('path') ? json.path : null;
+      }
+    };
+
+    File.prototype.getInfo = function() {
+      return {
+        id: this.id,
+        path: this.path
+      };
+    };
+
+    File.prototype.get = function(attribute) {
+      if (this.hasOwnProperty(attribute)) {
+        return this[attribute];
+      } else {
+        return null;
+      }
+    };
+
+    return File;
+
+  })();
+});
+
+angular.module('Blog').factory('Menu', function($http) {
+  var Menu;
+  return Menu = (function() {
+    var set;
+
+    function Menu(obj) {
+      if (obj != null) {
+        this.id = obj.hasOwnProperty('id') ? obj.id : null;
+        this.name = obj.hasOwnProperty('name') ? obj.name : null;
+        this.route = obj.hasOwnProperty('route') ? obj.route : null;
+        this.description = obj.hasOwnProperty('description') ? obj.description : null;
+        this.order = obj.hasOwnProperty('order') ? obj.order : null;
+      }
+    }
+
+    set = function(obj) {
+      if (obj != null) {
+        this.name = obj.hasOwnProperty('name') ? obj.name : null;
+        this.route = obj.hasOwnProperty('route') ? obj.route : null;
+        this.description = obj.hasOwnProperty('description') ? obj.description : null;
+        return this.order = obj.hasOwnProperty('order') ? obj.order : null;
+      }
+    };
+
+    Menu.prototype.getInfo = function() {
+      return {
+        id: this.id,
+        name: this.name,
+        route: this.route,
+        description: this.description,
+        order: this.order
+      };
+    };
+
+    Menu.prototype.get = function(attribute) {
+      if (this.hasOwnProperty(attribute)) {
+        return this[attribute];
+      } else {
+        return null;
+      }
+    };
+
+    return Menu;
+
+  })();
+});
+
+angular.module('Site').factory('Page', function($http) {
+  var Page;
+  return Page = (function() {
+    function Page(obj) {
+      if (obj != null) {
+        this.id = obj.hasOwnProperty('id') ? obj.id : null;
+        this.title = obj.hasOwnProperty('title') ? obj.title : null;
+        this.author = obj.hasOwnProperty('author') ? obj.author : null;
+        this.body = obj.hasOwnProperty('body') ? obj.body : null;
+        this.creationDate = obj.hasOwnProperty('creationDate') ? obj.creationDate : null;
+        this.updateDate = obj.hasOwnProperty('updateDate') ? obj.updateDate : null;
+        this.published = obj.hasOwnProperty('published') ? obj.published : null;
+      }
+    }
+
+    Page.prototype.set = function(obj) {
+      if (obj != null) {
+        this.title = obj.hasOwnProperty('title') ? obj.title : null;
+        this.author = obj.hasOwnProperty('author') ? obj.author : null;
+        this.body = obj.hasOwnProperty('body') ? obj.body : null;
+        this.creationDate = obj.hasOwnProperty('creationDate') ? obj.creationDate : null;
+        this.updateDate = obj.hasOwnProperty('updateDate') ? obj.updateDate : null;
+        return this.published = obj.hasOwnProperty('published') ? obj.published : null;
+      }
+    };
+
+    Page.prototype.getInfo = function() {
+      return {
+        id: this.id,
+        title: this.title,
+        author: this.author,
+        body: this.body,
+        creationDate: this.creationDate,
+        updateDate: this.updateDate,
+        published: this.published
+      };
+    };
+
+    Page.prototype.get = function(attribute) {
+      if (this.hasOwnProperty(attribute)) {
+        return this[attribute];
+      } else {
+        return null;
+      }
+    };
+
+    return Page;
+
+  })();
+});
+
+angular.module('Blog').factory('Post', function($http) {
+  var Post;
+  return Post = (function() {
+    function Post(obj) {
+      if (obj != null) {
+        this.id = obj.hasOwnProperty('id') ? obj.id : null;
+        this.title = obj.hasOwnProperty('title') ? obj.title : null;
+        this.author = obj.hasOwnProperty('author') ? obj.author : null;
+        this.body = obj.hasOwnProperty('body') ? obj.body : null;
+        this.tags = obj.hasOwnProperty('tags') ? obj.tags : null;
+        this.category = obj.hasOwnProperty('category') ? obj.category : null;
+        this.comments = obj.hasOwnProperty('comments') ? obj.comments : null;
+        this.creationDate = obj.hasOwnProperty('creationDate') ? obj.creationDate : null;
+        this.updateDate = obj.hasOwnProperty('updateDate') ? obj.updateDate : null;
+        this.published = obj.hasOwnProperty('published') ? obj.published : null;
+      }
+    }
+
+    Post.prototype.set = function(obj) {
+      if (obj != null) {
+        this.title = obj.hasOwnProperty('title') ? obj.title : null;
+        this.author = obj.hasOwnProperty('author') ? obj.author : null;
+        this.body = obj.hasOwnProperty('body') ? obj.body : null;
+        this.tags = obj.hasOwnProperty('tags') ? obj.tags : null;
+        this.category = obj.hasOwnProperty('category') ? obj.category : null;
+        this.comments = obj.hasOwnProperty('comments') ? obj.comments : null;
+        this.creationDate = obj.hasOwnProperty('creationDate') ? obj.creationDate : null;
+        this.updateDate = obj.hasOwnProperty('updateDate') ? obj.updateDate : null;
+        return this.published = obj.hasOwnProperty('published') ? obj.published : null;
+      }
+    };
+
+    Post.prototype.getInfo = function() {
+      return {
+        id: this.id,
+        title: this.title,
+        author: this.author,
+        body: this.body,
+        tags: this.tags,
+        category: this.category,
+        comments: this.comments,
+        creationDate: this.creationDate,
+        updateDate: this.updateDate,
+        published: this.publishe
+      };
+    };
+
+    Post.prototype.get = function(attribute) {
+      if (this.hasOwnProperty(attribute)) {
+        return this[attribute];
+      } else {
+        return null;
+      }
+    };
+
+    return Post;
+
+  })();
+});
+
+angular.module('Blog').factory('Settings', function($http) {
+  var Settings;
+  return Settings = (function() {
+    function Settings(obj) {
+      var i, len, property;
+      this.title = null;
+      this.description = null;
+      this.keywords = null;
+      this.author = null;
+      this.header = null;
+      this.footer = null;
+      if (obj != null) {
+        for (i = 0, len = obj.length; i < len; i++) {
+          property = obj[i];
+          this[attribute] = obj[property];
+        }
+      }
+    }
+
+    Settings.prototype.set = function(obj) {
+      var i, len, property, results;
+      if (obj != null) {
+        results = [];
+        for (i = 0, len = obj.length; i < len; i++) {
+          property = obj[i];
+          results.push(this[attribute] = obj[property]);
+        }
+        return results;
+      }
+    };
+
+    Settings.prototype.getInfo = function() {
+      return {
+        title: this.title,
+        description: this.description,
+        keywords: this.keywords,
+        author: this.author,
+        header: this.header,
+        footer: this.footer
+      };
+    };
+
+    Settings.prototype.get = function(attribute) {
+      if (this.hasOwnProperty(attribute)) {
+        return this[attribute];
+      } else {
+        return null;
+      }
+    };
+
+    return Settings;
+
+  })();
+});
+
+angular.module('Users').factory('User', function($http, $location, $window, AuthenticationService) {
+  var User;
+  return User = (function() {
+    function User(obj) {
+      if (obj != null) {
+        this.username = obj.hasOwnProperty('username') ? obj.username : null;
+        this.email = obj.hasOwnProperty('email') ? obj.email : null;
+        this.password = obj.hasOwnProperty('password') ? obj.password : null;
+        this.firstname = obj.hasOwnProperty('firstname') ? obj.firstname : null;
+        this.lastname = obj.hasOwnProperty('lastname') ? obj.lastname : null;
+      }
+    }
+
+    User.prototype.set = function(obj) {
+      if (obj != null) {
+        this.username = obj.hasOwnProperty('username') ? obj.username : null;
+        this.email = obj.hasOwnProperty('email') ? obj.email : null;
+        this.password = obj.hasOwnProperty('password') ? obj.password : null;
+        this.firstname = obj.hasOwnProperty('firstname') ? obj.firstname : null;
+        return this.lastname = obj.hasOwnProperty('lastname') ? obj.lastname : null;
+      }
+    };
+
+    User.prototype.getInfo = function() {
+      return {
+        username: this.username,
+        email: this.email,
+        firstname: this.firstname,
+        lastname: this.lastname
+      };
+    };
+
+    User.prototype.get = function(attribute) {
+      if (this.hasOwnProperty(attribute) && attribute !== 'password') {
+        return this[attribute];
+      } else {
+        return null;
+      }
+    };
+
+    return User;
+
+  })();
 });
 
 angular.module('Admin').controller('AdminFilesController', function($scope, $http, $routeParams, $location, $window, FileService) {
@@ -671,7 +963,7 @@ angular.module('User').controller('UserController', function($scope, $http, $rou
   };
 });
 
-angular.module('User').factory("authInterceptor", function($rootScope, $q, $window, $location, AuthenticationService) {
+angular.module('Auth').factory("authInterceptor", function($rootScope, $q, $window, $location, AuthenticationService) {
   return {
     request: function(config) {
       config.headers = config.headers || {};
@@ -694,7 +986,7 @@ angular.module('User').factory("authInterceptor", function($rootScope, $q, $wind
   };
 });
 
-angular.module('User').factory('AuthenticationService', function($window, $location) {
+angular.module('Auth').factory('AuthenticationService', function($window, $location) {
   var auth;
   auth = $window.sessionStorage.token !== undefined ? {
     isLogged: true
@@ -704,122 +996,179 @@ angular.module('User').factory('AuthenticationService', function($window, $locat
   return auth;
 });
 
-angular.module('User').factory('FileService', function($http, $location, $window) {
+angular.module('Admin').factory('FileService', function($http, File) {
+  var genericSuccessCallback;
+  ({
+    genericErrorCallback: function(response) {
+      console.log("error", response);
+      return $q.reject(response);
+    }
+  });
+  genericSuccessCallback = function(response) {
+    return new File(response.data);
+  };
   return {
-    getList: function() {
+    getFileList: function() {
       return $http.get('/data/files.json');
     },
-    remove: function(id) {
-      return $http["delete"]('/data/files/' + id);
+    removeFile: function(id) {
+      return $http["delete"]("/data/files/" + id);
     }
   };
 });
 
-angular.module('Blog').factory('MenuService', function($http) {
+angular.module('Blog').factory('MenuService', function($http, Menu) {
+  var genericSuccessCallback;
+  ({
+    genericErrorCallback: function(response) {
+      console.log("error", response);
+      return $q.reject(response);
+    }
+  });
+  genericSuccessCallback = function(response) {
+    return new Menu(response.data);
+  };
   return {
-    getList: function() {
+    getMenuList: function() {
       return $http.get('/data/menu.json');
     },
-    get: function(id) {
-      return $http.get('/data/menu/' + id + '.json');
+    getMenu: function(id) {
+      return $http.get("/data/menu/" + id + ".json");
     },
-    remove: function(id) {
-      return $http["delete"]('/data/menu/' + id + '.json');
+    removeMenu: function(id) {
+      return $http["delete"]("/data/menu/" + id + ".json");
     },
-    create: function(id) {
+    createMenu: function(id) {
       return $http.post('/data/menu/', id);
     },
-    save: function(id, data) {
-      return $http.put('/data/menu/' + id + '.json', data);
+    saveMenu: function(id, data) {
+      return $http.put("/data/menu/" + id + ".json", data);
     }
   };
 });
 
-angular.module('Page').factory('PageService', function($http) {
+angular.module('Site').factory('PageService', function($http, Page) {
+  var genericSuccessCallback;
+  ({
+    genericErrorCallback: function(response) {
+      console.log("error", response);
+      return $q.reject(response);
+    }
+  });
+  genericSuccessCallback = function(response) {
+    return new Page(response.data);
+  };
   return {
-    getList: function() {
+    getPageList: function() {
       return $http.get('/data/pages.json');
     },
-    get: function(route) {
-      return $http.get('/data/page/' + route + '.json');
+    getPage: function(id) {
+      return $http.get("/data/page/" + id + ".json");
     },
-    remove: function(route) {
-      return $http["delete"]('/data/page/' + route + '.json');
+    removePage: function(id) {
+      return $http["delete"]("/data/page/" + id + ".json");
     },
-    create: function(data) {
+    createPage: function(data) {
       return $http.post('/data/page/', data);
     },
-    save: function(route, data) {
-      return $http.put('/data/page/' + route + '.json', data);
+    savePage: function(id, data) {
+      return $http.put("/data/page/" + id + ".json", data);
     }
   };
 });
 
-angular.module('Blog').factory('PostService', function($http) {
+angular.module('Blog').factory('PostService', function($http, Post) {
   return {
-    getList: function() {
+    genericErrorCallback: function(response) {
+      console.log("error", response);
+      return $q.reject(response);
+    },
+    getPostList: function() {
       return $http.get('/data/blog/posts.json');
     },
-    getBySlice: function(s, l) {
-      return $http.get('/data/blog/post/' + s + '/' + l + '/posts.json');
+    getPostsBySlice: function(s, l) {
+      var successCallback;
+      successCallback = function(response) {
+        return new Post(response.data);
+      };
+      return $http.get("/data/blog/post/" + s + "/" + l + "/posts.json");
     },
-    get: function(id) {
-      return $http.get('/data/blog/post/' + id + '.json');
+    getPost: function(id) {
+      var successCallback;
+      successCallback = function(response) {
+        return new Post(response.data);
+      };
+      return $http.get("/data/blog/post/" + id + ".json").then(this.successCallback, this.genericErrorCallback);
     },
-    create: function(data) {
+    createPost: function(data) {
       return $http.post('/data/blog/post/', data);
     },
-    save: function(id, data) {
-      return $http.put('/data/blog/post/' + id + '.json', data);
+    savePost: function(id, data) {
+      return $http.put("/data/blog/post/" + id + ".json", data);
     },
-    remove: function(id) {
-      return $http["delete"]('/data/blog/post/' + id + '.json');
+    removePost: function(id) {
+      return $http["delete"]("/data/blog/post/" + id + ".json");
     }
   };
 });
 
-angular.module('Blog').factory('SettingService', function($http) {
+angular.module('Admin').factory('SettingsService', function($http, Settings) {
+  var genericSuccessCallback;
+  ({
+    genericErrorCallback: function(response) {
+      console.log("error", response);
+      return $q.reject(response);
+    }
+  });
+  genericSuccessCallback = function(response) {
+    return new Settings(response.data);
+  };
   return {
-    get: function() {
-      return $http.get('/data/settings.json');
+    getSettings: function() {
+      return $http.get('/data/settings.json').then(this.genericSuccessCallback, this.genericErrorCallback);
     },
-    create: function(data) {
-      return $http.post('/data/settings.json', data);
+    createSettings: function(settings) {
+      return $http.post('/data/settings.json', settings);
     },
-    save: function(data) {
-      return $http.put('/data/settings.json', data);
+    saveSettings: function(settings) {
+      return $http.put('/data/settings.json', settings);
     }
   };
 });
 
-angular.module('User').factory('UserService', function($http, $location, $window, AuthenticationService) {
+angular.module('Users').factory('UserService', function($http, $q, User) {
+  var genericSuccessCallback;
+  ({
+    genericErrorCallback: function(response) {
+      console.log("error", response);
+      return $q.reject(response);
+    }
+  });
+  genericSuccessCallback = function(response) {
+    return new User(response.data);
+  };
   return {
-    logIn: function(username, password) {
-      return $http.post('/login', {
-        username: username,
-        password: password
-      });
+    logInUser: function(userInfo) {
+      return $http.post('/login', userInfo).then(this.genericSuccessCallback, this.genericErrorCallback);
     },
-    signUp: function(user) {
-      console.log(user);
-      return $http.post('/signup', user);
+    signUpUser: function(user) {
+      return $http.post('/signup', user).then(this.genericSuccessCallback, this.genericErrorCallback);
     },
-    forgotPassword: function(email) {
+    forgotUserPassword: function(email) {
       return $http.post('/forgot', {
         email: email
       });
     },
-    resetPassword: function(token, password) {
-      return $http.post('/reset', {
-        token: token,
-        password: password
-      });
+    resetUserPassword: function(info) {
+      return $http.post('/reset', info);
     },
-    getUserData: function(username) {
-      return $http.get('/data/user/' + username + '.json');
+    getUser: function(username) {
+      return $http.get("/data/user/" + username + ".json").then(this.genericSuccessCallback, this.genericErrorCallback);
     },
-    updateUserData: function(username, data) {
-      return $http.put('/data/user/' + username + '.json', data);
+    updateUser: function(user) {
+      var username;
+      username = user.get('username');
+      return $http.put("/data/user/" + username + ".json", user.getInfo());
     }
   };
 });

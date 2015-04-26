@@ -5,11 +5,13 @@ angular.module('User').factory 'File', ($http, $location, $window) ->
     # Constructor: if is not set by the server, it will be overwritten on save
     #
     constructor: (json) ->
-      @id   = if json.hasOwnProperty('id') then json.id else null
-      @path = if json.hasOwnProperty('path') then json.path else null
+      if json?
+        @id   = if json.hasOwnProperty('id') then json.id else null
+        @path = if json.hasOwnProperty('path') then json.path else null
 
     set: (obj) ->
-      @path = if json.hasOwnProperty('path') then json.path else null
+      if obj?
+        @path = if json.hasOwnProperty('path') then json.path else null
 
     getInfo: ->
       id:   @id

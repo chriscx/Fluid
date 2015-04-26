@@ -11,12 +11,14 @@ angular.module('Blog').factory 'Settings', ($http) ->
       @author       = null
       @header       = null
       @footer       = null
-      for property in obj
-        @[attribute] = obj[property]
+      if obj?
+        for property in obj
+          @[attribute] = obj[property]
 
     set: (obj) ->
-      for property in obj
-        @[attribute] = obj[property]
+      if obj?
+        for property in obj
+          @[attribute] = obj[property]
 
     getInfo: ->
       title:        @title

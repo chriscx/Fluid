@@ -32,19 +32,6 @@ appenders = [
   }
 ]
 logger = new ln('fluid', appenders)
-# logger.e 'ln'
-#Android-like logging signature:
-#log.trace = log.t
-#log.debug = log.d
-#log.info  = log.i
-#log.warn  = log.w
-#log.error = log.e
-#log.fatal = log.f
-
-# logger.error new Error('ln')
-# logger.e 'ln', new Error('ln'), a: true
-#you can call it with numbers of argument
-#only the last json and string will used
 
 app = express()
 

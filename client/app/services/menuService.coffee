@@ -19,4 +19,4 @@ angular.module('Blog').factory 'MenuService', ($http, Menu) ->
     $http.post('/data/menu/', id)
 
   saveMenu: (id, data) ->
-    $http.put("/data/menu/#{id}.json"), data
+    $http.put("/data/menu/#{id}.json", data)

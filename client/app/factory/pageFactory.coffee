@@ -5,21 +5,23 @@ angular.module('Site').factory 'Page', ($http) ->
     # Constructor: if is not set by the server, it will be overwritten on save
     #
     constructor: (obj) ->
-      @id           = if obj.hasOwnProperty('id') then obj.id else null
-      @title        = if obj.hasOwnProperty('title') then obj.title else null
-      @author       = if obj.hasOwnProperty('author') then obj.author else null
-      @body         = if obj.hasOwnProperty('body') then obj.body else null
-      @creationDate = if obj.hasOwnProperty('creationDate') then obj.creationDate else null
-      @updateDate   = if obj.hasOwnProperty('updateDate') then obj.updateDate else null
-      @published    = if obj.hasOwnProperty('published') then obj.published else null
+      if obj?
+        @id           = if obj.hasOwnProperty('id') then obj.id else null
+        @title        = if obj.hasOwnProperty('title') then obj.title else null
+        @author       = if obj.hasOwnProperty('author') then obj.author else null
+        @body         = if obj.hasOwnProperty('body') then obj.body else null
+        @creationDate = if obj.hasOwnProperty('creationDate') then obj.creationDate else null
+        @updateDate   = if obj.hasOwnProperty('updateDate') then obj.updateDate else null
+        @published    = if obj.hasOwnProperty('published') then obj.published else null
 
-    set: () ->
-      @title        = if obj.hasOwnProperty('title') then obj.title else null
-      @author       = if obj.hasOwnProperty('author') then obj.author else null
-      @body         = if obj.hasOwnProperty('body') then obj.body else null
-      @creationDate = if obj.hasOwnProperty('creationDate') then obj.creationDate else null
-      @updateDate   = if obj.hasOwnProperty('updateDate') then obj.updateDate else null
-      @published    = if obj.hasOwnProperty('published') then obj.published else null
+    set: (obj) ->
+      if obj?
+        @title        = if obj.hasOwnProperty('title') then obj.title else null
+        @author       = if obj.hasOwnProperty('author') then obj.author else null
+        @body         = if obj.hasOwnProperty('body') then obj.body else null
+        @creationDate = if obj.hasOwnProperty('creationDate') then obj.creationDate else null
+        @updateDate   = if obj.hasOwnProperty('updateDate') then obj.updateDate else null
+        @published    = if obj.hasOwnProperty('published') then obj.published else null
 
     getInfo: ->
       id:           @id

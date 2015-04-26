@@ -76,7 +76,7 @@ module.exports = (app, passport, resetTokens, config, logger) ->
 
             # already exists
             if user
-              logger.warn 'User ' + username + ' already exists'
+              logger.warn "'User #{username} already exists"
               done null, false
             else
               # if there is no user with that email
@@ -105,7 +105,6 @@ module.exports = (app, passport, resetTokens, config, logger) ->
     passReqToCallback: true
   , (req, username, password, done) ->
 
-    logger.info 'new password ' + password
     updatedPassword = {password: bcrypt.hashSync password}
 
     # check in mongo if a user with username exists or not
@@ -128,7 +127,7 @@ module.exports = (app, passport, resetTokens, config, logger) ->
   )
 
   app.get '/data/user/:user.json', expressJwt({secret: secret}), (req, res) ->
-    logger.info 'GET user \'' + req.user.username + '\' JSON object'
+    logger.info "'GET user #{req.user.username} JSON object"
     User.findOne {username: req.user.username}, '-_id -__v -password', (err, data) ->
       delete data.password
       if err
@@ -141,7 +140,7 @@ module.exports = (app, passport, resetTokens, config, logger) ->
         res.json data
 
   app.put '/data/user/:user.json', expressJwt({secret: secret}), (req, res) ->
-    logger.info 'PUT user \'' + req.user.username + '\' JSON object'
+    logger.info "PUT user '#{req.user.username}' JSON object"
     req.body.password = bcrypt.hashSync req.body.password
     User.findOneAndUpdate username: req.user.username,
       req.body,
@@ -157,7 +156,7 @@ module.exports = (app, passport, resetTokens, config, logger) ->
             res.sendStatus(200).end()
 
   app.delete '/data/user/:user.json', expressJwt({secret: secret}), (req, res) ->
-    logger.info 'DEL user \'' + req.user.username + '\' JSON object'
+    logger.info "DEL user '#{req.user.username}' JSON object"
     User.remove {'username': req.user.username}, (err, data) ->
       if err
         logger.error new Error(err), {msg: 'HTTP 500'}
@@ -169,7 +168,7 @@ module.exports = (app, passport, resetTokens, config, logger) ->
         res.sendStatus(200).end()
 
   app.get '/data/blog/posts.json', expressJwt({secret: secret}), (req, res) ->
-    logger.info('GET playlist list of \'' + req.user.username + '\' JSON object')
+    logger.info "GET post list JSON object"
     Post.find {author: req.user.username}, 'id title category', (err, data) ->
       logger.info data
       unless err
@@ -179,6 +178,7 @@ module.exports = (app, passport, resetTokens, config, logger) ->
         res.sendStatus(404).end()
 
   app.get '/data/blog/post/:s/:l/posts.json', (req, res) ->
+    logger.info "GET posts list of '#{req.user.username}' JSON object"
     Post.find {}, '-_id -__v', {'skip': req.params.s, 'limit': req.params.l}
       .sort
         creationDate: 'desc'
