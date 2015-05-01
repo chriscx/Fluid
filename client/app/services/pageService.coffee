@@ -6,17 +6,17 @@ angular.module('Site').factory 'PageService', ($http, Page) ->
 
   genericSuccessCallback = (response) -> new Page response.data
 
-  getPageList: ->
+  getList: ->
     $http.get('/data/pages.json')
 
-  getPage: (id) ->
+  get: (id) ->
     $http.get("/data/page/#{id}.json")
 
-  removePage: (id) ->
+  remove: (id) ->
     $http.delete("/data/page/#{id}.json")
 
-  createPage: (data) ->
+  create: (data) ->
     $http.post('/data/page/', data)
 
-  savePage: (id, data) ->
+  save: (id, data) ->
     $http.put("/data/page/#{id}.json", data)

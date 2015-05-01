@@ -3,6 +3,7 @@ jade        = require 'gulp-jade'
 coffee      = require 'gulp-coffee'
 concat      = require 'gulp-concat'
 gutil       = require 'gulp-util'
+jasmine     = require 'gulp-jasmine'
 
 paths =
   jade:
@@ -25,6 +26,10 @@ gulp.task 'coffee', ->
     .pipe(coffee(bare: true).on('error', gutil.log))
     .pipe(concat('app.js'))
     .pipe gulp.dest paths.coffee_client.dest
+
+gulp.task 'jasmine', ->
+  gulp.src('client/app/test/*.coffee')
+    .pipe(jasmine())
 
 gulp.task 'watch', ->
   gulp.watch(paths.jade.src, [ 'jade' ]).on 'change', (event) ->

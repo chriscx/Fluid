@@ -1,4 +1,4 @@
-angular.module('Index').controller 'IndexController', ($scope, $routeParams, $location, $window, $sce, UserService, AuthenticationService, MenuService, PageService, SettingService) ->
+angular.module('Index').controller 'IndexController', ($scope, $routeParams, $location, $window, $sce, UserService, AuthenticationService, MenuService, PageService, SettingsService) ->
 
   $scope.site =
     title: 'Fluid'
@@ -15,24 +15,24 @@ angular.module('Index').controller 'IndexController', ($scope, $routeParams, $lo
     console.log status
     console.log data
 
-  SettingService.get().success((data) ->
-    $scope.header = data.header
-    $scope.header.htmlSafe = $sce.trustAsHtml($scope.header.body)
-    $scope.footer = data.footer
-    $scope.footer.htmlSafe = $sce.trustAsHtml($scope.footer.body)
-  ).error (status, data) ->
-    console.log status
-    console.log data
+  # SettingsService.get().success((data) ->
+  #   $scope.header = data.header
+  #   $scope.header.htmlSafe = $sce.trustAsHtml($scope.header.body)
+  #   $scope.footer = data.footer
+  #   $scope.footer.htmlSafe = $sce.trustAsHtml($scope.footer.body)
+  # ).error (status, data) ->
+  #   console.log status
+  #   console.log data
 
     $scope.page.htmlSafe =
        $sce.trustAsHtml($scope.page.body)
 
-  PageService.get('sider').success((data) ->
-    $scope.sider = data
-    $scope.sider.htmlSafe = $sce.trustAsHtml($scope.sider.body)
-  ).error (status, data) ->
-    console.log status
-    console.log data
+  # PageService.get('sider').success((data) ->
+  #   $scope.sider = data
+  #   $scope.sider.htmlSafe = $sce.trustAsHtml($scope.sider.body)
+  # ).error (status, data) ->
+  #   console.log status
+  #   console.log data
 
   $scope.adminMenu = [
     {id: 'public', name: 'Public', order: 0, route: '/'},

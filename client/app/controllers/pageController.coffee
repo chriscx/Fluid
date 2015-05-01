@@ -1,10 +1,11 @@
-angular.module('Page').controller 'PageController', ($scope, $http, $routeParams, $location, $window, $sce, PageService, MenuService) ->
+angular.module('Site').controller 'PageController', ($scope, $http, $routeParams, $location, $window, $sce, PageService, MenuService) ->
 
   $scope.page = {}
 
   if $location.path() == '/'
     PageService.get('index').success((data) ->
       $scope.page = data
+      console.log data
       $scope.page.htmlSafe =
          $sce.trustAsHtml($scope.page.body)
     ).error (status, data) ->

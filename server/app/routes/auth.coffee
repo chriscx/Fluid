@@ -7,8 +7,7 @@ Hashids = require 'hashids'
 hash = new Hashids('this is my salt')
 bcrypt = require 'bcrypt-nodejs'
 LocalStrategy = require('passport-local').Strategy
-utils = require './utils'
-User = require('./models/user').User
+User = require('../models/user').User
 
 module.exports = (app, passport, resetTokens, config, logger) ->
 

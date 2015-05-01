@@ -30,24 +30,24 @@ html(ng-app='FluidApp' ng-controller='IndexController')
     script(src='/components/textAngular/dist/textAngular.min.js' defer)
     script(type='text/javascript' src='app.js' defer)
         
-    script.
-      $('#sider_affix').affix({
-        offset: {
-          top: 100,
-          bottom: function () {
-            return (this.bottom = $('.footer').outerHeight(true))
-          }
-        }
-      })
+    //- script.
+    //-   $('#sider_affix').affix({
+    //-     offset: {
+    //-       top: 100,
+    //-       bottom: function () {
+    //-         return (this.bottom = $('.footer').outerHeight(true))
+    //-       }
+    //-     }
+    //-   })
 
   body.fadein(data-spy='scroll' data-target='#nav-scrollspy')
     .container-fluid(style="height: 100%;")
       
-      .col-md-4.affix_container(style="padding-left: 0px;")
-        div.affix.block(id='sider_affix' style=" width:inherit; background: url('media/sider.jpg') no-repeat fixed center;")
-          div(style="padding-top:40%; color: white;" ng-bind-html='sider.htmlSafe')
+      //- .col-md-4.affix_container(style="padding-left: 0px;")
+      //-   div.affix.block(id='sider_affix' style=" width:inherit; background: url('media/sider.jpg') no-repeat fixed center;")
+      //-     div(style="padding-top:40%; color: white;" ng-bind-html='sider.htmlSafe')
             
-      .col-md-8(style="padding-left:30px;")
+      .col-md-12(style="padding-left:30px;")
         header.row
           .col-md-12(ng-bind-html='header.htmlSafe')
           .col-md-12

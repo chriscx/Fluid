@@ -1,4 +1,4 @@
-angular.module('Admin').controller 'AdminSettingsController', ($scope, $http, $routeParams, $location, $window, MenuService, SettingService) ->
+angular.module('Admin').controller 'AdminSettingsController', ($scope, $http, $routeParams, $location, $window, MenuService, SettingsService) ->
 
   $scope.categoryList = []
   $scope.menuList = []

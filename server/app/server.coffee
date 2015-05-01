@@ -83,7 +83,17 @@ conf =
   port: process.env.SMTP_PORT || 25,
   ssl: process.env.SMTP_SSL || false
 
-require('./routes') app, passport, resetTokens, conf, logger
+require('./routes/auth') app, passport, resetTokens, conf, logger
+require('./routes/users') app, passport, resetTokens, conf, logger
+require('./routes/system') app, passport, resetTokens, conf, logger
+require('./routes/settings') app, passport, resetTokens, conf, logger
+require('./routes/posts') app, passport, resetTokens, conf, logger
+require('./routes/pages') app, passport, resetTokens, conf, logger
+require('./routes/files') app, passport, resetTokens, conf, logger
+
+app.get '*', (req, res) ->
+  logger.info 'GET ' +  req.originalUrl + ' redirect to ' + '/#' + req.originalUrl
+  res.redirect '/#' + req.originalUrl
 
 app.use (err, req, res, next) ->
   logger.error 'Ressources not found.'
